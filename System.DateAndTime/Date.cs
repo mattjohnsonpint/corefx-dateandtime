@@ -32,47 +32,27 @@ namespace System
 
         public int Year
         {
-            get
-            {
-                DateTime dt = new DateTime(_dayNumber * TimeSpan.TicksPerDay);
-                return dt.Year;
-            }
+            get { return ToDateTimeAtMidnight().Year; }
         }
 
         public int Month
         {
-            get
-            {
-                DateTime dt = new DateTime(_dayNumber * TimeSpan.TicksPerDay);
-                return dt.Month;
-            }
+            get { return ToDateTimeAtMidnight().Month; }
         }
 
         public int Day
         {
-            get
-            {
-                DateTime dt = new DateTime(_dayNumber * TimeSpan.TicksPerDay);
-                return dt.Day;
-            }
+            get { return ToDateTimeAtMidnight().Day; }
         }
 
         public int DayOfYear
         {
-            get
-            {
-                DateTime dt = new DateTime(_dayNumber * TimeSpan.TicksPerDay);
-                return dt.DayOfYear;
-            }
+            get { return ToDateTimeAtMidnight().DayOfYear; }
         }
 
         public DayOfWeek DayOfWeek
         {
-            get
-            {
-                DateTime dt = new DateTime(_dayNumber * TimeSpan.TicksPerDay);
-                return dt.DayOfWeek;
-            }
+            get { return ToDateTimeAtMidnight().DayOfWeek; }
         }
 
         public static Date MinValue
@@ -279,7 +259,7 @@ namespace System
             date = DateFromDateTime(dt);
             return true;
         }
-        
+
         public int CompareTo(object obj)
         {
             if (obj == null) return 1;
