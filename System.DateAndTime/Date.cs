@@ -100,19 +100,19 @@ namespace System
         {
             DateTimeOffset utcNow = DateTimeOffset.UtcNow;
             DateTimeOffset localNow = TimeZoneInfo.ConvertTime(utcNow, timeZone);
-            return new Date(localNow.Year, localNow.Month, localNow.Day);
+            return DateFromDateTime(localNow.Date);
         }
 
         public static Date TodayLocal()
         {
             DateTime localNow = DateTime.Now;
-            return new Date(localNow.Year, localNow.Month, localNow.Day);
+            return DateFromDateTime(localNow);
         }
 
         public static Date TodayUtc()
         {
             DateTime utcNow = DateTime.UtcNow;
-            return new Date(utcNow.Year, utcNow.Month, utcNow.Day);
+            return DateFromDateTime(utcNow);
         }
 
         public Date AddYears(int years)
