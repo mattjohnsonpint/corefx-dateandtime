@@ -81,6 +81,11 @@ namespace System
             return new DateTime(_dayNumber * TimeSpan.TicksPerDay);
         }
 
+        public static bool IsLeapYear(int year)
+        {
+            return DateTime.IsLeapYear(year);
+        }
+
         public static Date Today(TimeZoneInfo timeZone)
         {
             DateTimeOffset utcNow = DateTimeOffset.UtcNow;
