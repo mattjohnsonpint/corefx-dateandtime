@@ -30,6 +30,16 @@ namespace System
             _dayNumber = (int)(dt.Ticks / TimeSpan.TicksPerDay);
         }
 
+        public Date(int year, int dayOfYear)
+        {
+            if (dayOfYear < 1 || dayOfYear > (IsLeapYear(year) ? 366 : 365))
+                throw new ArgumentOutOfRangeException("dayOfYear");
+            Contract.EndContractBlock();
+
+            DateTime dt = new DateTime(year, 1, 1).AddDays(dayOfYear - 1);
+            _dayNumber = (int)(dt.Ticks / TimeSpan.TicksPerDay);
+        }
+
         public int Year
         {
             get { return ToDateTimeAtMidnight().Year; }
