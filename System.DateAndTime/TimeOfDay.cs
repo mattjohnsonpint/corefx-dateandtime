@@ -157,6 +157,23 @@
             return new TimeOfDay(utcNow.TimeOfDay.Ticks);
         }
 
+        /// <summary>
+        /// Determines if a time falls within the range provided.
+        /// Supports both "normal" ranges such as 10:00-12:00, and ranges that span midnight such as 23:00-01:00.
+        /// </summary>
+        /// <param name="startTime">The starting time of day, inclusive.</param>
+        /// <param name="endTime">The ending time of day, exclusive.</param>
+        /// <returns>True, if the time falls within the range, false otherwise.</returns>
+        public bool IsBetween(TimeOfDay startTime, TimeOfDay endTime)
+        {
+            long startTicks = startTime._ticks;
+            long endTicks = endTime._ticks;
+
+            return startTicks <= endTicks
+                ? (startTicks <= _ticks && endTicks > _ticks)
+                : (startTicks <= _ticks || endTicks > _ticks);
+        }
+
         public TimeOfDay Add(TimeSpan timeSpan)
         {
             DateTime dt = new Date(5000, 0, 0).At(this).Add(timeSpan);
