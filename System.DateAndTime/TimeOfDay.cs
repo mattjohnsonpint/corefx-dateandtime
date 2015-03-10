@@ -1,7 +1,8 @@
-﻿namespace System
-{
-    using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
+using System.Globalization;
 
+namespace System
+{
     /// <summary>
     /// Represents a time of day, as would be read from a clock, within the range 00:00:00 to 23:59:59.9999999
     /// Has properties for working with both 12-hour and 24-hour time values.
@@ -297,6 +298,82 @@
         public string ToString(string format, IFormatProvider formatProvider)
         {
             return DateTime.MinValue.AddTicks(_ticks).ToString(format, formatProvider);
+        }
+
+        public static TimeOfDay Parse(string s)
+        {
+            DateTime dt = DateTime.Parse(s, null, DateTimeStyles.NoCurrentDateDefault);
+            return new TimeOfDay(dt.TimeOfDay.Ticks);
+        }
+
+        public static TimeOfDay Parse(string s, IFormatProvider provider)
+        {
+            DateTime dt = DateTime.Parse(s, provider, DateTimeStyles.NoCurrentDateDefault);
+            return new TimeOfDay(dt.TimeOfDay.Ticks);
+        }
+
+        public static TimeOfDay ParseExact(string s, string format, IFormatProvider provider)
+        {
+            DateTime dt = DateTime.ParseExact(s, format, provider, DateTimeStyles.NoCurrentDateDefault);
+            return new TimeOfDay(dt.TimeOfDay.Ticks);
+        }
+
+        public static TimeOfDay ParseExact(string s, string[] formats, IFormatProvider provider)
+        {
+            DateTime dt = DateTime.ParseExact(s, formats, provider, DateTimeStyles.NoCurrentDateDefault);
+            return new TimeOfDay(dt.TimeOfDay.Ticks);
+        }
+
+        public static bool TryParse(string s, out TimeOfDay time)
+        {
+            DateTime dt;
+            if (!DateTime.TryParse(s, null, DateTimeStyles.NoCurrentDateDefault, out dt))
+            {
+                time = default(TimeOfDay);
+                return false;
+            }
+
+            time = new TimeOfDay(dt.TimeOfDay.Ticks);
+            return true;
+        }
+
+        public static bool TryParse(string s, IFormatProvider provider, out TimeOfDay time)
+        {
+            DateTime dt;
+            if (!DateTime.TryParse(s, provider, DateTimeStyles.NoCurrentDateDefault, out dt))
+            {
+                time = default(TimeOfDay);
+                return false;
+            }
+
+            time = new TimeOfDay(dt.TimeOfDay.Ticks);
+            return true;
+        }
+
+        public static bool TryParseExact(string s, string format, IFormatProvider provider, out TimeOfDay time)
+        {
+            DateTime dt;
+            if (!DateTime.TryParseExact(s, format, provider, DateTimeStyles.NoCurrentDateDefault, out dt))
+            {
+                time = default(TimeOfDay);
+                return false;
+            }
+
+            time = new TimeOfDay(dt.TimeOfDay.Ticks);
+            return true;
+        }
+
+        public static bool TryParseExact(string s, string[] formats, IFormatProvider provider, out TimeOfDay time)
+        {
+            DateTime dt;
+            if (!DateTime.TryParseExact(s, formats, provider, DateTimeStyles.NoCurrentDateDefault, out dt))
+            {
+                time = default(TimeOfDay);
+                return false;
+            }
+
+            time = new TimeOfDay(dt.TimeOfDay.Ticks);
+            return true;
         }
 
         public static bool operator ==(TimeOfDay left, TimeOfDay right)
