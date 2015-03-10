@@ -96,23 +96,29 @@ namespace System
             return DateTime.IsLeapYear(year);
         }
 
-        public static Date Today(TimeZoneInfo timeZone)
+        public static Date TodayAtTimeZone(TimeZoneInfo timeZone)
         {
             DateTimeOffset utcNow = DateTimeOffset.UtcNow;
             DateTimeOffset localNow = TimeZoneInfo.ConvertTime(utcNow, timeZone);
             return DateFromDateTime(localNow.Date);
         }
 
-        public static Date TodayLocal()
+        public static Date TodayLocal
         {
-            DateTime localNow = DateTime.Now;
-            return DateFromDateTime(localNow);
+            get
+            {
+                DateTime localNow = DateTime.Now;
+                return DateFromDateTime(localNow);
+            }
         }
 
-        public static Date TodayUtc()
+        public static Date TodayUtc
         {
-            DateTime utcNow = DateTime.UtcNow;
-            return DateFromDateTime(utcNow);
+            get
+            {
+                DateTime utcNow = DateTime.UtcNow;
+                return DateFromDateTime(utcNow);
+            }
         }
 
         public Date AddYears(int years)
