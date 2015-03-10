@@ -179,9 +179,13 @@ namespace System
             return _dayNumber;
         }
 
+        /// <summary>
+        /// Returns an ISO8601 standard string representation of this date.
+        /// </summary>
+        /// <returns>An ISO8601 standard string representation of this date.</returns>
         public override string ToString()
         {
-            return ToDateTimeAtMidnight().ToString("d");
+            return ToDateTimeAtMidnight().ToString("yyyy-MM-dd");
         }
 
         public string ToString(IFormatProvider formatProvider)
