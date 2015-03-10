@@ -143,19 +143,19 @@ namespace System
         {
             DateTimeOffset utcNow = DateTimeOffset.UtcNow;
             DateTimeOffset localNow = TimeZoneInfo.ConvertTime(utcNow, timeZone);
-            return new TimeOfDay(localNow.TimeOfDay.Ticks);
+            return TimeOfDayFromTimeSpan(localNow.TimeOfDay);
         }
 
         public static TimeOfDay NowLocal()
         {
             var localNow = DateTime.Now;
-            return new TimeOfDay(localNow.TimeOfDay.Ticks);
+            return TimeOfDayFromTimeSpan(localNow.TimeOfDay);
         }
 
         public static TimeOfDay NowUtc()
         {
             var utcNow = DateTime.UtcNow;
-            return new TimeOfDay(utcNow.TimeOfDay.Ticks);
+            return TimeOfDayFromTimeSpan(utcNow.TimeOfDay);
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace System
         public TimeOfDay Add(TimeSpan timeSpan)
         {
             DateTime dt = new Date(5000, 0, 0).At(this).Add(timeSpan);
-            return new TimeOfDay(dt.TimeOfDay.Ticks);
+            return TimeOfDayFromTimeSpan(dt.TimeOfDay);
         }
 
         public TimeOfDay AddHours(double hours)
@@ -303,25 +303,25 @@ namespace System
         public static TimeOfDay Parse(string s)
         {
             DateTime dt = DateTime.Parse(s, null, DateTimeStyles.NoCurrentDateDefault);
-            return new TimeOfDay(dt.TimeOfDay.Ticks);
+            return TimeOfDayFromTimeSpan(dt.TimeOfDay);
         }
 
         public static TimeOfDay Parse(string s, IFormatProvider provider)
         {
             DateTime dt = DateTime.Parse(s, provider, DateTimeStyles.NoCurrentDateDefault);
-            return new TimeOfDay(dt.TimeOfDay.Ticks);
+            return TimeOfDayFromTimeSpan(dt.TimeOfDay);
         }
 
         public static TimeOfDay ParseExact(string s, string format, IFormatProvider provider)
         {
             DateTime dt = DateTime.ParseExact(s, format, provider, DateTimeStyles.NoCurrentDateDefault);
-            return new TimeOfDay(dt.TimeOfDay.Ticks);
+            return TimeOfDayFromTimeSpan(dt.TimeOfDay);
         }
 
         public static TimeOfDay ParseExact(string s, string[] formats, IFormatProvider provider)
         {
             DateTime dt = DateTime.ParseExact(s, formats, provider, DateTimeStyles.NoCurrentDateDefault);
-            return new TimeOfDay(dt.TimeOfDay.Ticks);
+            return TimeOfDayFromTimeSpan(dt.TimeOfDay);
         }
 
         public static bool TryParse(string s, out TimeOfDay time)
@@ -333,7 +333,7 @@ namespace System
                 return false;
             }
 
-            time = new TimeOfDay(dt.TimeOfDay.Ticks);
+            time = TimeOfDayFromTimeSpan(dt.TimeOfDay);
             return true;
         }
 
@@ -346,7 +346,7 @@ namespace System
                 return false;
             }
 
-            time = new TimeOfDay(dt.TimeOfDay.Ticks);
+            time = TimeOfDayFromTimeSpan(dt.TimeOfDay);
             return true;
         }
 
@@ -359,7 +359,7 @@ namespace System
                 return false;
             }
 
-            time = new TimeOfDay(dt.TimeOfDay.Ticks);
+            time = TimeOfDayFromTimeSpan(dt.TimeOfDay);
             return true;
         }
 
@@ -372,7 +372,7 @@ namespace System
                 return false;
             }
 
-            time = new TimeOfDay(dt.TimeOfDay.Ticks);
+            time = TimeOfDayFromTimeSpan(dt.TimeOfDay);
             return true;
         }
 
@@ -411,6 +411,11 @@ namespace System
             return meridiem == Meridiem.AM
                 ? (hours12 == 12 ? 0 : hours12)
                 : (hours12 == 12 ? 12 : hours12 + 12);
+        }
+
+        private static TimeOfDay TimeOfDayFromTimeSpan(TimeSpan timeSpan)
+        {
+            return new TimeOfDay(timeSpan.Ticks);
         }
     }
 }
