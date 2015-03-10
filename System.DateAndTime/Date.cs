@@ -124,24 +124,21 @@ namespace System
         {
             DateTime dt = new DateTime(_dayNumber * TimeSpan.TicksPerDay);
             DateTime result = dt.AddYears(years);
-            int dayNumber = (int)(result.Ticks / TimeSpan.TicksPerDay);
-            return new Date(dayNumber);
+            return DateFromDateTime(result);
         }
 
         public Date AddMonths(int months)
         {
             DateTime dt = new DateTime(_dayNumber * TimeSpan.TicksPerDay);
             DateTime result = dt.AddMonths(months);
-            int dayNumber = (int)(result.Ticks / TimeSpan.TicksPerDay);
-            return new Date(dayNumber);
+            return DateFromDateTime(result);
         }
 
         public Date AddDays(int days)
         {
             DateTime dt = new DateTime(_dayNumber * TimeSpan.TicksPerDay);
             DateTime result = dt.AddDays(days);
-            int dayNumber = (int)(result.Ticks / TimeSpan.TicksPerDay);
-            return new Date(dayNumber);
+            return DateFromDateTime(result);
         }
 
         public Date SubtractYears(int years)
@@ -210,25 +207,25 @@ namespace System
         public static Date Parse(string s)
         {
             DateTime dt = DateTime.Parse(s);
-            return new Date((int)(dt.Date.Ticks / TimeSpan.TicksPerDay));
+            return DateFromDateTime(dt);
         }
 
         public static Date Parse(string s, IFormatProvider provider)
         {
             DateTime dt = DateTime.Parse(s, provider);
-            return new Date((int)(dt.Date.Ticks / TimeSpan.TicksPerDay));
+            return DateFromDateTime(dt);
         }
 
         public static Date ParseExact(string s, string format, IFormatProvider provider)
         {
             DateTime dt = DateTime.ParseExact(s, format, provider);
-            return new Date((int)(dt.Date.Ticks / TimeSpan.TicksPerDay));
+            return DateFromDateTime(dt);
         }
 
         public static Date ParseExact(string s, string[] formats, IFormatProvider provider)
         {
             DateTime dt = DateTime.ParseExact(s, formats, provider, DateTimeStyles.None);
-            return new Date((int)(dt.Date.Ticks / TimeSpan.TicksPerDay));
+            return DateFromDateTime(dt);
         }
 
         public static bool TryParse(string s, out Date date)
@@ -240,7 +237,7 @@ namespace System
                 return false;
             }
 
-            date = new Date((int)(dt.Date.Ticks / TimeSpan.TicksPerDay));
+            date = DateFromDateTime(dt);
             return true;
         }
 
@@ -253,7 +250,7 @@ namespace System
                 return false;
             }
 
-            date = new Date((int)(dt.Date.Ticks / TimeSpan.TicksPerDay));
+            date = DateFromDateTime(dt);
             return true;
         }
 
@@ -266,7 +263,7 @@ namespace System
                 return false;
             }
 
-            date = new Date((int)(dt.Date.Ticks / TimeSpan.TicksPerDay));
+            date = DateFromDateTime(dt);
             return true;
         }
 
@@ -279,7 +276,7 @@ namespace System
                 return false;
             }
 
-            date = new Date((int)(dt.Date.Ticks / TimeSpan.TicksPerDay));
+            date = DateFromDateTime(dt);
             return true;
         }
         
@@ -326,6 +323,11 @@ namespace System
         {
             // This is useful such that existing items like DateTime.Today and DateTime.Date can be assigned to a Date type.
 
+            return DateFromDateTime(dateTime);
+        }
+
+        private static Date DateFromDateTime(DateTime dateTime)
+        {
             return new Date((int)(dateTime.Date.Ticks / TimeSpan.TicksPerDay));
         }
     }
