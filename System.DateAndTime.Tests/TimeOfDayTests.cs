@@ -210,5 +210,24 @@ namespace System.DateAndTime.Tests
             bool between = testTime.IsBetween(startTime, endTime);
             Assert.False(between);
         }
+
+        [Fact]
+        public void CanCalculateDuration_Normal()
+        {
+            TimeOfDay startTime = new TimeOfDay(10, 0);
+            TimeOfDay endTime = new TimeOfDay(12, 0);
+
+            TimeSpan duration = TimeOfDay.CalculateDuration(startTime, endTime);
+            Assert.Equal(TimeSpan.FromHours(2), duration);
+        }
+
+        public void CanCalculateDuration_OverMidnight()
+        {
+            TimeOfDay startTime = new TimeOfDay(23, 0);
+            TimeOfDay endTime = new TimeOfDay(1, 0);
+
+            TimeSpan duration = TimeOfDay.CalculateDuration(startTime, endTime);
+            Assert.Equal(TimeSpan.FromHours(2), duration);
+        }
     }
 }

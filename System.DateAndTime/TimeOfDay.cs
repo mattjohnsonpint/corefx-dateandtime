@@ -174,6 +174,24 @@
                 : (startTicks <= _ticks || endTicks > _ticks);
         }
 
+        /// <summary>
+        /// Calculates the duration between two time values.
+        /// Assumes a standard day, with no invalid or ambiguous times due to Daylight Saving Time.
+        /// Supports both "normal" ranges such as 10:00-12:00, and ranges that span midnight such as 23:00-01:00.
+        /// </summary>
+        /// <param name="startTime">The starting time of day, inclusive.</param>
+        /// <param name="endTime">The ending time of day, exclusive.</param>
+        /// <returns>A <see cref="TimeSpan"/> representing the duration between the two values.</returns>
+        public static TimeSpan CalculateDuration(TimeOfDay startTime, TimeOfDay endTime)
+        {
+            long startTicks = startTime._ticks;
+            long endTicks = endTime._ticks;
+
+            return startTicks <= endTicks
+                ? TimeSpan.FromTicks(endTicks - startTicks)
+                : TimeSpan.FromTicks(endTicks - startTicks + TimeSpan.TicksPerDay);
+        }
+
         public TimeOfDay Add(TimeSpan timeSpan)
         {
             DateTime dt = new Date(5000, 0, 0).At(this).Add(timeSpan);
