@@ -1,7 +1,8 @@
-﻿namespace System
-{
-    using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
+using System.Globalization;
 
+namespace System
+{
     /// <summary>
     /// Represents a whole date, having a year, month and day component.
     /// All values are in the proleptic Gregorian (ISO8601) calendar system.
@@ -206,13 +207,89 @@
             return ToDateTimeAtMidnight().ToString(format, formatProvider);
         }
 
+        public static Date Parse(string s)
+        {
+            DateTime dt = DateTime.Parse(s);
+            return new Date((int)(dt.Date.Ticks / TimeSpan.TicksPerDay));
+        }
+
+        public static Date Parse(string s, IFormatProvider provider)
+        {
+            DateTime dt = DateTime.Parse(s, provider);
+            return new Date((int)(dt.Date.Ticks / TimeSpan.TicksPerDay));
+        }
+
+        public static Date ParseExact(string s, string format, IFormatProvider provider)
+        {
+            DateTime dt = DateTime.ParseExact(s, format, provider);
+            return new Date((int)(dt.Date.Ticks / TimeSpan.TicksPerDay));
+        }
+
+        public static Date ParseExact(string s, string[] formats, IFormatProvider provider)
+        {
+            DateTime dt = DateTime.ParseExact(s, formats, provider, DateTimeStyles.None);
+            return new Date((int)(dt.Date.Ticks / TimeSpan.TicksPerDay));
+        }
+
+        public static bool TryParse(string s, out Date date)
+        {
+            DateTime dt;
+            if (!DateTime.TryParse(s, out dt))
+            {
+                date = default(Date);
+                return false;
+            }
+
+            date = new Date((int)(dt.Date.Ticks / TimeSpan.TicksPerDay));
+            return true;
+        }
+
+        public static bool TryParse(string s, IFormatProvider provider, out Date date)
+        {
+            DateTime dt;
+            if (!DateTime.TryParse(s, provider, DateTimeStyles.None, out dt))
+            {
+                date = default(Date);
+                return false;
+            }
+
+            date = new Date((int)(dt.Date.Ticks / TimeSpan.TicksPerDay));
+            return true;
+        }
+
+        public static bool TryParseExact(string s, string format, IFormatProvider provider, out Date date)
+        {
+            DateTime dt;
+            if (!DateTime.TryParseExact(s, format, provider, DateTimeStyles.None, out dt))
+            {
+                date = default(Date);
+                return false;
+            }
+
+            date = new Date((int)(dt.Date.Ticks / TimeSpan.TicksPerDay));
+            return true;
+        }
+
+        public static bool TryParseExact(string s, string[] formats, IFormatProvider provider, out Date date)
+        {
+            DateTime dt;
+            if (!DateTime.TryParseExact(s, formats, provider, DateTimeStyles.None, out dt))
+            {
+                date = default(Date);
+                return false;
+            }
+
+            date = new Date((int)(dt.Date.Ticks / TimeSpan.TicksPerDay));
+            return true;
+        }
+        
         public int CompareTo(object obj)
         {
             if (obj == null) return 1;
             if (!(obj is Date))
                 throw new ArgumentException();
 
-            return Compare(this, (Date) obj);
+            return Compare(this, (Date)obj);
         }
 
         public static bool operator ==(Date left, Date right)
@@ -248,7 +325,7 @@
         public static implicit operator Date(DateTime dateTime)
         {
             // This is useful such that existing items like DateTime.Today and DateTime.Date can be assigned to a Date type.
-            
+
             return new Date((int)(dateTime.Date.Ticks / TimeSpan.TicksPerDay));
         }
     }
