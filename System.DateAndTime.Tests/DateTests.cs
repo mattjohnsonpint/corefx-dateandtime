@@ -54,7 +54,7 @@ namespace System.DateAndTime.Tests
         }
 
         [Fact]
-        public void CanGetDayOfYearFromDate_StandardYera()
+        public void CanGetDayOfYearFromDate_StandardYear()
         {
             Date date = new Date(2015, 12, 31);
             Assert.Equal(365, date.DayOfYear);
