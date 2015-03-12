@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System.Globalization;
+using Xunit;
 
 namespace System.DateAndTime.Tests
 {
@@ -76,6 +77,42 @@ namespace System.DateAndTime.Tests
 
             DateTime expected = new DateTime(2000, 12, 31, 23, 59, 59);
             Assert.Equal(expected, dt);
+        }
+
+        [Fact]
+        public void ToLongDateString()
+        {
+            var date = new Date(2000, 12, 31);
+            var longDateString = date.ToLongDateString();
+            // ToLongDateString() result depends on the current info. For now, we
+            // only run the assertion if the culture is en GB/US.
+            switch (CultureInfo.CurrentCulture.Name)
+            {
+                case "en-US":
+                    Assert.Equal(longDateString, "Sunday, December 31, 2000");
+                    break;
+                case "en-GB":
+                    Assert.Equal(longDateString, "31 December 2000");
+                    break;
+            }
+        }
+
+        [Fact]
+        public void ToShortDateString()
+        {
+            var date = new Date(2000, 12, 31);
+            var shortDateString = date.ToShortDateString();
+            // ToLongDateString() result depends on the current info. For now, we
+            // only run the assertion if the culture is en GB/US.
+            switch (CultureInfo.CurrentCulture.Name)
+            {
+                case "en-US":
+                    Assert.Equal(shortDateString, "12/31/2000");
+                    break;
+                case "en-GB":
+                    Assert.Equal(shortDateString, "31/12/2000");
+                    break;
+            }
         }
     }
 }

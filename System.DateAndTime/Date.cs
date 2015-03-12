@@ -330,6 +330,34 @@ namespace System
             return ToDateTimeAtMidnight().ToString(format, formatProvider);
         }
 
+        /// <summary>
+        /// Converts the value of the current <see cref="Date"/> object to its equivalent
+        /// long date string representation.
+        /// </summary>
+        /// <returns>A string that contains the long date string representation of the
+        /// current <see cref="Date"/> object.</returns>
+        /// <remarks>The value of the current <see cref="Date"/> object is formatted using
+        /// the pattern defined by the <see cref="DateTimeFormatInfo.LongDatePattern" />
+        /// property associated with the current thread culture.</remarks>
+        public string ToLongDateString()
+        {
+            return ToString(CultureInfo.CurrentCulture.DateTimeFormat.LongDatePattern);
+        }
+
+        /// <summary>
+        /// Converts the value of the current <see cref="Date"/> object to its equivalent
+        /// short date string representation.
+        /// </summary>
+        /// <returns>A string that contains the short date string representation of the
+        /// current <see cref="Date"/> object.</returns>
+        /// <remarks>The value of the current <see cref="Date"/> object is formatted using
+        /// the pattern defined by the <see cref="DateTimeFormatInfo.ShortDatePattern" />
+        /// property associated with the current thread culture.</remarks>
+        public string ToShortDateString()
+        {
+            return ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern);
+        }
+
         public static Date Parse(string s)
         {
             DateTime dt = DateTime.Parse(s);
