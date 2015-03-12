@@ -15,6 +15,10 @@ namespace System
         public static readonly Date MinValue = new Date(MinDayNumber);
         public static readonly Date MaxValue = new Date(MaxDayNumber);
 
+        // The following arrays contain the starting day-of-year number of each month, for regular and leap years
+        private static readonly int[] DaysToMonth365 = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
+        private static readonly int[] DaysToMonth366 = { 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 };
+
         // Number of whole days since 0001-01-01 (which is day 0)
         private readonly int _dayNumber;
 
@@ -29,8 +33,7 @@ namespace System
 
         public Date(int year, int month, int day)
         {
-            DateTime dt = new DateTime(year, month, day);
-            _dayNumber = (int)(dt.Ticks / TimeSpan.TicksPerDay);
+            _dayNumber = DateToDayNumber(year, month, day);
         }
 
         public Date(int year, int dayOfYear)
@@ -39,8 +42,7 @@ namespace System
                 throw new ArgumentOutOfRangeException("dayOfYear");
             Contract.EndContractBlock();
 
-            DateTime dt = new DateTime(year, 1, 1).AddDays(dayOfYear - 1);
-            _dayNumber = (int)(dt.Ticks / TimeSpan.TicksPerDay);
+            _dayNumber = DateToDayNumber(year, 1, 1) + dayOfYear - 1;
         }
 
         public int Year
@@ -317,6 +319,25 @@ namespace System
         private static Date DateFromDateTime(DateTime dateTime)
         {
             return new Date((int)(dateTime.Date.Ticks / TimeSpan.TicksPerDay));
+        }
+
+        /// <summary>
+        /// Returns the day number count corresponding to the given year, month, and day.
+        /// Will check the if the parameters are valid.
+        /// </summary>
+        private static int DateToDayNumber(int year, int month, int day)
+        {
+            if (year >= 1 && year <= 9999 && month >= 1 && month <= 12)
+            {
+                int[] days = IsLeapYear(year) ? DaysToMonth366 : DaysToMonth365;
+                if (day >= 1 && day <= days[month] - days[month - 1])
+                {
+                    int y = year - 1;
+                    int n = y * 365 + y / 4 - y / 100 + y / 400 + days[month - 1] + day - 1;
+                    return n;
+                }
+            }
+            throw new ArgumentOutOfRangeException();
         }
     }
 }
