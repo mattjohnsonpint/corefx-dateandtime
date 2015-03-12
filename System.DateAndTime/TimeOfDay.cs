@@ -29,12 +29,21 @@ namespace System
 
         public TimeOfDay(int hours24, int minutes)
         {
+            if (hours24 < 0 || hours24 > 23) throw new ArgumentOutOfRangeException("hours24");
+            if (minutes < 0 || minutes > 59) throw new ArgumentOutOfRangeException("minutes");
+            Contract.EndContractBlock();
+
             TimeSpan timeSpan = new TimeSpan(hours24, minutes, 0);
             _ticks = timeSpan.Ticks;
         }
 
         public TimeOfDay(int hours12, int minutes, Meridiem meridiem)
         {
+            if (hours12 < 1 || hours12 > 12) throw new ArgumentOutOfRangeException("hours12");
+            if (minutes < 0 || minutes > 59) throw new ArgumentOutOfRangeException("minutes");
+            if (meridiem < Meridiem.AM || meridiem > Meridiem.PM) throw new ArgumentOutOfRangeException("meridiem");
+            Contract.EndContractBlock();
+
             int hours24 = Hours12To24(hours12, meridiem);
             TimeSpan timeSpan = new TimeSpan(hours24, minutes, 0);
             _ticks = timeSpan.Ticks;
@@ -42,12 +51,23 @@ namespace System
 
         public TimeOfDay(int hours24, int minutes, int seconds)
         {
+            if (hours24 < 0 || hours24 > 23) throw new ArgumentOutOfRangeException("hours24");
+            if (minutes < 0 || minutes > 59) throw new ArgumentOutOfRangeException("minutes");
+            if (seconds < 0 || seconds > 59) throw new ArgumentOutOfRangeException("seconds");
+            Contract.EndContractBlock();
+
             TimeSpan timeSpan = new TimeSpan(hours24, minutes, seconds);
             _ticks = timeSpan.Ticks;
         }
 
         public TimeOfDay(int hours12, int minutes, int seconds, Meridiem meridiem)
         {
+            if (hours12 < 1 || hours12 > 12) throw new ArgumentOutOfRangeException("hours12");
+            if (minutes < 0 || minutes > 59) throw new ArgumentOutOfRangeException("minutes");
+            if (seconds < 0 || seconds > 59) throw new ArgumentOutOfRangeException("seconds");
+            if (meridiem < Meridiem.AM || meridiem > Meridiem.PM) throw new ArgumentOutOfRangeException("meridiem");
+            Contract.EndContractBlock();
+
             int hours24 = Hours12To24(hours12, meridiem);
             TimeSpan timeSpan = new TimeSpan(hours24, minutes, seconds);
             _ticks = timeSpan.Ticks;
@@ -55,12 +75,25 @@ namespace System
 
         public TimeOfDay(int hours24, int minutes, int seconds, int milliseconds)
         {
+            if (hours24 < 0 || hours24 > 23) throw new ArgumentOutOfRangeException("hours24");
+            if (minutes < 0 || minutes > 59) throw new ArgumentOutOfRangeException("minutes");
+            if (seconds < 0 || seconds > 59) throw new ArgumentOutOfRangeException("seconds");
+            if (milliseconds < 0 || milliseconds > 999) throw new ArgumentOutOfRangeException("milliseconds");
+            Contract.EndContractBlock();
+
             TimeSpan timeSpan = new TimeSpan(0, hours24, minutes, seconds, milliseconds);
             _ticks = timeSpan.Ticks;
         }
 
         public TimeOfDay(int hours12, int minutes, int seconds, int milliseconds, Meridiem meridiem)
         {
+            if (hours12 < 1 || hours12 > 12) throw new ArgumentOutOfRangeException("hours12");
+            if (minutes < 0 || minutes > 59) throw new ArgumentOutOfRangeException("minutes");
+            if (seconds < 0 || seconds > 59) throw new ArgumentOutOfRangeException("seconds");
+            if (milliseconds < 0 || milliseconds > 999) throw new ArgumentOutOfRangeException("milliseconds");
+            if (meridiem < Meridiem.AM || meridiem > Meridiem.PM) throw new ArgumentOutOfRangeException("meridiem");
+            Contract.EndContractBlock();
+
             int hours24 = Hours12To24(hours12, meridiem);
             TimeSpan timeSpan = new TimeSpan(0, hours24, minutes, seconds, milliseconds);
             _ticks = timeSpan.Ticks;
@@ -70,6 +103,9 @@ namespace System
         {
             get
             {
+                Contract.Ensures(Contract.Result<int>() >= 0);
+                Contract.Ensures(Contract.Result<int>() <= 23);
+
                 TimeSpan ts = new TimeSpan(_ticks);
                 return ts.Hours;
             }
@@ -79,6 +115,9 @@ namespace System
         {
             get
             {
+                Contract.Ensures(Contract.Result<int>() >= 1);
+                Contract.Ensures(Contract.Result<int>() <= 12);
+
                 TimeSpan ts = new TimeSpan(_ticks);
                 int hour = ts.Hours % 12;
                 return hour == 0 ? 12 : hour;
@@ -98,6 +137,9 @@ namespace System
         {
             get
             {
+                Contract.Ensures(Contract.Result<int>() >= 0);
+                Contract.Ensures(Contract.Result<int>() <= 59);
+
                 TimeSpan ts = new TimeSpan(_ticks);
                 return ts.Minutes;
             }
@@ -107,6 +149,9 @@ namespace System
         {
             get
             {
+                Contract.Ensures(Contract.Result<int>() >= 0);
+                Contract.Ensures(Contract.Result<int>() <= 59);
+
                 TimeSpan ts = new TimeSpan(_ticks);
                 return ts.Seconds;
             }
@@ -116,6 +161,9 @@ namespace System
         {
             get
             {
+                Contract.Ensures(Contract.Result<int>() >= 0);
+                Contract.Ensures(Contract.Result<int>() <= 999);
+
                 TimeSpan ts = new TimeSpan(_ticks);
                 return ts.Milliseconds;
             }
@@ -123,7 +171,13 @@ namespace System
 
         public long Ticks
         {
-            get { return _ticks; }
+            get
+            {
+                Contract.Ensures(Contract.Result<long>() >= MinTicks);
+                Contract.Ensures(Contract.Result<long>() <= MaxTicks);
+
+                return _ticks;
+            }
         }
 
         public DateTime On(Date date)
