@@ -13,6 +13,7 @@ namespace System
         private const long TicksPerSecond = TicksPerMillisecond * 1000;   // 10,000,000
         private const long TicksPerMinute = TicksPerSecond * 60;         // 600,000,000
         private const long TicksPerHour = TicksPerMinute * 60;        // 36,000,000,000
+        private const long TicksPerDay = TicksPerHour * 24;          // 864,000,000,000
 
         private const long MinTicks = 0L;
         private const long MaxTicks = 863999999999L;
@@ -247,38 +248,38 @@ namespace System
 
         public TimeOfDay Add(TimeSpan timeSpan)
         {
-            DateTime dt = new Date(5000, 0, 0).At(this).Add(timeSpan);
-            return TimeOfDayFromTimeSpan(dt.TimeOfDay);
+            return AddTicks(timeSpan.Ticks);
         }
 
         public TimeOfDay AddHours(double hours)
         {
-            return Add(TimeSpan.FromHours(hours));
+            return AddTicks((long)(hours * TicksPerHour));
         }
 
         public TimeOfDay AddMinutes(double minutes)
         {
-            return Add(TimeSpan.FromMinutes(minutes));
+            return AddTicks((long)(minutes * TicksPerMinute));
         }
 
         public TimeOfDay AddSeconds(double seconds)
         {
-            return Add(TimeSpan.FromSeconds(seconds));
+            return AddTicks((long)(seconds * TicksPerSecond));
         }
 
         public TimeOfDay AddMilliseconds(double milliseconds)
         {
-            return Add(TimeSpan.FromMilliseconds(milliseconds));
+            return AddTicks((long)(milliseconds * TicksPerMillisecond));
         }
 
         public TimeOfDay AddTicks(long ticks)
         {
-            return Add(TimeSpan.FromTicks(ticks));
+            long t = (_ticks + TicksPerDay + (ticks % TicksPerDay)) % TicksPerDay;
+            return new TimeOfDay(t);
         }
 
         public TimeOfDay Subtract(TimeSpan timeSpan)
         {
-            return Add(timeSpan.Negate());
+            return AddTicks(-timeSpan.Ticks);
         }
 
         public TimeOfDay SubtractHours(double hours)
