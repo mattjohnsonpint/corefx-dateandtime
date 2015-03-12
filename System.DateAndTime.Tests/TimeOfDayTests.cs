@@ -221,6 +221,7 @@ namespace System.DateAndTime.Tests
             Assert.Equal(TimeSpan.FromHours(2), duration);
         }
 
+        [Fact]
         public void CanCalculateDuration_OverMidnight()
         {
             TimeOfDay startTime = new TimeOfDay(23, 0);
@@ -228,6 +229,26 @@ namespace System.DateAndTime.Tests
 
             TimeSpan duration = TimeOfDay.CalculateDuration(startTime, endTime);
             Assert.Equal(TimeSpan.FromHours(2), duration);
+        }
+
+        [Fact]
+        public void CanAddPositiveTime()
+        {
+            TimeOfDay startTime = new TimeOfDay(12, 0);
+            TimeOfDay actual = startTime.AddHours(13);
+            TimeOfDay expected = new TimeOfDay(1, 0);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void CanAddNegativeTime()
+        {
+            TimeOfDay startTime = new TimeOfDay(12, 0);
+            TimeOfDay actual = startTime.AddHours(-13);
+            TimeOfDay expected = new TimeOfDay(23, 0);
+
+            Assert.Equal(expected, actual);
         }
     }
 }

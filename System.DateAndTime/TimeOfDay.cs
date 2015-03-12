@@ -9,8 +9,17 @@ namespace System
     /// </summary>
     public struct TimeOfDay : IEquatable<TimeOfDay>
     {
+        private const long TicksPerMillisecond = 10000;
+        private const long TicksPerSecond = TicksPerMillisecond * 1000;   // 10,000,000
+        private const long TicksPerMinute = TicksPerSecond * 60;         // 600,000,000
+        private const long TicksPerHour = TicksPerMinute * 60;        // 36,000,000,000
+        private const long TicksPerDay = TicksPerHour * 24;          // 864,000,000,000
+
         private const long MinTicks = 0L;
         private const long MaxTicks = 863999999999L;
+
+        public static readonly TimeOfDay MinValue = new TimeOfDay(MinTicks);
+        public static readonly TimeOfDay MaxValue = new TimeOfDay(MaxTicks);
 
         // Number of ticks (100ns units) since midnight
         private readonly long _ticks;
@@ -26,49 +35,90 @@ namespace System
 
         public TimeOfDay(int hours24, int minutes)
         {
-            TimeSpan timeSpan = new TimeSpan(hours24, minutes, 0);
-            _ticks = timeSpan.Ticks;
+            if (hours24 < 0 || hours24 > 23) throw new ArgumentOutOfRangeException("hours24");
+            if (minutes < 0 || minutes > 59) throw new ArgumentOutOfRangeException("minutes");
+            Contract.EndContractBlock();
+
+            _ticks = hours24 * TicksPerHour +
+                     minutes * TicksPerMinute;
         }
 
         public TimeOfDay(int hours12, int minutes, Meridiem meridiem)
         {
+            if (hours12 < 1 || hours12 > 12) throw new ArgumentOutOfRangeException("hours12");
+            if (minutes < 0 || minutes > 59) throw new ArgumentOutOfRangeException("minutes");
+            if (meridiem < Meridiem.AM || meridiem > Meridiem.PM) throw new ArgumentOutOfRangeException("meridiem");
+            Contract.EndContractBlock();
+
             int hours24 = Hours12To24(hours12, meridiem);
-            TimeSpan timeSpan = new TimeSpan(hours24, minutes, 0);
-            _ticks = timeSpan.Ticks;
+            _ticks = hours24 * TicksPerHour +
+                     minutes * TicksPerMinute;
         }
 
         public TimeOfDay(int hours24, int minutes, int seconds)
         {
-            TimeSpan timeSpan = new TimeSpan(hours24, minutes, seconds);
-            _ticks = timeSpan.Ticks;
+            if (hours24 < 0 || hours24 > 23) throw new ArgumentOutOfRangeException("hours24");
+            if (minutes < 0 || minutes > 59) throw new ArgumentOutOfRangeException("minutes");
+            if (seconds < 0 || seconds > 59) throw new ArgumentOutOfRangeException("seconds");
+            Contract.EndContractBlock();
+
+            _ticks = hours24 * TicksPerHour +
+                     minutes * TicksPerMinute +
+                     seconds * TicksPerSecond;
         }
 
         public TimeOfDay(int hours12, int minutes, int seconds, Meridiem meridiem)
         {
+            if (hours12 < 1 || hours12 > 12) throw new ArgumentOutOfRangeException("hours12");
+            if (minutes < 0 || minutes > 59) throw new ArgumentOutOfRangeException("minutes");
+            if (seconds < 0 || seconds > 59) throw new ArgumentOutOfRangeException("seconds");
+            if (meridiem < Meridiem.AM || meridiem > Meridiem.PM) throw new ArgumentOutOfRangeException("meridiem");
+            Contract.EndContractBlock();
+
             int hours24 = Hours12To24(hours12, meridiem);
-            TimeSpan timeSpan = new TimeSpan(hours24, minutes, seconds);
-            _ticks = timeSpan.Ticks;
+            _ticks = hours24 * TicksPerHour +
+                     minutes * TicksPerMinute +
+                     seconds * TicksPerSecond;
         }
 
         public TimeOfDay(int hours24, int minutes, int seconds, int milliseconds)
         {
-            TimeSpan timeSpan = new TimeSpan(0, hours24, minutes, seconds, milliseconds);
-            _ticks = timeSpan.Ticks;
+            if (hours24 < 0 || hours24 > 23) throw new ArgumentOutOfRangeException("hours24");
+            if (minutes < 0 || minutes > 59) throw new ArgumentOutOfRangeException("minutes");
+            if (seconds < 0 || seconds > 59) throw new ArgumentOutOfRangeException("seconds");
+            if (milliseconds < 0 || milliseconds > 999) throw new ArgumentOutOfRangeException("milliseconds");
+            Contract.EndContractBlock();
+
+            _ticks = hours24 * TicksPerHour +
+                     minutes * TicksPerMinute +
+                     seconds * TicksPerSecond +
+                     milliseconds * TicksPerMillisecond;
         }
 
         public TimeOfDay(int hours12, int minutes, int seconds, int milliseconds, Meridiem meridiem)
         {
+            if (hours12 < 1 || hours12 > 12) throw new ArgumentOutOfRangeException("hours12");
+            if (minutes < 0 || minutes > 59) throw new ArgumentOutOfRangeException("minutes");
+            if (seconds < 0 || seconds > 59) throw new ArgumentOutOfRangeException("seconds");
+            if (milliseconds < 0 || milliseconds > 999) throw new ArgumentOutOfRangeException("milliseconds");
+            if (meridiem < Meridiem.AM || meridiem > Meridiem.PM) throw new ArgumentOutOfRangeException("meridiem");
+            Contract.EndContractBlock();
+
             int hours24 = Hours12To24(hours12, meridiem);
-            TimeSpan timeSpan = new TimeSpan(0, hours24, minutes, seconds, milliseconds);
-            _ticks = timeSpan.Ticks;
+            _ticks = hours24 * TicksPerHour +
+                     minutes * TicksPerMinute +
+                     seconds * TicksPerSecond +
+                     milliseconds * TicksPerMillisecond;
         }
 
         public int Hours24
         {
             get
             {
-                TimeSpan ts = new TimeSpan(_ticks);
-                return ts.Hours;
+                Contract.Ensures(Contract.Result<int>() >= 0);
+                Contract.Ensures(Contract.Result<int>() <= 23);
+
+                return (int)((_ticks / TicksPerHour) % 24);
             }
         }
 
@@ -76,8 +126,10 @@ namespace System
         {
             get
             {
-                TimeSpan ts = new TimeSpan(_ticks);
-                int hour = ts.Hours % 12;
+                Contract.Ensures(Contract.Result<int>() >= 1);
+                Contract.Ensures(Contract.Result<int>() <= 12);
+
+                int hour = Hours24 % 12;
                 return hour == 0 ? 12 : hour;
             }
         }
@@ -86,8 +138,7 @@ namespace System
         {
             get
             {
-                TimeSpan ts = new TimeSpan(_ticks);
-                return ts.Hours < 12 ? Meridiem.AM : Meridiem.PM;
+                return Hours24 < 12 ? Meridiem.AM : Meridiem.PM;
             }
         }
 
@@ -95,8 +146,10 @@ namespace System
         {
             get
             {
-                TimeSpan ts = new TimeSpan(_ticks);
-                return ts.Minutes;
+                Contract.Ensures(Contract.Result<int>() >= 0);
+                Contract.Ensures(Contract.Result<int>() <= 59);
+
+                return (int)((_ticks / TicksPerMinute) % 60);
             }
         }
 
@@ -104,8 +157,10 @@ namespace System
         {
             get
             {
-                TimeSpan ts = new TimeSpan(_ticks);
-                return ts.Seconds;
+                Contract.Ensures(Contract.Result<int>() >= 0);
+                Contract.Ensures(Contract.Result<int>() <= 59);
+
+                return (int)((_ticks / TicksPerSecond) % 60);
             }
         }
 
@@ -113,24 +168,22 @@ namespace System
         {
             get
             {
-                TimeSpan ts = new TimeSpan(_ticks);
-                return ts.Milliseconds;
+                Contract.Ensures(Contract.Result<int>() >= 0);
+                Contract.Ensures(Contract.Result<int>() <= 999);
+
+                return (int)((_ticks / TicksPerMillisecond) % 1000);
             }
-        }
-
-        public static TimeOfDay MinValue
-        {
-            get { return new TimeOfDay(MinTicks); }
-        }
-
-        public static TimeOfDay MaxValue
-        {
-            get { return new TimeOfDay(MaxTicks); }
         }
 
         public long Ticks
         {
-            get { return _ticks; }
+            get
+            {
+                Contract.Ensures(Contract.Result<long>() >= MinTicks);
+                Contract.Ensures(Contract.Result<long>() <= MaxTicks);
+
+                return _ticks;
+            }
         }
 
         public DateTime On(Date date)
@@ -195,63 +248,38 @@ namespace System
 
         public TimeOfDay Add(TimeSpan timeSpan)
         {
-            DateTime dt = new Date(5000, 0, 0).At(this).Add(timeSpan);
-            return TimeOfDayFromTimeSpan(dt.TimeOfDay);
+            return AddTicks(timeSpan.Ticks);
         }
 
         public TimeOfDay AddHours(double hours)
         {
-            return Add(TimeSpan.FromHours(hours));
+            return AddTicks((long)(hours * TicksPerHour));
         }
 
         public TimeOfDay AddMinutes(double minutes)
         {
-            return Add(TimeSpan.FromMinutes(minutes));
+            return AddTicks((long)(minutes * TicksPerMinute));
         }
 
         public TimeOfDay AddSeconds(double seconds)
         {
-            return Add(TimeSpan.FromSeconds(seconds));
+            return AddTicks((long)(seconds * TicksPerSecond));
         }
 
         public TimeOfDay AddMilliseconds(double milliseconds)
         {
-            return Add(TimeSpan.FromMilliseconds(milliseconds));
+            return AddTicks((long)(milliseconds * TicksPerMillisecond));
         }
 
         public TimeOfDay AddTicks(long ticks)
         {
-            return Add(TimeSpan.FromTicks(ticks));
+            long t = (_ticks + TicksPerDay + (ticks % TicksPerDay)) % TicksPerDay;
+            return new TimeOfDay(t);
         }
 
         public TimeOfDay Subtract(TimeSpan timeSpan)
         {
-            return Add(timeSpan.Negate());
-        }
-
-        public TimeOfDay SubtractHours(double hours)
-        {
-            return Subtract(TimeSpan.FromHours(hours));
-        }
-
-        public TimeOfDay SubtractMinutes(double minutes)
-        {
-            return Subtract(TimeSpan.FromMinutes(minutes));
-        }
-
-        public TimeOfDay SubtractSeconds(double seconds)
-        {
-            return Subtract(TimeSpan.FromSeconds(seconds));
-        }
-
-        public TimeOfDay SubtractMilliseconds(double milliseconds)
-        {
-            return Subtract(TimeSpan.FromMilliseconds(milliseconds));
-        }
-
-        public TimeOfDay SubtractTicks(long ticks)
-        {
-            return Subtract(TimeSpan.FromTicks(ticks));
+            return AddTicks(-timeSpan.Ticks);
         }
 
         public static TimeOfDay operator +(TimeOfDay timeOfDay, TimeSpan timeSpan)
@@ -272,7 +300,7 @@ namespace System
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is TimeOfDay && Equals((TimeOfDay) obj);
+            return obj is TimeOfDay && Equals((TimeOfDay)obj);
         }
 
         public override int GetHashCode()
@@ -405,7 +433,7 @@ namespace System
 
             if (!Enum.IsDefined(typeof(Meridiem), meridiem))
                 throw new ArgumentOutOfRangeException("meridiem");
-            
+
             Contract.EndContractBlock();
 
             return meridiem == Meridiem.AM
