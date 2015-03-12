@@ -149,6 +149,22 @@ namespace System
             return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
         }
 
+        /// <summary>
+        /// Returns the number of days in the month given by the year and month arguments.
+        /// </summary>
+        /// <param name="year">The year.</param>
+        /// <param name="month">The month.</param>
+        /// <returns>The number of days.</returns>
+        public static int DaysInMonth(int year, int month)
+        {
+            if (month < 1 || month > 12) throw new ArgumentOutOfRangeException("month");
+            Contract.EndContractBlock();
+
+            // IsLeapYear checks the year argument
+            int[] days = IsLeapYear(year) ? DaysToMonth366 : DaysToMonth365;
+            return days[month] - days[month - 1];
+        }
+
         public static Date Today(TimeZoneInfo timeZone)
         {
             DateTimeOffset utcNow = DateTimeOffset.UtcNow;
