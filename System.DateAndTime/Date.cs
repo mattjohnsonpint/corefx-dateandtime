@@ -12,7 +12,14 @@ namespace System
         private const int MinDayNumber = 0;
         private const int MaxDayNumber = 3652058;
 
+        /// <summary>
+        /// Represents the smallest possible value of Date. This field is read-only.
+        /// </summary>
         public static readonly Date MinValue = new Date(MinDayNumber);
+
+        /// <summary>
+        /// Represents the largest possible value of Date. This field is read-only.
+        /// </summary>
         public static readonly Date MaxValue = new Date(MaxDayNumber);
 
         // Number of days in a non-leap year
@@ -46,6 +53,11 @@ namespace System
         // Number of whole days since 0001-01-01 (which is day 0)
         private readonly int _dayNumber;
 
+        /// <summary>
+        /// Initializes a new instance of Date structure to a specified number of days.
+        /// </summary>
+        /// <param name="dayNumber">The number of days since January 1, 0001 in the
+        /// proleptic Gregorian calendar.</param>
         public Date(int dayNumber)
         {
             if (dayNumber < MinDayNumber || dayNumber > MaxDayNumber)
@@ -55,6 +67,18 @@ namespace System
             _dayNumber = dayNumber;
         }
 
+        /// <summary>
+        /// Initializes a new instance of Date structure to a specified year, month,
+        /// and day.
+        /// </summary>
+        /// <param name="year">The year (1 through 9999).</param>
+        /// <param name="month">The month (1 through 12).</param>
+        /// <param name="day">The day (1 through the number of days in month).</param>
+        /// <exception cref="ArgumentOutOfRangeException">year is less than 1 or greater than 9999.
+        /// -or-
+        /// month is less than 1 or greater than 12.
+        /// -or-
+        /// day is less than 1 or greater than the number of days in month.</exception>
         public Date(int year, int month, int day)
         {
             _dayNumber = DateToDayNumber(year, month, day);
@@ -69,6 +93,9 @@ namespace System
             _dayNumber = DateToDayNumber(year, 1, 1) + dayOfYear - 1;
         }
 
+        /// <summary>
+        /// Gets the year component of the date represented by this instance.
+        /// </summary>
         public int Year
         {
             get
@@ -79,6 +106,9 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// Gets the month component of the date represented by this instance.
+        /// </summary>
         public int Month
         {
             get
@@ -89,6 +119,9 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// Gets the day component of the date represented by this instance.
+        /// </summary>
         public int Day
         {
             get
@@ -99,6 +132,9 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// Gets the day of the year represented by this instance.
+        /// </summary>
         public int DayOfYear
         {
             get
@@ -109,6 +145,9 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// Gets the day of the week represented by this instance.
+        /// </summary>
         public DayOfWeek DayOfWeek
         {
             get
@@ -119,6 +158,9 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// Gets the number of days since January 1, 0001 in the proleptic Gregorian calendar.
+        /// </summary>
         public int DayNumber
         {
             get
@@ -140,6 +182,11 @@ namespace System
             return new DateTime(_dayNumber * TimeSpan.TicksPerDay);
         }
 
+        /// <summary>
+        /// Returns an indication whether the specified year is a leap year.
+        /// </summary>
+        /// <param name="year">A 4-digit year.</param>
+        /// <returns><c>true</c> if year is a leap year; otherwise, <c>false</c>.</returns>
         public static bool IsLeapYear(int year)
         {
             if (year < 1 || year > 9999)
