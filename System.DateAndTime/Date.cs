@@ -142,7 +142,11 @@ namespace System
 
         public static bool IsLeapYear(int year)
         {
-            return DateTime.IsLeapYear(year);
+            if (year < 1 || year > 9999)
+                throw new ArgumentOutOfRangeException("year");
+            Contract.EndContractBlock();
+
+            return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
         }
 
         public static Date Today(TimeZoneInfo timeZone)
