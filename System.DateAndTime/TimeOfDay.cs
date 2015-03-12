@@ -12,6 +12,9 @@ namespace System
         private const long MinTicks = 0L;
         private const long MaxTicks = 863999999999L;
 
+        public static readonly TimeOfDay MinValue = new TimeOfDay(MinTicks);
+        public static readonly TimeOfDay MaxValue = new TimeOfDay(MaxTicks);
+
         // Number of ticks (100ns units) since midnight
         private readonly long _ticks;
 
@@ -116,16 +119,6 @@ namespace System
                 TimeSpan ts = new TimeSpan(_ticks);
                 return ts.Milliseconds;
             }
-        }
-
-        public static TimeOfDay MinValue
-        {
-            get { return new TimeOfDay(MinTicks); }
-        }
-
-        public static TimeOfDay MaxValue
-        {
-            get { return new TimeOfDay(MaxTicks); }
         }
 
         public long Ticks

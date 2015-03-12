@@ -12,6 +12,9 @@ namespace System
         private const int MinDayNumber = 0;
         private const int MaxDayNumber = 3652058;
 
+        public static readonly Date MinValue = new Date(MinDayNumber);
+        public static readonly Date MaxValue = new Date(MaxDayNumber);
+
         // Number of whole days since 0001-01-01 (which is day 0)
         private readonly int _dayNumber;
 
@@ -63,16 +66,6 @@ namespace System
         public DayOfWeek DayOfWeek
         {
             get { return ToDateTimeAtMidnight().DayOfWeek; }
-        }
-
-        public static Date MinValue
-        {
-            get { return new Date(MinDayNumber); }
-        }
-
-        public static Date MaxValue
-        {
-            get { return new Date(MaxDayNumber); }
         }
 
         public int DayNumber
