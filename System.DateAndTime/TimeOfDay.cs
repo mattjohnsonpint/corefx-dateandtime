@@ -282,31 +282,6 @@ namespace System
             return AddTicks(-timeSpan.Ticks);
         }
 
-        public TimeOfDay SubtractHours(double hours)
-        {
-            return Subtract(TimeSpan.FromHours(hours));
-        }
-
-        public TimeOfDay SubtractMinutes(double minutes)
-        {
-            return Subtract(TimeSpan.FromMinutes(minutes));
-        }
-
-        public TimeOfDay SubtractSeconds(double seconds)
-        {
-            return Subtract(TimeSpan.FromSeconds(seconds));
-        }
-
-        public TimeOfDay SubtractMilliseconds(double milliseconds)
-        {
-            return Subtract(TimeSpan.FromMilliseconds(milliseconds));
-        }
-
-        public TimeOfDay SubtractTicks(long ticks)
-        {
-            return Subtract(TimeSpan.FromTicks(ticks));
-        }
-
         public static TimeOfDay operator +(TimeOfDay timeOfDay, TimeSpan timeSpan)
         {
             return timeOfDay.Add(timeSpan);

@@ -203,7 +203,7 @@ namespace System
             int m = GetDatePart(DatePartMonth);
             int d = GetDatePart(DatePartDay);
             int i = m - 1 + months;
-            
+
             if (i >= 0)
             {
                 m = i % 12 + 1;
@@ -233,21 +233,6 @@ namespace System
             Contract.EndContractBlock();
 
             return new Date(dayNumber);
-        }
-
-        public Date SubtractYears(int years)
-        {
-            return AddYears(-years);
-        }
-
-        public Date SubtractMonths(int months)
-        {
-            return AddMonths(-months);
-        }
-
-        public Date SubtractDays(int days)
-        {
-            return AddDays(-days);
         }
 
         public bool Equals(Date other)
