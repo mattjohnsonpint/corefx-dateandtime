@@ -9,6 +9,11 @@ namespace System
     /// </summary>
     public struct TimeOfDay : IEquatable<TimeOfDay>
     {
+        private const long TicksPerMillisecond = 10000;
+        private const long TicksPerSecond = TicksPerMillisecond * 1000;   // 10,000,000
+        private const long TicksPerMinute = TicksPerSecond * 60;         // 600,000,000
+        private const long TicksPerHour = TicksPerMinute * 60;        // 36,000,000,000
+
         private const long MinTicks = 0L;
         private const long MaxTicks = 863999999999L;
 
@@ -33,8 +38,8 @@ namespace System
             if (minutes < 0 || minutes > 59) throw new ArgumentOutOfRangeException("minutes");
             Contract.EndContractBlock();
 
-            TimeSpan timeSpan = new TimeSpan(hours24, minutes, 0);
-            _ticks = timeSpan.Ticks;
+            _ticks = hours24 * TicksPerHour +
+                     minutes * TicksPerMinute;
         }
 
         public TimeOfDay(int hours12, int minutes, Meridiem meridiem)
@@ -45,8 +50,8 @@ namespace System
             Contract.EndContractBlock();
 
             int hours24 = Hours12To24(hours12, meridiem);
-            TimeSpan timeSpan = new TimeSpan(hours24, minutes, 0);
-            _ticks = timeSpan.Ticks;
+            _ticks = hours24 * TicksPerHour +
+                     minutes * TicksPerMinute;
         }
 
         public TimeOfDay(int hours24, int minutes, int seconds)
@@ -56,8 +61,9 @@ namespace System
             if (seconds < 0 || seconds > 59) throw new ArgumentOutOfRangeException("seconds");
             Contract.EndContractBlock();
 
-            TimeSpan timeSpan = new TimeSpan(hours24, minutes, seconds);
-            _ticks = timeSpan.Ticks;
+            _ticks = hours24 * TicksPerHour +
+                     minutes * TicksPerMinute +
+                     seconds * TicksPerSecond;
         }
 
         public TimeOfDay(int hours12, int minutes, int seconds, Meridiem meridiem)
@@ -69,8 +75,9 @@ namespace System
             Contract.EndContractBlock();
 
             int hours24 = Hours12To24(hours12, meridiem);
-            TimeSpan timeSpan = new TimeSpan(hours24, minutes, seconds);
-            _ticks = timeSpan.Ticks;
+            _ticks = hours24 * TicksPerHour +
+                     minutes * TicksPerMinute +
+                     seconds * TicksPerSecond;
         }
 
         public TimeOfDay(int hours24, int minutes, int seconds, int milliseconds)
@@ -81,8 +88,10 @@ namespace System
             if (milliseconds < 0 || milliseconds > 999) throw new ArgumentOutOfRangeException("milliseconds");
             Contract.EndContractBlock();
 
-            TimeSpan timeSpan = new TimeSpan(0, hours24, minutes, seconds, milliseconds);
-            _ticks = timeSpan.Ticks;
+            _ticks = hours24 * TicksPerHour +
+                     minutes * TicksPerMinute +
+                     seconds * TicksPerSecond +
+                     milliseconds * TicksPerMillisecond;
         }
 
         public TimeOfDay(int hours12, int minutes, int seconds, int milliseconds, Meridiem meridiem)
@@ -95,8 +104,10 @@ namespace System
             Contract.EndContractBlock();
 
             int hours24 = Hours12To24(hours12, meridiem);
-            TimeSpan timeSpan = new TimeSpan(0, hours24, minutes, seconds, milliseconds);
-            _ticks = timeSpan.Ticks;
+            _ticks = hours24 * TicksPerHour +
+                     minutes * TicksPerMinute +
+                     seconds * TicksPerSecond +
+                     milliseconds * TicksPerMillisecond;
         }
 
         public int Hours24
@@ -106,8 +117,7 @@ namespace System
                 Contract.Ensures(Contract.Result<int>() >= 0);
                 Contract.Ensures(Contract.Result<int>() <= 23);
 
-                TimeSpan ts = new TimeSpan(_ticks);
-                return ts.Hours;
+                return (int)((_ticks / TicksPerHour) % 24);
             }
         }
 
@@ -118,8 +128,7 @@ namespace System
                 Contract.Ensures(Contract.Result<int>() >= 1);
                 Contract.Ensures(Contract.Result<int>() <= 12);
 
-                TimeSpan ts = new TimeSpan(_ticks);
-                int hour = ts.Hours % 12;
+                int hour = Hours24 % 12;
                 return hour == 0 ? 12 : hour;
             }
         }
@@ -128,8 +137,7 @@ namespace System
         {
             get
             {
-                TimeSpan ts = new TimeSpan(_ticks);
-                return ts.Hours < 12 ? Meridiem.AM : Meridiem.PM;
+                return Hours24 < 12 ? Meridiem.AM : Meridiem.PM;
             }
         }
 
@@ -140,8 +148,7 @@ namespace System
                 Contract.Ensures(Contract.Result<int>() >= 0);
                 Contract.Ensures(Contract.Result<int>() <= 59);
 
-                TimeSpan ts = new TimeSpan(_ticks);
-                return ts.Minutes;
+                return (int)((_ticks / TicksPerMinute) % 60);
             }
         }
 
@@ -152,8 +159,7 @@ namespace System
                 Contract.Ensures(Contract.Result<int>() >= 0);
                 Contract.Ensures(Contract.Result<int>() <= 59);
 
-                TimeSpan ts = new TimeSpan(_ticks);
-                return ts.Seconds;
+                return (int)((_ticks / TicksPerSecond) % 60);
             }
         }
 
@@ -164,8 +170,7 @@ namespace System
                 Contract.Ensures(Contract.Result<int>() >= 0);
                 Contract.Ensures(Contract.Result<int>() <= 999);
 
-                TimeSpan ts = new TimeSpan(_ticks);
-                return ts.Milliseconds;
+                return (int)((_ticks / TicksPerMillisecond) % 1000);
             }
         }
 
@@ -319,7 +324,7 @@ namespace System
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is TimeOfDay && Equals((TimeOfDay) obj);
+            return obj is TimeOfDay && Equals((TimeOfDay)obj);
         }
 
         public override int GetHashCode()
@@ -452,7 +457,7 @@ namespace System
 
             if (!Enum.IsDefined(typeof(Meridiem), meridiem))
                 throw new ArgumentOutOfRangeException("meridiem");
-            
+
             Contract.EndContractBlock();
 
             return meridiem == Meridiem.AM
