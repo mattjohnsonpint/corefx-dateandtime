@@ -186,23 +186,53 @@ namespace System
 
         public Date AddYears(int years)
         {
-            DateTime dt = new DateTime(_dayNumber * TimeSpan.TicksPerDay);
-            DateTime result = dt.AddYears(years);
-            return DateFromDateTime(result);
+            if (years < -10000 || years > 10000)
+                throw new ArgumentOutOfRangeException("years");
+            Contract.EndContractBlock();
+
+            return AddMonths(years * 12);
         }
 
         public Date AddMonths(int months)
         {
-            DateTime dt = new DateTime(_dayNumber * TimeSpan.TicksPerDay);
-            DateTime result = dt.AddMonths(months);
-            return DateFromDateTime(result);
+            if (months < -120000 || months > 120000)
+                throw new ArgumentOutOfRangeException("months");
+            Contract.EndContractBlock();
+
+            int y = GetDatePart(DatePartYear);
+            int m = GetDatePart(DatePartMonth);
+            int d = GetDatePart(DatePartDay);
+            int i = m - 1 + months;
+            
+            if (i >= 0)
+            {
+                m = i % 12 + 1;
+                y = y + i / 12;
+            }
+            else
+            {
+                m = 12 + (i + 1) % 12;
+                y = y + (i - 11) / 12;
+            }
+
+            if (y < 1 || y > 9999)
+                throw new ArgumentOutOfRangeException("months");
+
+            int days = DaysInMonth(y, m);
+            if (d > days) d = days;
+
+            var dayNumber = DateToDayNumber(y, m, d);
+            return new Date(dayNumber);
         }
 
         public Date AddDays(int days)
         {
-            DateTime dt = new DateTime(_dayNumber * TimeSpan.TicksPerDay);
-            DateTime result = dt.AddDays(days);
-            return DateFromDateTime(result);
+            int dayNumber = _dayNumber + days;
+            if (dayNumber < MinDayNumber || dayNumber > MaxDayNumber)
+                throw new ArgumentOutOfRangeException("days");
+            Contract.EndContractBlock();
+
+            return new Date(dayNumber);
         }
 
         public Date SubtractYears(int years)
