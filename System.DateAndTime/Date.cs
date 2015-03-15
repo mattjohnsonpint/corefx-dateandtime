@@ -358,6 +358,17 @@ namespace System
             return ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern);
         }
 
+        /// <summary>
+        /// Converts the value of the current <see cref="Date"/> object to its equivalent
+        /// ISO standard string representation (ISO-8601), which has the format: yyyy-MM-dd.
+        /// </summary>
+        /// <returns>A string that contains the ISO standard string representation of the
+        /// current <see cref="Date"/> object.</returns>
+        public string ToIsoString()
+        {
+            return ToString("yyyy-MM-dd");
+        }
+
         public static Date Parse(string s)
         {
             DateTime dt = DateTime.Parse(s);

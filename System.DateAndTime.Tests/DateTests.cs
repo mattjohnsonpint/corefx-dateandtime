@@ -114,5 +114,13 @@ namespace System.DateAndTime.Tests
                     break;
             }
         }
+
+        [Fact]
+        public void ToIsoString()
+        {
+            var date = new Date(2000, 12, 31);
+            var isoString = date.ToIsoString();
+            Assert.Equal(isoString, "2000-12-31");
+        }
     }
 }
