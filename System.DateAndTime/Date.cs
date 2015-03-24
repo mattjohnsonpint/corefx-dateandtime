@@ -305,6 +305,12 @@ namespace System
             return obj is Date && Equals((Date)obj);
         }
 
+        /// <summary>
+        /// Returns the hash code of this instance.
+        /// </summary>
+        /// <returns>a 32-bit signed integer hash code.</returns>
+        /// <remarks>The hash code of a <see cref="Date"/> object is the day number, which is
+        /// number of days since January 1, 0001 in the proleptic Gregorian calendar.</remarks>
         public override int GetHashCode()
         {
             return _dayNumber;
@@ -366,7 +372,7 @@ namespace System
         /// current <see cref="Date"/> object.</returns>
         public string ToIsoString()
         {
-            return ToString("yyyy-MM-dd");
+            return ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
         }
 
         public static Date Parse(string s)
