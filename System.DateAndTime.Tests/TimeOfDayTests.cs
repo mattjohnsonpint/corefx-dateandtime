@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System.Globalization;
+using Xunit;
 
 namespace System.DateAndTime.Tests
 {
@@ -249,6 +250,34 @@ namespace System.DateAndTime.Tests
             TimeOfDay expected = new TimeOfDay(23, 0);
 
             Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void ToLongDateString()
+        {
+            var time = new TimeOfDay(10, 49, 12, Meridiem.PM);
+            var longTimeString = time.ToLongTimeString();
+            // ToLongTimeString() result depends on the current info. For now, we
+            // only run the assertion if the culture is en GB/US.
+            if (CultureInfo.CurrentCulture.Name == "en-GB" ||
+                CultureInfo.CurrentCulture.Name == "en-US")
+            {
+                Assert.Equal(longTimeString, "10:49:12 PM");
+            }
+        }
+
+        [Fact]
+        public void ToShortDateString()
+        {
+            var time = new TimeOfDay(22, 49);
+            var shortTimeString = time.ToShortTimeString();
+            // ToShortTimeString() result depends on the current info. For now, we
+            // only run the assertion if the culture is en GB/US.
+            if (CultureInfo.CurrentCulture.Name == "en-GB" ||
+                CultureInfo.CurrentCulture.Name == "en-US")
+            {
+                Assert.Equal(shortTimeString, "10:49 PM");
+            }
         }
     }
 }

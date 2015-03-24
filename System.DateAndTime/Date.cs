@@ -305,6 +305,12 @@ namespace System
             return obj is Date && Equals((Date)obj);
         }
 
+        /// <summary>
+        /// Returns the hash code of this instance.
+        /// </summary>
+        /// <returns>a 32-bit signed integer hash code.</returns>
+        /// <remarks>The hash code of a <see cref="Date"/> object is the day number, which is
+        /// number of days since January 1, 0001 in the proleptic Gregorian calendar.</remarks>
         public override int GetHashCode()
         {
             return _dayNumber;
@@ -328,6 +334,45 @@ namespace System
         public string ToString(string format, IFormatProvider formatProvider)
         {
             return ToDateTimeAtMidnight().ToString(format, formatProvider);
+        }
+
+        /// <summary>
+        /// Converts the value of the current <see cref="Date"/> object to its equivalent
+        /// long date string representation.
+        /// </summary>
+        /// <returns>A string that contains the long date string representation of the
+        /// current <see cref="Date"/> object.</returns>
+        /// <remarks>The value of the current <see cref="Date"/> object is formatted using
+        /// the pattern defined by the <see cref="DateTimeFormatInfo.LongDatePattern" />
+        /// property associated with the current thread culture.</remarks>
+        public string ToLongDateString()
+        {
+            return ToString(CultureInfo.CurrentCulture.DateTimeFormat.LongDatePattern);
+        }
+
+        /// <summary>
+        /// Converts the value of the current <see cref="Date"/> object to its equivalent
+        /// short date string representation.
+        /// </summary>
+        /// <returns>A string that contains the short date string representation of the
+        /// current <see cref="Date"/> object.</returns>
+        /// <remarks>The value of the current <see cref="Date"/> object is formatted using
+        /// the pattern defined by the <see cref="DateTimeFormatInfo.ShortDatePattern" />
+        /// property associated with the current thread culture.</remarks>
+        public string ToShortDateString()
+        {
+            return ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern);
+        }
+
+        /// <summary>
+        /// Converts the value of the current <see cref="Date"/> object to its equivalent
+        /// ISO standard string representation (ISO-8601), which has the format: yyyy-MM-dd.
+        /// </summary>
+        /// <returns>A string that contains the ISO standard string representation of the
+        /// current <see cref="Date"/> object.</returns>
+        public string ToIsoString()
+        {
+            return ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
         }
 
         public static Date Parse(string s)

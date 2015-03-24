@@ -328,6 +328,34 @@ namespace System
             return DateTime.MinValue.AddTicks(_ticks).ToString(format, formatProvider);
         }
 
+        /// <summary>
+        /// Converts the value of the current <see cref="TimeOfDay"/> object to its equivalent
+        /// long time string representation.
+        /// </summary>
+        /// <returns>A string that contains the long time string representation of the
+        /// current <see cref="TimeOfDay"/> object.</returns>
+        /// <remarks>The value of the current <see cref="TimeOfDay"/> object is formatted
+        /// using the pattern defined by the <see cref="DateTimeFormatInfo.LongTimePattern" />
+        /// property associated with the current thread culture.</remarks>
+        public string ToLongTimeString()
+        {
+            return ToString(CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern);
+        }
+
+        /// <summary>
+        /// Converts the value of the current <see cref="TimeOfDay"/> object to its equivalent
+        /// short time string representation.
+        /// </summary>
+        /// <returns>A string that contains the short time string representation of the
+        /// current <see cref="TimeOfDay"/> object.</returns>
+        /// <remarks>The value of the current <see cref="TimeOfDay"/> object is formatted
+        /// using the pattern defined by the <see cref="DateTimeFormatInfo.ShortTimePattern" />
+        /// property associated with the current thread culture.</remarks>
+        public string ToShortTimeString()
+        {
+            return ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern);
+        }
+
         public static TimeOfDay Parse(string s)
         {
             DateTime dt = DateTime.Parse(s, null, DateTimeStyles.NoCurrentDateDefault);
