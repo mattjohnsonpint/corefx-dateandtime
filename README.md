@@ -5,3 +5,6 @@ This is an unofficial community-based effort, being used to coordinate an implem
 For more details, see [dotnet/corefx#700](https://github.com/dotnet/corefx/issues/700).
 
 Please review the [list of current issues](https://github.com/mj1856/corefx-dateandtime/issues), and feel free to chime in with your opinions.  We are gladly taking feedback and pull requests!
+
+
+[![Join the chat at https://gitter.im/mj1856/corefx-dateandtime](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mj1856/corefx-dateandtime?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
