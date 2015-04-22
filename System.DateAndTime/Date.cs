@@ -500,6 +500,14 @@ namespace System
             return DateFromDateTime(dateTime);
         }
 
+        public static implicit operator DateTime(Date date)
+        {
+            // This is useful such that Date types can be used in methods that typically expect a DateTime.
+            // For example, Calendar.GetYear(DateTime) and similar methods.
+
+            return date.ToDateTimeAtMidnight();
+        }
+
         private static Date DateFromDateTime(DateTime dateTime)
         {
             return new Date((int)(dateTime.Date.Ticks / TimeSpan.TicksPerDay));
