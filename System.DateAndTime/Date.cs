@@ -75,6 +75,12 @@ namespace System
             _dayNumber = DateToDayNumber(year, month, day);
         }
 
+        public Date(int year, int month, int day, Calendar calendar)
+        {
+            DateTime dt = calendar.ToDateTime(year, month, day, 0, 0, 0, 0);
+            _dayNumber = (int)(dt.Ticks / TimeSpan.TicksPerDay);
+        }
+
         public Date(int year, int dayOfYear)
         {
             if (dayOfYear < 1 || dayOfYear > (IsLeapYear(year) ? 366 : 365))
@@ -492,6 +498,14 @@ namespace System
             // This is useful such that existing items like DateTime.Today and DateTime.Date can be assigned to a Date type.
 
             return DateFromDateTime(dateTime);
+        }
+
+        public static implicit operator DateTime(Date date)
+        {
+            // This is useful such that Date types can be used in methods that typically expect a DateTime.
+            // For example, Calendar.GetYear(DateTime) and similar methods.
+
+            return date.ToDateTimeAtMidnight();
         }
 
         private static Date DateFromDateTime(DateTime dateTime)
