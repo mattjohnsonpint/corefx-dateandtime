@@ -50,9 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DateCalendarTests.cs" />
+    <Compile Include="DateFormattingTests.cs" />
     <Compile Include="DateTests.cs" />
     <Compile Include="DateTimeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TimeOfDayFormattingTests.cs" />
     <Compile Include="TimeOfDayTests.cs" />
   </ItemGroup>
   <ItemGroup>
