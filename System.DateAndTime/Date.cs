@@ -75,6 +75,12 @@ namespace System
             _dayNumber = DateToDayNumber(year, month, day);
         }
 
+        public Date(int year, int month, int day, Calendar calendar)
+        {
+            DateTime dt = calendar.ToDateTime(year, month, day, 0, 0, 0, 0);
+            _dayNumber = (int)(dt.Ticks / TimeSpan.TicksPerDay);
+        }
+
         public Date(int year, int dayOfYear)
         {
             if (dayOfYear < 1 || dayOfYear > (IsLeapYear(year) ? 366 : 365))
