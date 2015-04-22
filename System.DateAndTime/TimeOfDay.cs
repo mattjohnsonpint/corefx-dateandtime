@@ -192,7 +192,7 @@ namespace System
             return new DateTime(ticks);
         }
 
-        public static TimeOfDay Now(TimeZoneInfo timeZone)
+        public static TimeOfDay NowInTimeZone(TimeZoneInfo timeZone)
         {
             DateTimeOffset utcNow = DateTimeOffset.UtcNow;
             DateTimeOffset localNow = TimeZoneInfo.ConvertTime(utcNow, timeZone);

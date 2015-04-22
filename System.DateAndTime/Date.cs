@@ -212,7 +212,7 @@ namespace System
             return days[month] - days[month - 1];
         }
 
-        public static Date Today(TimeZoneInfo timeZone)
+        public static Date TodayInTimeZone(TimeZoneInfo timeZone)
         {
             DateTimeOffset utcNow = DateTimeOffset.UtcNow;
             DateTimeOffset localNow = TimeZoneInfo.ConvertTime(utcNow, timeZone);
