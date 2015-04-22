@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>System.DateAndTime.Tests</RootNamespace>
     <AssemblyName>System.DateAndTime.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>e62bc90d</NuGetPackageImportStamp>
     <TargetFrameworkProfile />
