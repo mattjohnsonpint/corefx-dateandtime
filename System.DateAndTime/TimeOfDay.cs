@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace System
 {
@@ -329,12 +330,14 @@ namespace System
         public string ToString(string format)
         {
             Contract.Ensures(Contract.Result<string>() != null);
+            format = NormalizeTimeFormat(format);
             return DateTime.MinValue.AddTicks(_ticks).ToString(format);
         }
 
         public string ToString(string format, IFormatProvider formatProvider)
         {
             Contract.Ensures(Contract.Result<string>() != null);
+            format = NormalizeTimeFormat(format);
             return DateTime.MinValue.AddTicks(_ticks).ToString(format, formatProvider);
         }
 
@@ -380,12 +383,18 @@ namespace System
 
         public static TimeOfDay ParseExact(string s, string format, IFormatProvider provider)
         {
+            format = NormalizeTimeFormat(format);
             DateTime dt = DateTime.ParseExact(s, format, provider, DateTimeStyles.NoCurrentDateDefault);
             return TimeOfDayFromTimeSpan(dt.TimeOfDay);
         }
 
         public static TimeOfDay ParseExact(string s, string[] formats, IFormatProvider provider)
         {
+            for (int i = 0; i < formats.Length; i++)
+            {
+                formats[i] = NormalizeTimeFormat(formats[i]);
+            }
+
             DateTime dt = DateTime.ParseExact(s, formats, provider, DateTimeStyles.NoCurrentDateDefault);
             return TimeOfDayFromTimeSpan(dt.TimeOfDay);
         }
@@ -418,6 +427,8 @@ namespace System
 
         public static bool TryParseExact(string s, string format, IFormatProvider provider, out TimeOfDay time)
         {
+            format = NormalizeTimeFormat(format);
+
             DateTime dt;
             if (!DateTime.TryParseExact(s, format, provider, DateTimeStyles.NoCurrentDateDefault, out dt))
             {
@@ -431,6 +442,11 @@ namespace System
 
         public static bool TryParseExact(string s, string[] formats, IFormatProvider provider, out TimeOfDay time)
         {
+            for (int i = 0; i < formats.Length; i++)
+            {
+                formats[i] = NormalizeTimeFormat(formats[i]);
+            }
+
             DateTime dt;
             if (!DateTime.TryParseExact(s, formats, provider, DateTimeStyles.NoCurrentDateDefault, out dt))
             {
@@ -482,6 +498,45 @@ namespace System
         private static TimeOfDay TimeOfDayFromTimeSpan(TimeSpan timeSpan)
         {
             return new TimeOfDay(timeSpan.Ticks);
+        }
+
+        private static string NormalizeTimeFormat(string format)
+        {
+            if (string.IsNullOrWhiteSpace(format))
+                throw new FormatException();
+
+            // standard formats
+            if (format.Length == 1)
+            {
+                // pass-through formats
+                if ("Tt".Contains(format))
+                    return format;
+
+                // ISO formats
+                if (format == "s")
+                    return "HH:mm:ss";
+
+                if ("Oo".Contains(format))
+                    return "HH:mm:ss.fffffff";
+
+
+                // All other standard DateTime formats are invalid for TimeOfDay
+                throw new FormatException();
+            }
+
+            // custom format - test for date components or embedded standard date formats
+            // except when escaped by preceding \ or enclosed in "" or '' quotes
+
+            var filtered = Regex.Replace(format, @"(\\.)|("".*"")|('.*')", String.Empty);
+            if (Regex.IsMatch(filtered, "([dKMyz/]+)|(%[dDfFgGmMrRuUyY]+)"))
+                throw new FormatException();
+
+            // custom format with embedded standard format(s) - ISO replacement
+            format = format.Replace("%s", "HH:mm:ss");
+            format = Regex.Replace(format, @"(%[Oo])", "HH:mm:ss.fffffff");
+
+            // pass through
+            return format;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace System
 {
@@ -334,12 +335,16 @@ namespace System
         public string ToString(string format)
         {
             Contract.Ensures(Contract.Result<string>() != null);
+            format = NormalizeDateFormat(format);
+
             return ToDateTimeAtMidnight().ToString(format);
         }
 
         public string ToString(string format, IFormatProvider formatProvider)
         {
             Contract.Ensures(Contract.Result<string>() != null);
+            format = NormalizeDateFormat(format);
+
             return ToDateTimeAtMidnight().ToString(format, formatProvider);
         }
 
@@ -396,12 +401,19 @@ namespace System
 
         public static Date ParseExact(string s, string format, IFormatProvider provider)
         {
+            format = NormalizeDateFormat(format);
+
             DateTime dt = DateTime.ParseExact(s, format, provider);
             return DateFromDateTime(dt);
         }
 
         public static Date ParseExact(string s, string[] formats, IFormatProvider provider)
         {
+            for (int i = 0; i < formats.Length; i++)
+            {
+                formats[i] = NormalizeDateFormat(formats[i]);
+            }
+
             DateTime dt = DateTime.ParseExact(s, formats, provider, DateTimeStyles.None);
             return DateFromDateTime(dt);
         }
@@ -434,6 +446,8 @@ namespace System
 
         public static bool TryParseExact(string s, string format, IFormatProvider provider, out Date date)
         {
+            format = NormalizeDateFormat(format);
+
             DateTime dt;
             if (!DateTime.TryParseExact(s, format, provider, DateTimeStyles.None, out dt))
             {
@@ -447,6 +461,11 @@ namespace System
 
         public static bool TryParseExact(string s, string[] formats, IFormatProvider provider, out Date date)
         {
+            for (int i = 0; i < formats.Length; i++)
+            {
+                formats[i] = NormalizeDateFormat(formats[i]);
+            }
+
             DateTime dt;
             if (!DateTime.TryParseExact(s, formats, provider, DateTimeStyles.None, out dt))
             {
@@ -599,6 +618,41 @@ namespace System
 
             // Return 1-based day-of-month
             return n - days[m - 1] + 1;
+        }
+
+        private static string NormalizeDateFormat(string format)
+        {
+            if (string.IsNullOrWhiteSpace(format))
+                throw new FormatException();
+
+            // standard formats
+            if (format.Length == 1)
+            {
+                // pass-through formats
+                if ("DdMmYy".Contains(format))
+                    return format;
+
+                // ISO formats
+                if ("Oos".Contains(format))
+                    return "yyyy-MM-dd";
+
+                
+                // All other standard DateTime formats are invalid for Date
+                throw new FormatException();
+            }
+
+            // custom format - test for time components or embedded standard time formats
+            // except when escaped by preceding \ or enclosed in "" or '' quotes
+
+            var filtered = Regex.Replace(format, @"(\\.)|("".*"")|('.*')", String.Empty);
+            if (Regex.IsMatch(filtered, "([fFghHKmstz:]+)|(%[fFgGrRtTuU]+)"))
+                throw new FormatException();
+
+            // custom format with embedded standard format(s) - ISO replacement
+            format = Regex.Replace(format, @"(%[Oos])", "yyyy-MM-dd");
+
+            // pass through
+            return format;
         }
     }
 }
