@@ -1,6 +1,6 @@
 [![Join the chat at https://gitter.im/mj1856/corefx-dateandtime](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mj1856/corefx-dateandtime?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-This repository contains a prototype project for `System.Date` and `System.Time`.
+This repository contains a prototype project for `System.Date` and `System.TimeOfDay`.
 
 This is an unofficial community-based effort, being used to coordinate an implementation that *could* ultimately be merged into the .NET CoreCLR.  **Nothing here is intended to be usable in its current state.**
 
