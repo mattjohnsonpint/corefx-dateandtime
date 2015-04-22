@@ -321,21 +321,25 @@ namespace System
 
         public override string ToString()
         {
+            Contract.Ensures(Contract.Result<string>() != null);
             return ToDateTimeAtMidnight().ToString("d");
         }
 
         public string ToString(IFormatProvider formatProvider)
         {
+            Contract.Ensures(Contract.Result<string>() != null);
             return ToDateTimeAtMidnight().ToString("d", formatProvider);
         }
 
         public string ToString(string format)
         {
+            Contract.Ensures(Contract.Result<string>() != null);
             return ToDateTimeAtMidnight().ToString(format);
         }
 
         public string ToString(string format, IFormatProvider formatProvider)
         {
+            Contract.Ensures(Contract.Result<string>() != null);
             return ToDateTimeAtMidnight().ToString(format, formatProvider);
         }
 

@@ -316,21 +316,25 @@ namespace System
 
         public override string ToString()
         {
+            Contract.Ensures(Contract.Result<string>() != null);
             return DateTime.MinValue.AddTicks(_ticks).ToString("T");
         }
 
         public string ToString(IFormatProvider formatProvider)
         {
+            Contract.Ensures(Contract.Result<string>() != null);
             return DateTime.MinValue.AddTicks(_ticks).ToString("T", formatProvider);
         }
 
         public string ToString(string format)
         {
+            Contract.Ensures(Contract.Result<string>() != null);
             return DateTime.MinValue.AddTicks(_ticks).ToString(format);
         }
 
         public string ToString(string format, IFormatProvider formatProvider)
         {
+            Contract.Ensures(Contract.Result<string>() != null);
             return DateTime.MinValue.AddTicks(_ticks).ToString(format, formatProvider);
         }
 
