@@ -212,23 +212,29 @@ namespace System
             return days[month] - days[month - 1];
         }
 
-        public static Date Today(TimeZoneInfo timeZone)
+        public static Date TodayInTimeZone(TimeZoneInfo timeZone)
         {
             DateTimeOffset utcNow = DateTimeOffset.UtcNow;
             DateTimeOffset localNow = TimeZoneInfo.ConvertTime(utcNow, timeZone);
             return DateFromDateTime(localNow.Date);
         }
 
-        public static Date TodayLocal()
+        public static Date Today
         {
-            DateTime localNow = DateTime.Now;
-            return DateFromDateTime(localNow);
+            get
+            {
+                DateTime localNow = DateTime.Now;
+                return DateFromDateTime(localNow);
+            }
         }
 
-        public static Date TodayUtc()
+        public static Date UtcToday
         {
-            DateTime utcNow = DateTime.UtcNow;
-            return DateFromDateTime(utcNow);
+            get
+            {
+                DateTime utcNow = DateTime.UtcNow;
+                return DateFromDateTime(utcNow);
+            }
         }
 
         public Date AddYears(int years)

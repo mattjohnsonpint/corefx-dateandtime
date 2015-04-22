@@ -15,22 +15,11 @@
             return new TimeOfDay(dateTimeOffset.TimeOfDay.Ticks);
         }
 
-
-
-        public static DateTimeOffset Now(TimeZoneInfo timeZone)
+        // TODO: Propose placing this method directly in the System.DateTimeOffset struct
+        public static DateTimeOffset NowInTimeZone(TimeZoneInfo timeZone)
         {
             DateTimeOffset utcNow = DateTimeOffset.UtcNow;
             return TimeZoneInfo.ConvertTime(utcNow, timeZone);
-        }
-
-        public static DateTimeOffset NowLocal()
-        {
-            return DateTimeOffset.Now;
-        }
-
-        public static DateTimeOffset NowUtc()
-        {
-            return DateTimeOffset.UtcNow;
         }
     }
 }

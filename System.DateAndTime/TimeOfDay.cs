@@ -192,23 +192,29 @@ namespace System
             return new DateTime(ticks);
         }
 
-        public static TimeOfDay Now(TimeZoneInfo timeZone)
+        public static TimeOfDay NowInTimeZone(TimeZoneInfo timeZone)
         {
             DateTimeOffset utcNow = DateTimeOffset.UtcNow;
             DateTimeOffset localNow = TimeZoneInfo.ConvertTime(utcNow, timeZone);
             return TimeOfDayFromTimeSpan(localNow.TimeOfDay);
         }
 
-        public static TimeOfDay NowLocal()
+        public static TimeOfDay Now
         {
-            var localNow = DateTime.Now;
-            return TimeOfDayFromTimeSpan(localNow.TimeOfDay);
+            get
+            {
+                DateTime localNow = DateTime.Now;
+                return TimeOfDayFromTimeSpan(localNow.TimeOfDay);
+            }
         }
 
-        public static TimeOfDay NowUtc()
+        public static TimeOfDay UtcNow
         {
-            var utcNow = DateTime.UtcNow;
-            return TimeOfDayFromTimeSpan(utcNow.TimeOfDay);
+            get
+            {
+                DateTime utcNow = DateTime.UtcNow;
+                return TimeOfDayFromTimeSpan(utcNow.TimeOfDay);
+            }
         }
 
         /// <summary>
