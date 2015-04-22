@@ -8,16 +8,16 @@ namespace System.DateAndTime.Tests
         public void ToLongDateString()
         {
             var time = new TimeOfDay(10, 49, 12, Meridiem.PM);
-            var longTimeString = time.ToLongTimeString();
-            Assert.Equal(longTimeString, "10:49:12 PM");
+            var s = time.ToLongTimeString();
+            Assert.Equal("10:49:12 PM", s);
         }
 
         [Fact]
         public void ToShortDateString()
         {
             var time = new TimeOfDay(22, 49);
-            var shortTimeString = time.ToShortTimeString();
-            Assert.Equal(shortTimeString, "10:49 PM");
+            var s = time.ToShortTimeString();
+            Assert.Equal("10:49 PM", s);
         }
     }
 }
