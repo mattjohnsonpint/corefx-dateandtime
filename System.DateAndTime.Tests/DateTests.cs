@@ -5,6 +5,11 @@ namespace System.DateAndTime.Tests
 {
     public class DateTests
     {
+        public DateTests()
+        {
+            CultureInfo.CurrentCulture = new CultureInfo("en-US");
+        }
+
         [Fact]
         public void CanConstructDefaultDate()
         {
@@ -84,17 +89,7 @@ namespace System.DateAndTime.Tests
         {
             var date = new Date(2000, 12, 31);
             var longDateString = date.ToLongDateString();
-            // ToLongDateString() result depends on the current info. For now, we
-            // only run the assertion if the culture is en GB/US.
-            switch (CultureInfo.CurrentCulture.Name)
-            {
-                case "en-US":
-                    Assert.Equal(longDateString, "Sunday, December 31, 2000");
-                    break;
-                case "en-GB":
-                    Assert.Equal(longDateString, "31 December 2000");
-                    break;
-            }
+            Assert.Equal(longDateString, "Sunday, December 31, 2000");
         }
 
         [Fact]
@@ -102,17 +97,7 @@ namespace System.DateAndTime.Tests
         {
             var date = new Date(2000, 12, 31);
             var shortDateString = date.ToShortDateString();
-            // ToLongDateString() result depends on the current info. For now, we
-            // only run the assertion if the culture is en GB/US.
-            switch (CultureInfo.CurrentCulture.Name)
-            {
-                case "en-US":
-                    Assert.Equal(shortDateString, "12/31/2000");
-                    break;
-                case "en-GB":
-                    Assert.Equal(shortDateString, "31/12/2000");
-                    break;
-            }
+            Assert.Equal(shortDateString, "12/31/2000");
         }
 
         [Fact]

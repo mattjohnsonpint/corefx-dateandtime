@@ -5,6 +5,11 @@ namespace System.DateAndTime.Tests
 {
     public class TimeOfDayTests
     {
+        public TimeOfDayTests()
+        {
+            CultureInfo.CurrentCulture = new CultureInfo("en-US");
+        }
+
         [Fact]
         public void CanConstructDefaultTimeOfDay()
         {
@@ -257,13 +262,7 @@ namespace System.DateAndTime.Tests
         {
             var time = new TimeOfDay(10, 49, 12, Meridiem.PM);
             var longTimeString = time.ToLongTimeString();
-            // ToLongTimeString() result depends on the current info. For now, we
-            // only run the assertion if the culture is en GB/US.
-            if (CultureInfo.CurrentCulture.Name == "en-GB" ||
-                CultureInfo.CurrentCulture.Name == "en-US")
-            {
-                Assert.Equal(longTimeString, "10:49:12 PM");
-            }
+            Assert.Equal(longTimeString, "10:49:12 PM");
         }
 
         [Fact]
@@ -271,13 +270,7 @@ namespace System.DateAndTime.Tests
         {
             var time = new TimeOfDay(22, 49);
             var shortTimeString = time.ToShortTimeString();
-            // ToShortTimeString() result depends on the current info. For now, we
-            // only run the assertion if the culture is en GB/US.
-            if (CultureInfo.CurrentCulture.Name == "en-GB" ||
-                CultureInfo.CurrentCulture.Name == "en-US")
-            {
-                Assert.Equal(shortTimeString, "10:49 PM");
-            }
+            Assert.Equal(shortTimeString, "10:49 PM");
         }
     }
 }
