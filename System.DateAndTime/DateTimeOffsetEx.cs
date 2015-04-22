@@ -21,15 +21,5 @@
             DateTimeOffset utcNow = DateTimeOffset.UtcNow;
             return TimeZoneInfo.ConvertTime(utcNow, timeZone);
         }
-
-        public static DateTimeOffset NowLocal()
-        {
-            return DateTimeOffset.Now;
-        }
-
-        public static DateTimeOffset NowUtc()
-        {
-            return DateTimeOffset.UtcNow;
-        }
     }
 }
