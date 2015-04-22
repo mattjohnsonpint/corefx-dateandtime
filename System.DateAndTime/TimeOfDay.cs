@@ -199,16 +199,22 @@ namespace System
             return TimeOfDayFromTimeSpan(localNow.TimeOfDay);
         }
 
-        public static TimeOfDay NowLocal()
+        public static TimeOfDay Now
         {
-            var localNow = DateTime.Now;
-            return TimeOfDayFromTimeSpan(localNow.TimeOfDay);
+            get
+            {
+                DateTime localNow = DateTime.Now;
+                return TimeOfDayFromTimeSpan(localNow.TimeOfDay);
+            }
         }
 
-        public static TimeOfDay NowUtc()
+        public static TimeOfDay UtcNow
         {
-            var utcNow = DateTime.UtcNow;
-            return TimeOfDayFromTimeSpan(utcNow.TimeOfDay);
+            get
+            {
+                DateTime utcNow = DateTime.UtcNow;
+                return TimeOfDayFromTimeSpan(utcNow.TimeOfDay);
+            }
         }
 
         /// <summary>
