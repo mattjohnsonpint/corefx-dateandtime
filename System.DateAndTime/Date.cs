@@ -640,7 +640,6 @@ namespace System
                 if ("Oos".Contains(format))
                     return "yyyy-MM-dd";
 
-                
                 // All other standard DateTime formats are invalid for Date
                 throw new FormatException();
             }
