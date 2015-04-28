@@ -1,6 +1,9 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace System
 {
@@ -8,7 +11,8 @@ namespace System
     /// Represents a whole date, having a year, month and day component.
     /// All values are in the proleptic Gregorian (ISO8601) calendar system.
     /// </summary>
-    public struct Date : IEquatable<Date>, IComparable<Date>, IComparable, IFormattable
+    [XmlSchemaProvider("GetSchema")]
+    public struct Date : IEquatable<Date>, IComparable<Date>, IComparable, IFormattable, IXmlSerializable
     {
         private const int MinDayNumber = 0;
         private const int MaxDayNumber = 3652058;
@@ -653,6 +657,36 @@ namespace System
 
             // pass through
             return format;
+        }
+
+        public static XmlQualifiedName GetSchema(object xs)
+        {
+            return new XmlQualifiedName("date", "http://www.w3.org/2001/XMLSchema");
+        }
+
+        XmlSchema IXmlSerializable.GetSchema()
+        {
+            return null;
+        }
+
+        void IXmlSerializable.ReadXml(XmlReader reader)
+        {
+            var s = reader.NodeType == XmlNodeType.Element
+                ? reader.ReadElementContentAsString()
+                : reader.ReadContentAsString();
+
+            Date d;
+            if (!TryParseExact(s, "yyyy-MM-dd", CultureInfo.InvariantCulture, out d))
+            {
+                throw new FormatException();
+            }
+
+            this = d;
+        }
+
+        void IXmlSerializable.WriteXml(XmlWriter writer)
+        {
+            writer.WriteString(ToIsoString());
         }
     }
 }

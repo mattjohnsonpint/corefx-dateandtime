@@ -1,6 +1,9 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace System
 {
@@ -8,7 +11,8 @@ namespace System
     /// Represents a time of day, as would be read from a clock, within the range 00:00:00 to 23:59:59.9999999
     /// Has properties for working with both 12-hour and 24-hour time values.
     /// </summary>
-    public struct TimeOfDay : IEquatable<TimeOfDay>
+    [XmlSchemaProvider("GetSchema")]
+    public struct TimeOfDay : IEquatable<TimeOfDay>, IFormattable, IXmlSerializable
     {
         private const long TicksPerMillisecond = 10000;
         private const long TicksPerSecond = TicksPerMillisecond * 1000;   // 10,000,000
@@ -537,6 +541,36 @@ namespace System
 
             // pass through
             return format;
+        }
+
+        public static XmlQualifiedName GetSchema(object xs)
+        {
+            return new XmlQualifiedName("time", "http://www.w3.org/2001/XMLSchema");
+        }
+
+        XmlSchema IXmlSerializable.GetSchema()
+        {
+            return null;
+        }
+
+        void IXmlSerializable.ReadXml(XmlReader reader)
+        {
+            var s = reader.NodeType == XmlNodeType.Element
+                ? reader.ReadElementContentAsString()
+                : reader.ReadContentAsString();
+
+            TimeOfDay t;
+            if (!TryParseExact(s, "HH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture, out t))
+            {
+                throw new FormatException();
+            }
+
+            this = t;
+        }
+
+        void IXmlSerializable.WriteXml(XmlWriter writer)
+        {
+            writer.WriteString(ToString("HH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture));
         }
     }
 }

@@ -36,6 +36,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
     </Reference>
@@ -51,6 +53,8 @@
   <ItemGroup>
     <Compile Include="DateCalendarTests.cs" />
     <Compile Include="DateFormattingTests.cs" />
+    <Compile Include="TimeOfDaySerializationTests.cs" />
+    <Compile Include="DateSerializationTests.cs" />
     <Compile Include="DateTests.cs" />
     <Compile Include="DateTimeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
