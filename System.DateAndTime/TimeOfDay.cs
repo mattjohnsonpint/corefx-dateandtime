@@ -507,7 +507,9 @@ namespace System
         private static string NormalizeTimeFormat(string format)
         {
             if (string.IsNullOrWhiteSpace(format))
-                throw new FormatException();
+            {
+                return "T";
+            }
 
             // standard formats
             if (format.Length == 1)
