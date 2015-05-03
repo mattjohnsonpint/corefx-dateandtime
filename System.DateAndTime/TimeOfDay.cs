@@ -308,6 +308,11 @@ namespace System
             return _ticks == other._ticks;
         }
 
+        public static bool Equals(TimeOfDay t1, TimeOfDay t2)
+        {
+            return t1.Equals(t2);
+        }
+
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;

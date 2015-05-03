@@ -295,6 +295,11 @@ namespace System
             return _dayNumber == other._dayNumber;
         }
 
+        public static bool Equals(Date d1, Date d2)
+        {
+            return d1.Equals(d2);
+        }
+
         public static int Compare(Date d1, Date d2)
         {
             if (d1._dayNumber > d2._dayNumber) return 1;
