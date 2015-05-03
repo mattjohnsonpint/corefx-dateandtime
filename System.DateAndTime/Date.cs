@@ -627,7 +627,9 @@ namespace System
         private static string NormalizeDateFormat(string format)
         {
             if (string.IsNullOrWhiteSpace(format))
-                throw new FormatException();
+            {
+                return "d";
+            }
 
             // standard formats
             if (format.Length == 1)
