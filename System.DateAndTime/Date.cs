@@ -408,6 +408,16 @@ namespace System
             return DateFromDateTime(dt);
         }
 
+        public static Date Parse(string s, IFormatProvider provider, DateTimeStyles styles)
+        {
+            if (((int)styles) >= 8)
+                throw new ArgumentOutOfRangeException("styles");
+            Contract.EndContractBlock();
+
+            DateTime dt = DateTime.Parse(s, provider, styles);
+            return DateFromDateTime(dt);
+        }
+
         public static Date ParseExact(string s, string format, IFormatProvider provider)
         {
             format = NormalizeDateFormat(format);
@@ -416,14 +426,30 @@ namespace System
             return DateFromDateTime(dt);
         }
 
-        public static Date ParseExact(string s, string[] formats, IFormatProvider provider)
+        public static Date ParseExact(string s, string format, IFormatProvider provider, DateTimeStyles styles)
         {
+            if (((int)styles) >= 8)
+                throw new ArgumentOutOfRangeException("styles");
+            Contract.EndContractBlock();
+
+            format = NormalizeDateFormat(format);
+
+            DateTime dt = DateTime.ParseExact(s, format, provider, styles);
+            return DateFromDateTime(dt);
+        }
+
+        public static Date ParseExact(string s, string[] formats, IFormatProvider provider, DateTimeStyles styles)
+        {
+            if (((int)styles) >= 8)
+                throw new ArgumentOutOfRangeException("styles");
+            Contract.EndContractBlock();
+
             for (int i = 0; i < formats.Length; i++)
             {
                 formats[i] = NormalizeDateFormat(formats[i]);
             }
 
-            DateTime dt = DateTime.ParseExact(s, formats, provider, DateTimeStyles.None);
+            DateTime dt = DateTime.ParseExact(s, formats, provider, styles);
             return DateFromDateTime(dt);
         }
 
@@ -440,10 +466,14 @@ namespace System
             return true;
         }
 
-        public static bool TryParse(string s, IFormatProvider provider, out Date date)
+        public static bool TryParse(string s, IFormatProvider provider, DateTimeStyles styles, out Date date)
         {
+            if (((int)styles) >= 8)
+                throw new ArgumentOutOfRangeException("styles");
+            Contract.EndContractBlock();
+
             DateTime dt;
-            if (!DateTime.TryParse(s, provider, DateTimeStyles.None, out dt))
+            if (!DateTime.TryParse(s, provider, styles, out dt))
             {
                 date = default(Date);
                 return false;
@@ -453,12 +483,16 @@ namespace System
             return true;
         }
 
-        public static bool TryParseExact(string s, string format, IFormatProvider provider, out Date date)
+        public static bool TryParseExact(string s, string format, IFormatProvider provider, DateTimeStyles styles, out Date date)
         {
+            if (((int)styles) >= 8)
+                throw new ArgumentOutOfRangeException("styles");
+            Contract.EndContractBlock();
+
             format = NormalizeDateFormat(format);
 
             DateTime dt;
-            if (!DateTime.TryParseExact(s, format, provider, DateTimeStyles.None, out dt))
+            if (!DateTime.TryParseExact(s, format, provider, styles, out dt))
             {
                 date = default(Date);
                 return false;
@@ -468,15 +502,19 @@ namespace System
             return true;
         }
 
-        public static bool TryParseExact(string s, string[] formats, IFormatProvider provider, out Date date)
+        public static bool TryParseExact(string s, string[] formats, IFormatProvider provider, DateTimeStyles styles, out Date date)
         {
+            if (((int)styles) >= 8)
+                throw new ArgumentOutOfRangeException("styles");
+            Contract.EndContractBlock();
+
             for (int i = 0; i < formats.Length; i++)
             {
                 formats[i] = NormalizeDateFormat(formats[i]);
             }
 
             DateTime dt;
-            if (!DateTime.TryParseExact(s, formats, provider, DateTimeStyles.None, out dt))
+            if (!DateTime.TryParseExact(s, formats, provider, styles, out dt))
             {
                 date = default(Date);
                 return false;
@@ -682,7 +720,7 @@ namespace System
                 : reader.ReadContentAsString();
 
             Date d;
-            if (!TryParseExact(s, "yyyy-MM-dd", CultureInfo.InvariantCulture, out d))
+            if (!TryParseExact(s, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out d))
             {
                 throw new FormatException();
             }

@@ -390,6 +390,16 @@ namespace System
             return TimeOfDayFromTimeSpan(dt.TimeOfDay);
         }
 
+        public static TimeOfDay Parse(string s, IFormatProvider provider, DateTimeStyles styles)
+        {
+            if (((int)styles) >= 8)
+                throw new ArgumentOutOfRangeException("styles");
+            Contract.EndContractBlock();
+
+            DateTime dt = DateTime.Parse(s, provider, DateTimeStyles.NoCurrentDateDefault | styles);
+            return TimeOfDayFromTimeSpan(dt.TimeOfDay);
+        }
+
         public static TimeOfDay ParseExact(string s, string format, IFormatProvider provider)
         {
             format = NormalizeTimeFormat(format);
@@ -397,14 +407,29 @@ namespace System
             return TimeOfDayFromTimeSpan(dt.TimeOfDay);
         }
 
-        public static TimeOfDay ParseExact(string s, string[] formats, IFormatProvider provider)
+        public static TimeOfDay ParseExact(string s, string format, IFormatProvider provider, DateTimeStyles styles)
         {
+            if (((int)styles) >= 8)
+                throw new ArgumentOutOfRangeException("styles");
+            Contract.EndContractBlock();
+
+            format = NormalizeTimeFormat(format);
+            DateTime dt = DateTime.ParseExact(s, format, provider, DateTimeStyles.NoCurrentDateDefault | styles);
+            return TimeOfDayFromTimeSpan(dt.TimeOfDay);
+        }
+
+        public static TimeOfDay ParseExact(string s, string[] formats, IFormatProvider provider, DateTimeStyles styles)
+        {
+            if (((int)styles) >= 8)
+                throw new ArgumentOutOfRangeException("styles");
+            Contract.EndContractBlock();
+
             for (int i = 0; i < formats.Length; i++)
             {
                 formats[i] = NormalizeTimeFormat(formats[i]);
             }
 
-            DateTime dt = DateTime.ParseExact(s, formats, provider, DateTimeStyles.NoCurrentDateDefault);
+            DateTime dt = DateTime.ParseExact(s, formats, provider, DateTimeStyles.NoCurrentDateDefault | styles);
             return TimeOfDayFromTimeSpan(dt.TimeOfDay);
         }
 
@@ -421,10 +446,14 @@ namespace System
             return true;
         }
 
-        public static bool TryParse(string s, IFormatProvider provider, out TimeOfDay time)
+        public static bool TryParse(string s, IFormatProvider provider, DateTimeStyles styles, out TimeOfDay time)
         {
+            if (((int)styles) >= 8)
+                throw new ArgumentOutOfRangeException("styles");
+            Contract.EndContractBlock();
+
             DateTime dt;
-            if (!DateTime.TryParse(s, provider, DateTimeStyles.NoCurrentDateDefault, out dt))
+            if (!DateTime.TryParse(s, provider, DateTimeStyles.NoCurrentDateDefault | styles, out dt))
             {
                 time = default(TimeOfDay);
                 return false;
@@ -434,12 +463,16 @@ namespace System
             return true;
         }
 
-        public static bool TryParseExact(string s, string format, IFormatProvider provider, out TimeOfDay time)
+        public static bool TryParseExact(string s, string format, IFormatProvider provider, DateTimeStyles styles, out TimeOfDay time)
         {
+            if (((int)styles) >= 8)
+                throw new ArgumentOutOfRangeException("styles");
+            Contract.EndContractBlock();
+
             format = NormalizeTimeFormat(format);
 
             DateTime dt;
-            if (!DateTime.TryParseExact(s, format, provider, DateTimeStyles.NoCurrentDateDefault, out dt))
+            if (!DateTime.TryParseExact(s, format, provider, DateTimeStyles.NoCurrentDateDefault | styles, out dt))
             {
                 time = default(TimeOfDay);
                 return false;
@@ -449,15 +482,19 @@ namespace System
             return true;
         }
 
-        public static bool TryParseExact(string s, string[] formats, IFormatProvider provider, out TimeOfDay time)
+        public static bool TryParseExact(string s, string[] formats, IFormatProvider provider, DateTimeStyles styles, out TimeOfDay time)
         {
+            if (((int)styles) >= 8)
+                throw new ArgumentOutOfRangeException("styles");
+            Contract.EndContractBlock();
+
             for (int i = 0; i < formats.Length; i++)
             {
                 formats[i] = NormalizeTimeFormat(formats[i]);
             }
 
             DateTime dt;
-            if (!DateTime.TryParseExact(s, formats, provider, DateTimeStyles.NoCurrentDateDefault, out dt))
+            if (!DateTime.TryParseExact(s, formats, provider, DateTimeStyles.NoCurrentDateDefault | styles, out dt))
             {
                 time = default(TimeOfDay);
                 return false;
@@ -567,7 +604,7 @@ namespace System
                 : reader.ReadContentAsString();
 
             TimeOfDay t;
-            if (!TryParseExact(s, "HH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture, out t))
+            if (!TryParseExact(s, "HH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture, DateTimeStyles.None, out t))
             {
                 throw new FormatException();
             }
