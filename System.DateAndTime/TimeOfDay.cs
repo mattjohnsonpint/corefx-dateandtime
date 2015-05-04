@@ -520,10 +520,32 @@ namespace System
             return !left.Equals(right);
         }
 
+        /// <summary>
+        /// Implicitly casts a <see cref="TimeSpan"/> object to a <see cref="TimeOfDay"/> by returning a new
+        /// <see cref="TimeOfDay"/> object that has the equivalent hours, minutes, seconds, and fractional seconds
+        /// components.  This is useful when using APIs that express a time-of-day as the elapsed time since
+        /// midnight, such that their values can be assigned to a variable having a <see cref="TimeOfDay"/> type.
+        /// </summary>
+        /// <param name="timeSpan">A <see cref="TimeSpan"/> variable representing the time elapsed since midnight,
+        /// without regard to daylight saving time transitions.</param>
+        /// <returns>A newly constructed <see cref="TimeOfDay"/> object with an equivalent value.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="timeSpan"/> is either negative, or greater than <c>23:59:59.9999999</c>, and thus cannot be
+        /// mapped to a <see cref="TimeOfDay"/>.
+        /// </exception>
+        /// <remarks>
+        /// Fundamentally, a time-of-day and an elapsed-time are two different concepts.  In previous versions
+        /// of the .NET framework, the <see cref="TimeOfDay"/> type did not exist, and thus several time-of-day
+        /// values were represented by <see cref="TimeSpan"/> values erroneously.  For example, the
+        /// <see cref="DateTime.TimeOfDay"/> property returns a value having a <see cref="TimeSpan"/> type.
+        /// This implicit cast operator allows those APIs to be naturally used with <see cref="TimeOfDay"/>.
+        /// <para>
+        /// Also note that the input <paramref name="timeSpan"/> might actually *not* accurately represent the
+        /// "time elapsed since midnight" on days containing a daylight saving time transition.
+        /// </para>
+        /// </remarks>
         public static implicit operator TimeOfDay(TimeSpan timeSpan)
         {
-            // This is useful such that existing items like DateTime.TimeOfDay can be assigned to a TimeOfDay type.
-
             long ticks = timeSpan.Ticks;
             if (ticks < 0 || ticks >= TimeSpan.TicksPerDay)
                 throw new ArgumentOutOfRangeException("timeSpan");
