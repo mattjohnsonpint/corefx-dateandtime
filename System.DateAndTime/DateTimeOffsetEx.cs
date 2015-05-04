@@ -6,7 +6,8 @@
     public static class DateTimeOffsetEx
     {
         /// <summary>
-        /// Gets a <see cref="Date"/> value that represents the date component of the current <see cref="DateTimeOffset"/> object.
+        /// Gets a <see cref="Date"/> value that represents the date component of the current
+        /// <see cref="DateTimeOffset"/> object.
         /// </summary>
         /// <param name="dateTimeOffset">The <see cref="DateTimeOffset"/> instance.</param>
         /// <returns>The <see cref="Date"/> value.</returns>
@@ -16,7 +17,8 @@
         }
 
         /// <summary>
-        /// Gets a <see cref="TimeOfDay"/> value that represents the time component of the current <see cref="DateTimeOffset"/> object.
+        /// Gets a <see cref="TimeOfDay"/> value that represents the time component of the current
+        /// <see cref="DateTimeOffset"/> object.
         /// </summary>
         /// <param name="dateTimeOffset">The <see cref="DateTimeOffset"/> instance.</param>
         /// <returns>The <see cref="TimeOfDay"/> value.</returns>

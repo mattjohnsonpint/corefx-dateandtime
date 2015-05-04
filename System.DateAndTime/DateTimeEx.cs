@@ -6,7 +6,8 @@
     public static class DateTimeEx
     {
         /// <summary>
-        /// Gets a <see cref="Date"/> value that represents the date component of the current <see cref="DateTime"/> object.
+        /// Gets a <see cref="Date"/> value that represents the date component of the current
+        /// <see cref="DateTime"/> object.
         /// </summary>
         /// <param name="dateTime">The <see cref="DateTime"/> instance.</param>
         /// <returns>The <see cref="Date"/> value.</returns>
@@ -16,7 +17,8 @@
         }
 
         /// <summary>
-        /// Gets a <see cref="TimeOfDay"/> value that represents the time component of the current <see cref="DateTime"/> object.
+        /// Gets a <see cref="TimeOfDay"/> value that represents the time component of the current
+        /// <see cref="DateTime"/> object.
         /// </summary>
         /// <param name="dateTime">The <see cref="DateTime"/> instance.</param>
         /// <returns>The <see cref="TimeOfDay"/> value.</returns>

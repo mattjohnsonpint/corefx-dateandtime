@@ -9,7 +9,7 @@ namespace System
 {
     /// <summary>
     /// Represents a whole date, having a year, month and day component.
-    /// All values are in the proleptic Gregorian (ISO8601) calendar system.
+    /// All values are in the proleptic Gregorian (ISO 8601) calendar system unless otherwise specified.
     /// </summary>
     [XmlSchemaProvider("GetSchema")]
     public struct Date : IEquatable<Date>, IComparable<Date>, IComparable, IFormattable, IXmlSerializable
@@ -18,21 +18,24 @@ namespace System
         private const int MaxDayNumber = 3652058;
 
         /// <summary>
-        /// Represents the smallest possible value of Date. This field is read-only.
+        /// Represents the smallest possible value of <see cref="Date"/>. This field is read-only.
         /// </summary>
         public static readonly Date MinValue = new Date(MinDayNumber);
 
         /// <summary>
-        /// Represents the largest possible value of Date. This field is read-only.
+        /// Represents the largest possible value of <see cref="Date"/>. This field is read-only.
         /// </summary>
         public static readonly Date MaxValue = new Date(MaxDayNumber);
 
         // Number of days in a non-leap year
         private const int DaysPerYear = 365;
+        
         // Number of days in 4 years
         private const int DaysPer4Years = DaysPerYear * 4 + 1;       // 1461
+        
         // Number of days in 100 years
         private const int DaysPer100Years = DaysPer4Years * 25 - 1;  // 36524
+        
         // Number of days in 400 years
         private const int DaysPer400Years = DaysPer100Years * 4 + 1; // 146097
 
@@ -47,13 +50,16 @@ namespace System
         private const int DatePartDay = 3;
 
         // Number of whole days since 0001-01-01 (which is day 0)
+        // NOTE: This is the only field in this structure.
         private readonly int _dayNumber;
 
         /// <summary>
-        /// Initializes a new instance of Date structure to a specified number of days.
+        /// Initializes a new instance of a <see cref="Date"/> structure to a specified number of days.
         /// </summary>
-        /// <param name="dayNumber">The number of days since January 1, 0001 in the
-        /// proleptic Gregorian calendar.</param>
+        /// <param name="dayNumber">The number of days since January 1, 0001 in the proleptic Gregorian calendar.</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="dayNumber"/> is out of the range supported by the <see cref="Date"/> object.
+        /// </exception>
         public Date(int dayNumber)
         {
             if (dayNumber < MinDayNumber || dayNumber > MaxDayNumber)
@@ -64,28 +70,60 @@ namespace System
         }
 
         /// <summary>
-        /// Initializes a new instance of Date structure to a specified year, month,
-        /// and day.
+        /// Initializes a new instance of a <see cref="Date"/> structure to a specified year, month, and day.
         /// </summary>
         /// <param name="year">The year (1 through 9999).</param>
         /// <param name="month">The month (1 through 12).</param>
-        /// <param name="day">The day (1 through the number of days in month).</param>
-        /// <exception cref="ArgumentOutOfRangeException">year is less than 1 or greater than 9999.
-        /// -or-
-        /// month is less than 1 or greater than 12.
-        /// -or-
-        /// day is less than 1 or greater than the number of days in month.</exception>
+        /// <param name="day">The day (1 through the number of days in <paramref name="month"/>).</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="year"/> is less than 1 or greater than 9999.
+        /// <para>-or-</para>
+        /// <paramref name="month"/> is less than 1 or greater than 12.
+        /// <para>-or-</para>
+        /// <paramref name="day"/> is less than 1 or greater than the number of days in <paramref name="month"/>.
+        /// </exception>
         public Date(int year, int month, int day)
         {
             _dayNumber = DateToDayNumber(year, month, day);
         }
 
+        /// <summary>
+        /// Initializes a new instance of Date structure to a specified year, month, and day for the specified calendar.
+        /// </summary>
+        /// <param name="year">The year (1 through the number of years in <paramref name="calendar"/>).</param>
+        /// <param name="month">The month (1 through the number of months in <paramref name="calendar"/>).</param>
+        /// <param name="day">The day (1 through the number of days in <paramref name="month"/>).</param>
+        /// <param name="calendar">
+        /// The calendar that is used to interpret <paramref name="year"/>,
+        /// <paramref name="month"/>, and <paramref name="day"/>.
+        /// </param>
+        /// <exception cref="ArgumentNullException"><paramref name="calendar"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="year"/> is not in the range supported by <paramref name="calendar"/>.
+        /// <para>-or-</para>
+        /// <paramref name="month"/> is less than 1 or greater than the number of months in <paramref name="calendar"/>.
+        /// <para>-or-</para>
+        /// <paramref name="day"/> is less than 1 or greater than the number of days in <paramref name="month"/>.
+        /// </exception>
         public Date(int year, int month, int day, Calendar calendar)
         {
             DateTime dt = calendar.ToDateTime(year, month, day, 0, 0, 0, 0);
             _dayNumber = (int)(dt.Ticks / TimeSpan.TicksPerDay);
         }
 
+        /// <summary>
+        /// Initializes a new instance of a <see cref="Date"/> structure to a specified year, and day of year.
+        /// </summary>
+        /// <param name="year">The year (1 through 9999).</param>
+        /// <param name="dayOfYear">The day of year (1 through the number of days in <paramref name="year"/>).</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="year"/> is less than 1 or greater than 9999.
+        /// <para>-or-</para>
+        /// <paramref name="dayOfYear"/> is less than 1 or greater than the number of days in <paramref name="year"/>.
+        /// </exception>
+        /// <remarks>
+        /// Note that standard years have days numbered 1 through 365, while leap years have days numbered 1 through 366.
+        /// </remarks>
         public Date(int year, int dayOfYear)
         {
             if (dayOfYear < 1 || dayOfYear > (IsLeapYear(year) ? 366 : 365))
@@ -173,12 +211,32 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// Creates a <see cref="DateTime"/> object from the current <see cref="Date"/> and the specified <see cref="TimeOfDay"/>.
+        /// The resulting value has a <see cref="DateTime.Kind"/> of <see cref="DateTimeKind.Unspecified"/>.
+        /// </summary>
+        /// <remarks>
+        /// Since neither <see cref="Date"/> or <see cref="TimeOfDay"/> keep track of <see cref="DateTimeKind"/>,
+        /// recognize that the <see cref="DateTime"/> produced by <c>Date.Now.At(TimeOfDay.Now)</c> will have
+        /// <see cref="DateTimeKind.Unspecified"/>, rather than then <see cref="DateTimeKind.Local"/> that would be
+        /// given by <c>DateTime.Now</c>.
+        /// <para>The same applies for <see cref="DateTimeKind.Utc"/>.</para>
+        /// </remarks>
         public DateTime At(TimeOfDay time)
         {
             long ticks = _dayNumber * TimeSpan.TicksPerDay + time.Ticks;
             return new DateTime(ticks);
         }
 
+        /// <summary>
+        /// Creates a <see cref="DateTime"/> object from the current <see cref="Date"/>, with the time set to midnight
+        /// (00:00:00). The resulting value has a <see cref="DateTime.Kind"/> of <see cref="DateTimeKind.Unspecified"/>.
+        /// </summary>
+        /// <remarks>
+        /// Note that midnight might be ambiguous or invalid in some time zones on DST transition days.
+        /// Though this method is time zone ignorant, the resulting value should be considered suspect and used with
+        /// caution.
+        /// </remarks>
         public DateTime ToDateTimeAtMidnight()
         {
             return new DateTime(_dayNumber * TimeSpan.TicksPerDay);
@@ -189,6 +247,9 @@ namespace System
         /// </summary>
         /// <param name="year">A 4-digit year.</param>
         /// <returns><c>true</c> if year is a leap year; otherwise, <c>false</c>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="year"/> is less than 1 or greater than 9999.
+        /// </exception>
         public static bool IsLeapYear(int year)
         {
             if (year < 1 || year > 9999)
@@ -199,11 +260,20 @@ namespace System
         }
 
         /// <summary>
-        /// Returns the number of days in the month given by the year and month arguments.
+        /// Returns the number of days in the specified month and year.
         /// </summary>
+        /// <returns>
+        /// The number of days in <paramref name="month"/> for the specified <paramref name="year"/>.
+        /// For example, if <paramref name="month"/> equals 2 for February, the return value is 28 or 29 depending
+        /// upon whether <paramref name="year"/> is a leap year.
+        /// </returns>
         /// <param name="year">The year.</param>
-        /// <param name="month">The month.</param>
-        /// <returns>The number of days.</returns>
+        /// <param name="month">The month (a number ranging from 1 to 12).</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="month"/> is less than 1 or greater than 12.
+        /// <para>-or-</para>
+        /// <paramref name="year"/> is less than 1 or greater than 9999.
+        /// </exception>
         public static int DaysInMonth(int year, int month)
         {
             if (month < 1 || month > 12) throw new ArgumentOutOfRangeException("month");
@@ -214,13 +284,21 @@ namespace System
             return days[month] - days[month - 1];
         }
 
-        public static Date TodayInTimeZone(TimeZoneInfo timeZone)
+        /// <summary>
+        /// Gets a <see cref="Date"/> object that is set to the current date in the specified time zone.
+        /// </summary>
+        /// <param name="timeZoneInfo">The <see cref="TimeZoneInfo"/> instance.</param>
+        /// <returns>The current <see cref="Date"/> for the specified time zone.</returns>
+        public static Date TodayInTimeZone(TimeZoneInfo timeZoneInfo)
         {
             DateTimeOffset utcNow = DateTimeOffset.UtcNow;
-            DateTimeOffset localNow = TimeZoneInfo.ConvertTime(utcNow, timeZone);
+            DateTimeOffset localNow = TimeZoneInfo.ConvertTime(utcNow, timeZoneInfo);
             return DateFromDateTime(localNow.Date);
         }
 
+        /// <summary>
+        /// Gets the current date in the local time zone.
+        /// </summary>
         public static Date Today
         {
             get
@@ -230,6 +308,9 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// Gets the current date in Coordinated Universal Time (UTC).
+        /// </summary>
         public static Date UtcToday
         {
             get
@@ -239,6 +320,23 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// Gets a <see cref="Date"/> object whose value is ahead or behind the value of this instance by the specified
+        /// number of years. Positive values will move the date forward; negative values will move the date backwards.
+        /// <para>
+        /// If the original date is a leap day (February 29), and the resulting year is not a leap year, the resulting
+        /// value will be adjusted to February 28.
+        /// </para>
+        /// </summary>
+        /// <returns>
+        /// A new <see cref="Date"/> object which is the result of adjusting this instance by the
+        /// <paramref name="years"/> specified.
+        /// </returns>
+        /// <param name="years">The number of years to adjust by. The value can be negative or positive.</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="years"/> or the resulting <see cref="Date"/> is less than <see cref="Date.MinValue"/>
+        /// or greater than <see cref="Date.MaxValue"/>.
+        /// </exception>
         public Date AddYears(int years)
         {
             if (years < -10000 || years > 10000)
@@ -248,6 +346,24 @@ namespace System
             return AddMonths(years * 12);
         }
 
+        /// <summary>
+        /// Gets a <see cref="Date"/> object whose value is ahead or behind the value of this instance by the specified
+        /// number of months. Positive values will move the date forward; negative values will move the date backwards.
+        /// <para>
+        /// Since the number of days in a months varies, the resulting date may not necessarily fall on the same
+        /// day. If the resulting value would have landed on a day that doesn't exist within a month, the value is
+        /// adjusted backward to the last day of the month.
+        /// </para>
+        /// </summary>
+        /// <returns>
+        /// A new <see cref="Date"/> object which is the result of adjusting this instance by the
+        /// <paramref name="months"/> specified.
+        /// </returns>
+        /// <param name="months">The number of months to adjust by. The value can be negative or positive.</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="months"/> or the resulting <see cref="Date"/> is less than <see cref="Date.MinValue"/>
+        /// or greater than <see cref="Date.MaxValue"/>.
+        /// </exception>
         public Date AddMonths(int months)
         {
             if (months < -120000 || months > 120000)
@@ -280,6 +396,19 @@ namespace System
             return new Date(dayNumber);
         }
 
+        /// <summary>
+        /// Gets a <see cref="Date"/> object whose value is ahead or behind the value of this instance by the specified
+        /// number of days. Positive values will move the date forward; negative values will move the date backwards.
+        /// </summary>
+        /// <returns>
+        /// A new <see cref="Date"/> object which is the result of adjusting this instance by the
+        /// <paramref name="days"/> specified.
+        /// </returns>
+        /// <param name="days">The number of days to adjust by. The value can be negative or positive.</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="days"/> or the resulting <see cref="Date"/> is less than <see cref="Date.MinValue"/>
+        /// or greater than <see cref="Date.MaxValue"/>.
+        /// </exception>
         public Date AddDays(int days)
         {
             int dayNumber = _dayNumber + days;
@@ -290,16 +419,55 @@ namespace System
             return new Date(dayNumber);
         }
 
-        public bool Equals(Date other)
+        /// <summary>
+        /// Returns a value indicating whether the value of this instance is equal to the value of the specified
+        /// <see cref="Date"/> instance.
+        /// </summary>
+        /// <param name="value">The other date object to compare against this instance.</param>
+        /// <returns>
+        /// <c>true</c> if the <paramref name="value"/> parameter equals the value of this instance;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        public bool Equals(Date value)
         {
-            return _dayNumber == other._dayNumber;
+            return _dayNumber == value._dayNumber;
         }
 
+        /// <summary>
+        /// Returns a value indicating whether two <see cref="Date"/> instances have the same date value.
+        /// </summary>
+        /// <param name="d1">The first object to compare.</param>
+        /// <param name="d2">The second object to compare.</param>
+        /// <returns><c>true</c> if the two values are equal; otherwise, <c>false</c>.</returns>
         public static bool Equals(Date d1, Date d2)
         {
             return d1.Equals(d2);
         }
 
+        /// <summary>
+        /// Compares two instances of <see cref="Date"/> and returns an integer that indicates whether the first
+        /// instance is earlier than, the same as, or later than the second instance.
+        /// </summary>
+        /// <param name="d1">The first object to compare.</param>
+        /// <param name="d2">The second object to compare.</param>
+        /// <returns>
+        /// A signed number indicating the relative values of <paramref name="d1"/> and <paramref name="d2"/>.
+        /// <list type="table">
+        /// <listheader><term>Value</term><term>Description</term></listheader>
+        /// <item>
+        ///   <term>Less than zero</term>
+        ///   <term><paramref name="d1"/> is earlier than <paramref name="d2"/>.</term>
+        /// </item>
+        /// <item>
+        ///   <term>Zero</term>
+        ///   <term><paramref name="d1"/> is the same as <paramref name="d2"/>.</term>
+        /// </item>
+        /// <item>
+        ///   <term>Greater than zero</term>
+        ///   <term><paramref name="d1"/> is later than <paramref name="d2"/>.</term>
+        /// </item>
+        /// </list>
+        /// </returns>
         public static int Compare(Date d1, Date d2)
         {
             if (d1._dayNumber > d2._dayNumber) return 1;
@@ -307,40 +475,114 @@ namespace System
             return 0;
         }
 
-        public int CompareTo(Date other)
+        /// <summary>
+        /// Compares the value of this instance to a specified <see cref="Date"/> value and returns an integer that
+        /// indicates whether this instance is earlier than, the same as, or later than the specified
+        /// <see cref="Date"/> value.
+        /// </summary>
+        /// <param name="value">The object to compare to the current instance.</param>
+        /// <returns>
+        /// A signed number indicating the relative values of this instance and the <paramref name="value"/> parameter.
+        /// <list type="table">
+        /// <listheader><term>Value</term><term>Description</term></listheader>
+        /// <item>
+        ///   <term>Less than zero</term>
+        ///   <term>This instance is earlier than <paramref name="value"/>.</term>
+        /// </item>
+        /// <item>
+        ///   <term>Zero</term>
+        ///   <term>This instance is the same as <paramref name="value"/>.</term>
+        /// </item>
+        /// <item>
+        ///   <term>Greater than zero</term>
+        ///   <term>This instance is later than <paramref name="value"/>.</term>
+        /// </item>
+        /// </list>
+        /// </returns>
+        public int CompareTo(Date value)
         {
-            return Compare(this, other);
+            return Compare(this, value);
         }
 
-        public override bool Equals(object obj)
+        /// <summary>
+        /// Returns a value indicating whether this instance is equal to the specified object.
+        /// </summary>
+        /// <param name="value">The object to compare to this instance.</param>
+        /// <returns>
+        /// <c>true</c> if <paramref name="value"/> is an instance of <see cref="Date"/>
+        /// and equals the value of this instance; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool Equals(object value)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            return obj is Date && Equals((Date)obj);
+            if (ReferenceEquals(null, value)) return false;
+            return value is Date && Equals((Date)value);
         }
 
         /// <summary>
         /// Returns the hash code of this instance.
         /// </summary>
-        /// <returns>a 32-bit signed integer hash code.</returns>
-        /// <remarks>The hash code of a <see cref="Date"/> object is the day number, which is
-        /// number of days since January 1, 0001 in the proleptic Gregorian calendar.</remarks>
+        /// <returns>A 32-bit signed integer hash code.</returns>
+        /// <remarks>
+        /// The hash code of a <see cref="Date"/> object is the day number, which is the 
+        /// number of days since January 1, 0001 in the proleptic Gregorian calendar.
+        /// </remarks>
         public override int GetHashCode()
         {
             return _dayNumber;
         }
 
+        /// <summary>
+        /// Converts the value of the current <see cref="Date"/> object to its equivalent string representation.
+        /// </summary>
+        /// <returns>A string representation of value of the current <see cref="Date"/> object.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// The date is outside the range of dates supported by the calendar used by the current culture.
+        /// </exception>
         public override string ToString()
         {
             Contract.Ensures(Contract.Result<string>() != null);
             return ToDateTimeAtMidnight().ToString("d");
         }
 
-        public string ToString(IFormatProvider formatProvider)
+        /// <summary>
+        /// Converts the value of the current <see cref="Date"/> object to its equivalent string representation
+        /// using the specified culture-specific format information.
+        /// </summary>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        /// <returns>
+        /// A string representation of value of the current <see cref="Date"/> object as specified by
+        /// <paramref name="provider"/>.
+        /// </returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// The date is outside the range of dates supported by the calendar used by <paramref name="provider"/>.
+        /// </exception>
+        public string ToString(IFormatProvider provider)
         {
             Contract.Ensures(Contract.Result<string>() != null);
-            return ToDateTimeAtMidnight().ToString("d", formatProvider);
+            return ToDateTimeAtMidnight().ToString("d", provider);
         }
 
+        /// <summary>
+        /// Converts the value of the current <see cref="Date"/> object to its equivalent string representation
+        /// using the specified format.
+        /// </summary>
+        /// <param name="format">A standard or custom date format string.</param>
+        /// <returns>
+        /// A string representation of value of the current <see cref="Date"/> object as specified by
+        /// <paramref name="format"/>.
+        /// </returns>
+        /// <exception cref="FormatException">
+        /// The length of <paramref name="format"/> is 1, and it is not one of the format specifier characters defined
+        /// for <see cref="DateTimeFormatInfo"/>.
+        /// <para>-or-</para>
+        /// <paramref name="format"/> does not contain a valid custom format pattern.
+        /// <para>-or-</para>
+        /// The standard or custom format specified is not valid for a <see cref="Date"/> object, because it contains
+        /// a time-of-day component.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// The date is outside the range of dates supported by the calendar used by the current culture.
+        /// </exception>
         public string ToString(string format)
         {
             Contract.Ensures(Contract.Result<string>() != null);
@@ -349,48 +591,79 @@ namespace System
             return ToDateTimeAtMidnight().ToString(format);
         }
 
-        public string ToString(string format, IFormatProvider formatProvider)
+        /// <summary>
+        /// Converts the value of the current <see cref="Date"/> object to its equivalent string representation
+        /// using the specified format and culture-specific format information.
+        /// </summary>
+        /// <param name="format">A standard or custom date format string.</param>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        /// <returns>
+        /// A string representation of value of the current <see cref="Date"/> object as specified by
+        /// <paramref name="format"/> and <paramref name="provider"/>.
+        /// </returns>
+        /// <exception cref="FormatException">
+        /// The length of <paramref name="format"/> is 1, and it is not one of the format specifier characters defined
+        /// for <see cref="DateTimeFormatInfo"/>.
+        /// <para>-or-</para>
+        /// <paramref name="format"/> does not contain a valid custom format pattern.
+        /// <para>-or-</para>
+        /// The standard or custom format specified is not valid for a <see cref="Date"/> object, because it contains
+        /// a time-of-day component.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// The date is outside the range of dates supported by the calendar used by <paramref name="provider"/>.
+        /// </exception>
+        public string ToString(string format, IFormatProvider provider)
         {
             Contract.Ensures(Contract.Result<string>() != null);
             format = NormalizeDateFormat(format);
 
-            return ToDateTimeAtMidnight().ToString(format, formatProvider);
+            return ToDateTimeAtMidnight().ToString(format, provider);
         }
 
         /// <summary>
-        /// Converts the value of the current <see cref="Date"/> object to its equivalent
-        /// long date string representation.
+        /// Converts the value of the current <see cref="Date"/> object to its equivalent long date string
+        /// representation.
         /// </summary>
-        /// <returns>A string that contains the long date string representation of the
-        /// current <see cref="Date"/> object.</returns>
-        /// <remarks>The value of the current <see cref="Date"/> object is formatted using
-        /// the pattern defined by the <see cref="DateTimeFormatInfo.LongDatePattern" />
-        /// property associated with the current thread culture.</remarks>
+        /// <returns>
+        /// A string that contains the long date string representation of the current <see cref="Date"/> object.
+        /// </returns>
+        /// <remarks>
+        /// The value of the current <see cref="Date"/> object is formatted using the pattern defined by the
+        /// <see cref="DateTimeFormatInfo.LongDatePattern" /> property associated with the current thread culture.
+        /// </remarks>
         public string ToLongDateString()
         {
             return ToString(CultureInfo.CurrentCulture.DateTimeFormat.LongDatePattern);
         }
 
         /// <summary>
-        /// Converts the value of the current <see cref="Date"/> object to its equivalent
-        /// short date string representation.
+        /// Converts the value of the current <see cref="Date"/> object to its equivalent short date string
+        /// representation.
         /// </summary>
-        /// <returns>A string that contains the short date string representation of the
-        /// current <see cref="Date"/> object.</returns>
-        /// <remarks>The value of the current <see cref="Date"/> object is formatted using
-        /// the pattern defined by the <see cref="DateTimeFormatInfo.ShortDatePattern" />
-        /// property associated with the current thread culture.</remarks>
+        /// <returns>
+        /// A string that contains the short date string representation of the current <see cref="Date"/> object.
+        /// </returns>
+        /// <remarks>
+        /// The value of the current <see cref="Date"/> object is formatted using the pattern defined by the
+        /// <see cref="DateTimeFormatInfo.ShortDatePattern" /> property associated with the current thread culture.
+        /// </remarks>
         public string ToShortDateString()
         {
             return ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern);
         }
 
         /// <summary>
-        /// Converts the value of the current <see cref="Date"/> object to its equivalent
-        /// ISO standard string representation (ISO-8601), which has the format: yyyy-MM-dd.
+        /// Converts the value of the current <see cref="Date"/> object to its equivalent ISO standard string
+        /// representation (ISO-8601), which has the format: <c>yyyy-MM-dd</c>.
         /// </summary>
-        /// <returns>A string that contains the ISO standard string representation of the
-        /// current <see cref="Date"/> object.</returns>
+        /// <returns>
+        /// A string that contains the ISO standard string representation of the current <see cref="Date"/> object.
+        /// </returns>
+        /// <remarks>
+        /// Because the ISO-8601 standard uses the proleptic Gregorian calendar, this method always uses the calendar
+        /// of the <see cref="CultureInfo.InvariantCulture"/>, despite the setting of the current culture.
+        /// </remarks>
         public string ToIsoString()
         {
             return ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
@@ -524,13 +797,40 @@ namespace System
             return true;
         }
 
-        public int CompareTo(object obj)
+        /// <summary>
+        /// Compares the value of this instance to a specified object that contains a <see cref="Date"/> value and
+        /// returns an integer that indicates whether this instance is earlier than, the same as, or later than the
+        /// specified <see cref="Date"/> value.
+        /// </summary>
+        /// <param name="value">The object to compare to the current instance.</param>
+        /// <returns>
+        /// A signed number indicating the relative values of this instance and the <paramref name="value"/> parameter.
+        /// <list type="table">
+        /// <listheader><term>Value</term><term>Description</term></listheader>
+        /// <item>
+        ///   <term>Less than zero</term>
+        ///   <term>This instance is earlier than <paramref name="value"/>.</term>
+        /// </item>
+        /// <item>
+        ///   <term>Zero</term>
+        ///   <term>This instance is earlier than <paramref name="value"/>.</term>
+        /// </item>
+        /// <item>
+        ///   <term>Greater than zero</term>
+        ///   <term>
+        ///     This instance is later than <paramref name="value"/>,
+        ///     or <paramref name="value"/> is <c>null</c>.
+        ///   </term>
+        /// </item>
+        /// </list>
+        /// </returns>
+        public int CompareTo(object value)
         {
-            if (obj == null) return 1;
-            if (!(obj is Date))
+            if (value == null) return 1;
+            if (!(value is Date))
                 throw new ArgumentException();
 
-            return Compare(this, (Date)obj);
+            return Compare(this, (Date)value);
         }
 
         public static bool operator ==(Date left, Date right)

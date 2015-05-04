@@ -26,7 +26,8 @@ namespace System
         public static readonly TimeOfDay MinValue = new TimeOfDay(MinTicks);
         public static readonly TimeOfDay MaxValue = new TimeOfDay(MaxTicks);
 
-        // Number of ticks (100ns units) since midnight
+        // Number of ticks (100ns units) since midnight at the beginning of a standard 24-hour day.
+        // NOTE: This is the only field in this structure.
         private readonly long _ticks;
 
         public TimeOfDay(long ticks)
@@ -197,10 +198,15 @@ namespace System
             return new DateTime(ticks);
         }
 
-        public static TimeOfDay NowInTimeZone(TimeZoneInfo timeZone)
+        /// <summary>
+        /// Gets a <see cref="TimeOfDay"/> object that is set to the current time in the specified time zone.
+        /// </summary>
+        /// <param name="timeZoneInfo">The <see cref="TimeZoneInfo"/> instance.</param>
+        /// <returns>The current <see cref="TimeOfDay"/> for the specified time zone.</returns>
+        public static TimeOfDay NowInTimeZone(TimeZoneInfo timeZoneInfo)
         {
             DateTimeOffset utcNow = DateTimeOffset.UtcNow;
-            DateTimeOffset localNow = TimeZoneInfo.ConvertTime(utcNow, timeZone);
+            DateTimeOffset localNow = TimeZoneInfo.ConvertTime(utcNow, timeZoneInfo);
             return TimeOfDayFromTimeSpan(localNow.TimeOfDay);
         }
 
@@ -303,9 +309,9 @@ namespace System
             return timeOfDay.Subtract(timeSpan);
         }
 
-        public bool Equals(TimeOfDay other)
+        public bool Equals(TimeOfDay value)
         {
-            return _ticks == other._ticks;
+            return _ticks == value._ticks;
         }
 
         public static bool Equals(TimeOfDay t1, TimeOfDay t2)
@@ -313,10 +319,10 @@ namespace System
             return t1.Equals(t2);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object value)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            return obj is TimeOfDay && Equals((TimeOfDay)obj);
+            if (ReferenceEquals(null, value)) return false;
+            return value is TimeOfDay && Equals((TimeOfDay)value);
         }
 
         public override int GetHashCode()
@@ -330,10 +336,10 @@ namespace System
             return DateTime.MinValue.AddTicks(_ticks).ToString("T");
         }
 
-        public string ToString(IFormatProvider formatProvider)
+        public string ToString(IFormatProvider provider)
         {
             Contract.Ensures(Contract.Result<string>() != null);
-            return DateTime.MinValue.AddTicks(_ticks).ToString("T", formatProvider);
+            return DateTime.MinValue.AddTicks(_ticks).ToString("T", provider);
         }
 
         public string ToString(string format)
@@ -343,11 +349,11 @@ namespace System
             return DateTime.MinValue.AddTicks(_ticks).ToString(format);
         }
 
-        public string ToString(string format, IFormatProvider formatProvider)
+        public string ToString(string format, IFormatProvider provider)
         {
             Contract.Ensures(Contract.Result<string>() != null);
             format = NormalizeTimeFormat(format);
-            return DateTime.MinValue.AddTicks(_ticks).ToString(format, formatProvider);
+            return DateTime.MinValue.AddTicks(_ticks).ToString(format, provider);
         }
 
         /// <summary>
