@@ -554,6 +554,23 @@ namespace System
             return new TimeOfDay(ticks);
         }
 
+        /// <summary>
+        /// Enables explicit casting of a <see cref="TimeOfDay"/> object to a <see cref="TimeSpan"/> by returning a new
+        /// <see cref="TimeSpan"/> object that has the equivalent hours, minutes, seconds, and fractional seconds
+        /// components.  This is useful when using APIs that express a time-of-day as the elapsed time since
+        /// midnight, such that a <see cref="TimeOfDay"/> type can be passed to a method expecting a
+        /// <see cref="TimeSpan"/> parameter as a time-of-day.
+        /// </summary>
+        /// <param name="timeOfDay">A <see cref="TimeOfDay"/> value.</param>
+        /// <returns>
+        /// A newly constructed <see cref="TimeSpan"/> object representing the time elapsed since midnight, without
+        /// regard to daylight saving time transitions.
+        /// </returns>
+        public static explicit operator TimeSpan(TimeOfDay timeOfDay)
+        {
+            return new TimeSpan(timeOfDay.Ticks);
+        }
+
         private static int Hours12To24(int hours12, Meridiem meridiem)
         {
             if (hours12 < 1 || hours12 > 12)
