@@ -526,7 +526,7 @@ namespace System
         /// components.  This is useful when using APIs that express a time-of-day as the elapsed time since
         /// midnight, such that their values can be assigned to a variable having a <see cref="TimeOfDay"/> type.
         /// </summary>
-        /// <param name="timeSpan">A <see cref="TimeSpan"/> variable representing the time elapsed since midnight,
+        /// <param name="timeSpan">A <see cref="TimeSpan"/> value representing the time elapsed since midnight,
         /// without regard to daylight saving time transitions.</param>
         /// <returns>A newly constructed <see cref="TimeOfDay"/> object with an equivalent value.</returns>
         /// <exception cref="ArgumentOutOfRangeException">
