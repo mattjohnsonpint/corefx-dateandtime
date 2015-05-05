@@ -443,9 +443,70 @@ namespace System
         /// <param name="d1">The first <see cref="Date"/> in the inclusive range.</param>
         /// <param name="d2">The second <see cref="Date"/> in the inclusive range.</param>
         /// <returns>The number of days in the range.</returns>
+        /// <remarks>
+        /// Because a <see cref="Date"/> inherently represents a whole day, the range used by this method is
+        /// fully-inclusive.  This is unlike the <see cref="MonthsInRange"/> and <see cref="YearsInRange"/> methods.
+        /// <seealso cref="DaysUntil"/>
+        /// </remarks>
         public static int DaysInRange(Date d1, Date d2)
         {
             return Math.Abs(d2.DayNumber - d1.DayNumber) + 1;
+        }
+
+        /// <summary>
+        /// Returns the number of whole months in the range of the two dates specified.
+        /// The parameters <paramref name="d1"/> and <paramref name="d2"/> make up a half-open range of dates.
+        /// For example, there is one whole month between January 1st and February 1st.
+        /// <para>The order of the parameters does not matter; the result is always positive.</para>
+        /// <para>The calculation does not include partial months.</para>
+        /// </summary>
+        /// <param name="d1">The first <see cref="Date"/> in the range.</param>
+        /// <param name="d2">The second <see cref="Date"/> in the range.</param>
+        /// <returns>The number of whole months in the range.</returns>
+        /// <remarks>
+        /// Note that the calculation assumes the proleptic Gregorian calendar.
+        /// </remarks>
+        public static int MonthsInRange(Date d1, Date d2)
+        {
+            if (d1 == d2)
+                return 0;
+
+            Date min = d1 < d2 ? d1 : d2;
+            Date max = d1 > d2 ? d1 : d2;
+
+            int months = (max.Year * 12 + max.Month) - (min.Year * 12 + min.Month);
+            if (min > max.AddMonths(-months))
+                months--;
+
+            return months;
+        }
+
+        /// <summary>
+        /// Returns the number of whole years in the range of the two dates specified.
+        /// The parameters <paramref name="d1"/> and <paramref name="d2"/> make up a half-open range of dates.
+        /// For example, there is one whole year between <c>2000-01-01</c> and <c>2001-01-01</c>.
+        /// <para>The order of the parameters does not matter; the result is always positive.</para>
+        /// <para>The calculation does not include partial years.</para>
+        /// </summary>
+        /// <param name="d1">The first <see cref="Date"/> in the range.</param>
+        /// <param name="d2">The second <see cref="Date"/> in the range.</param>
+        /// <returns>The number of whole years in the range.</returns>
+        /// <remarks>
+        /// This method is useful for calculating a person's age, and similar anniversaries.
+        /// </remarks>
+        public static int YearsInRange(Date d1, Date d2)
+        {
+            if (d1 == d2)
+                return 0;
+
+            Date min = d1 < d2 ? d1 : d2;
+            Date max = d1 > d2 ? d1 : d2;
+
+            int years = max.Year - min.Year;
+            if (min > max.AddYears(-years))
+                years--;
+
+            return years;
         }
 
         /// <summary>
