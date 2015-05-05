@@ -571,6 +571,9 @@ namespace System
             return new TimeSpan(timeOfDay.Ticks);
         }
 
+        /// <summary>
+        /// Converts the time from a 12-hour-clock representation to a 24-hour-clock representation.
+        /// </summary>
         private static int Hours12To24(int hours12, Meridiem meridiem)
         {
             if (hours12 < 1 || hours12 > 12)
@@ -586,11 +589,23 @@ namespace System
                 : (hours12 == 12 ? 12 : hours12 + 12);
         }
 
+        /// <summary>
+        /// Constructs a <see cref="TimeOfDay"/> from a <see cref="TimeSpan"/> representing the time elapsed since
+        /// midnight, without regard to daylight saving time transitions.
+        /// </summary>
         private static TimeOfDay TimeOfDayFromTimeSpan(TimeSpan timeSpan)
         {
             return new TimeOfDay(timeSpan.Ticks);
         }
 
+        /// <summary>
+        /// Normalizes a format string that has standard or custom date/time formats,
+        /// such that the formatted output can only contain a time-of-day when applied.
+        /// </summary>
+        /// <exception cref="FormatException">
+        /// The format string contained a format specifier that is only applicable
+        /// when a date would be part of the formatted output.
+        /// </exception>
         private static string NormalizeTimeFormat(string format)
         {
             if (string.IsNullOrWhiteSpace(format))
@@ -632,16 +647,35 @@ namespace System
             return format;
         }
 
+        /// <summary>
+        /// Gets a <see cref="XmlQualifiedName"/> that represents the <c>xs:time</c> type of the
+        /// W3C XML Schema Definition (XSD) specification.
+        /// </summary>
+        /// <remarks>
+        /// This is required to support the <see cref="XmlSchemaProviderAttribute"/> applied to this structure.
+        /// </remarks>
         public static XmlQualifiedName GetSchema(object xs)
         {
             return new XmlQualifiedName("time", "http://www.w3.org/2001/XMLSchema");
         }
 
+        /// <summary>
+        /// Required by the <see cref="IXmlSerializable"/> interface.
+        /// </summary>
+        /// <returns><c>null</c></returns>
         XmlSchema IXmlSerializable.GetSchema()
         {
             return null;
         }
 
+        /// <summary>
+        /// Generates a <see cref="TimeOfDay"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">The <see cref="XmlReader"/> stream from which the object is deserialized.</param>
+        /// <remarks>
+        /// An <c>xs:time</c> uses the ISO-8601 extended time format, with up to seven decimal places of fractional
+        /// seconds.  The equivalent .NET Framework format string is <c>HH:mm:ss.FFFFFFF</c>.
+        /// </remarks>
         void IXmlSerializable.ReadXml(XmlReader reader)
         {
             var s = reader.NodeType == XmlNodeType.Element
@@ -657,6 +691,14 @@ namespace System
             this = t;
         }
 
+        /// <summary>
+        /// Converts a <see cref="TimeOfDay"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">The <see cref="XmlWriter"/> stream to which the object is serialized.</param>
+        /// <remarks>
+        /// An <c>xs:time</c> uses the ISO-8601 extended time format, with up to seven decimal places of fractional
+        /// seconds.  The equivalent .NET Framework format string is <c>HH:mm:ss.FFFFFFF</c>.
+        /// </remarks>
         void IXmlSerializable.WriteXml(XmlWriter writer)
         {
             writer.WriteString(ToString("HH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture));

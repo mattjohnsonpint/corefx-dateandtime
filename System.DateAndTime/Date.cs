@@ -863,21 +863,66 @@ namespace System
             return left._dayNumber <= right._dayNumber;
         }
 
+        /// <summary>
+        /// Implicitly casts a <see cref="DateTime"/> object to a <see cref="Date"/> by returning a new
+        /// <see cref="Date"/> object that has the equivalent year, month, and day components.  This is useful when
+        /// using APIs that express a calendar date as a <see cref="DateTime"/> and expect the consumer to ignore
+        /// the time portion of the value.  This operator enables these values to be assigned to a variable having
+        /// a <see cref="Date"/> type.
+        /// </summary>
+        /// <param name="dateTime">A <see cref="DateTime"/> value whose date portion will be used to construct a new
+        /// <see cref="Date"/> object, and whose time portion will be ignored.</param>
+        /// <returns>A newly constructed <see cref="Date"/> object with an equivalent date value.</returns>
+        /// <remarks>
+        /// Fundamentally, a date-only value and a date-time value are two different concepts.  In previous versions
+        /// of the .NET framework, the <see cref="Date"/> type did not exist, and thus several date-only values were
+        /// represented by using a <see cref="DateTime"/> with the time set to midnight (00:00:00).  For example, the
+        /// <see cref="DateTime.Today"/> and <see cref="DateTime.Date"/> properties exhibit this behavior.
+        /// This implicit cast operator allows those APIs to be naturally used with <see cref="Date"/>.
+        /// <para>
+        /// Also note that when evaluated as a full date-time, the input <paramref name="dateTime"/> might not actually
+        /// exist, since some time zones (ex: Brazil) will spring-forward directly from 23:59 to 01:00, skipping over
+        /// midnight.  Using a <see cref="Date"/> object avoids this particular edge case, and several others.
+        /// </para>
+        /// </remarks>
         public static implicit operator Date(DateTime dateTime)
         {
-            // This is useful such that existing items like DateTime.Today and DateTime.Date can be assigned to a Date type.
-
             return DateFromDateTime(dateTime);
         }
 
+        /// <summary>
+        /// Implicitly casts a <see cref="Date"/> object to a <see cref="DateTime"/> by returning a new
+        /// <see cref="DateTime"/> object that has the equivalent year, month, and day components, and has its time
+        /// set to midnight (00:00:00).  This is useful when using APIs that express a calendar date as a
+        /// <see cref="DateTime"/> and ignore the time portion of the value.  This operator enables <see cref="Date"/>
+        /// values to be passed to a method expecting a <see cref="DateTime"/>.
+        /// <para>
+        /// Use with caution, as midnight may not necessarily be valid in every time zone on every day of the year.
+        /// For example, when Brazil springs forward for daylight saving time, the clocks skip from 23:59:59 directly
+        /// to 01:00:00.
+        /// </para>
+        /// </summary>
+        /// <param name="date">A <see cref="Date"/> value whose date portion will be used to construct a new
+        /// <see cref="DateTime"/> object.</param>
+        /// <returns>
+        /// A newly constructed <see cref="DateTime"/> object with an equivalent date value, and the time set
+        /// to midnight (00:00:00).
+        /// </returns>
+        /// <remarks>
+        /// Fundamentally, a date-only value and a date-time value are two different concepts.  In previous versions
+        /// of the .NET framework, the <see cref="Date"/> type did not exist, and thus several date-only values were
+        /// represented by using a <see cref="DateTime"/> with the time set to midnight (00:00:00).  For example, the
+        /// <see cref="Calendar.GetYear"/> method expects a <see cref="DateTime"/>, even though it only uses the date
+        /// component. This implicit cast operator allows those APIs to be naturally used with <see cref="Date"/>.
+        /// </remarks>
         public static implicit operator DateTime(Date date)
         {
-            // This is useful such that Date types can be used in methods that typically expect a DateTime.
-            // For example, Calendar.GetYear(DateTime) and similar methods.
-
             return date.ToDateTimeAtMidnight();
         }
-
+        
+        /// <summary>
+        /// Constructs a <see cref="Date"/> object from the date component of a <see cref="DateTime"/>.
+        /// </summary>
         private static Date DateFromDateTime(DateTime dateTime)
         {
             return new Date((int)(dateTime.Date.Ticks / TimeSpan.TicksPerDay));
@@ -902,8 +947,10 @@ namespace System
             throw new ArgumentOutOfRangeException();
         }
 
-        // Returns a given date part of this DateTime. This method is used
-        // to compute the year, day-of-year, month, or day part.
+        /// <summary>
+        /// Returns a given date part of this DateTime. This method is used
+        /// to compute the year, day-of-year, month, or day part.
+        /// </summary>
         private int GetDatePart(int part)
         {
             // n = number of days since 1/1/0001
@@ -967,6 +1014,14 @@ namespace System
             return n - days[m - 1] + 1;
         }
 
+        /// <summary>
+        /// Normalizes a format string that has standard or custom date/time formats,
+        /// such that the formatted output can only contain a date when applied.
+        /// </summary>
+        /// <exception cref="FormatException">
+        /// The format string contained a format specifier that is only applicable
+        /// when a time-of-day would be part of the formatted output.
+        /// </exception>
         private static string NormalizeDateFormat(string format)
         {
             if (string.IsNullOrWhiteSpace(format))
@@ -1003,16 +1058,36 @@ namespace System
             return format;
         }
 
+        /// <summary>
+        /// Gets a <see cref="XmlQualifiedName"/> that represents the <c>xs:date</c> type of the
+        /// W3C XML Schema Definition (XSD) specification.
+        /// </summary>
+        /// <remarks>
+        /// This is required to support the <see cref="XmlSchemaProviderAttribute"/> applied to this structure.
+        /// </remarks>
         public static XmlQualifiedName GetSchema(object xs)
         {
             return new XmlQualifiedName("date", "http://www.w3.org/2001/XMLSchema");
         }
 
+        /// <summary>
+        /// Required by the <see cref="IXmlSerializable"/> interface.
+        /// </summary>
+        /// <returns><c>null</c></returns>
         XmlSchema IXmlSerializable.GetSchema()
         {
             return null;
         }
 
+        /// <summary>
+        /// Generates a <see cref="Date"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">The <see cref="XmlReader"/> stream from which the object is deserialized.</param>
+        /// <remarks>
+        /// An <c>xs:date</c> uses the ISO-8601 extended date format. The equivalent .NET Framework format string
+        /// is <c>yyyy-MM-dd</c>.  This method always uses the proleptic Gregorian calendar of the
+        /// <see cref="CultureInfo.InvariantCulture"/>, regardless of the current culture setting.
+        /// </remarks>
         void IXmlSerializable.ReadXml(XmlReader reader)
         {
             var s = reader.NodeType == XmlNodeType.Element
@@ -1028,6 +1103,15 @@ namespace System
             this = d;
         }
 
+        /// <summary>
+        /// Converts a <see cref="Date"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">The <see cref="XmlWriter"/> stream to which the object is serialized.</param>
+        /// <remarks>
+        /// An <c>xs:date</c> uses the ISO-8601 extended date format. The equivalent .NET Framework format string
+        /// is <c>yyyy-MM-dd</c>.  This method always uses the proleptic Gregorian calendar of the
+        /// <see cref="CultureInfo.InvariantCulture"/>, regardless of the current culture setting.
+        /// </remarks>
         void IXmlSerializable.WriteXml(XmlWriter writer)
         {
             writer.WriteString(ToIsoString());
