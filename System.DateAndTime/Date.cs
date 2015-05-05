@@ -420,6 +420,35 @@ namespace System
         }
 
         /// <summary>
+        /// Returns the number of days remaining from this date to the <paramref name="date"/> specified.
+        /// If the <paramref name="date"/> has already passed, the result will be negative.
+        /// </summary>
+        /// <param name="date">The target <see cref="Date"/> value.</param>
+        /// <returns>The integer number of days until the date specified.</returns>
+        /// <remarks>
+        /// Unlike the <see cref="DaysInRange"/> method, this operation uses an exclusive upper bound.
+        /// For example, if the current instance represents January 1st, there is one day until January 2nd.
+        /// </remarks>
+        public int DaysUntil(Date date)
+        {
+            return date.DayNumber - _dayNumber;
+        }
+
+        /// <summary>
+        /// Returns the number of days in the range of the two dates specified.  The parameters <paramref name="d1"/>
+        /// and <paramref name="d2"/> make up a fully-inclusive range of dates.  For example, there are
+        /// two days between January 1st and January 2nd.
+        /// <para>The order of the parameters does not matter; the result is always positive.</para>
+        /// </summary>
+        /// <param name="d1">The first <see cref="Date"/> in the inclusive range.</param>
+        /// <param name="d2">The second <see cref="Date"/> in the inclusive range.</param>
+        /// <returns>The number of days in the range.</returns>
+        public static int DaysInRange(Date d1, Date d2)
+        {
+            return Math.Abs(d2.DayNumber - d1.DayNumber) + 1;
+        }
+
+        /// <summary>
         /// Returns a value indicating whether the value of this instance is equal to the value of the specified
         /// <see cref="Date"/> instance.
         /// </summary>
