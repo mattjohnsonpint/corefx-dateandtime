@@ -29,13 +29,13 @@ namespace System
 
         // Number of days in a non-leap year
         private const int DaysPerYear = 365;
-        
+
         // Number of days in 4 years
         private const int DaysPer4Years = DaysPerYear * 4 + 1;       // 1461
-        
+
         // Number of days in 100 years
         private const int DaysPer100Years = DaysPer4Years * 25 - 1;  // 36524
-        
+
         // Number of days in 400 years
         private const int DaysPer400Years = DaysPer100Years * 4 + 1; // 146097
 
@@ -1009,7 +1009,7 @@ namespace System
         {
             return date.ToDateTimeAtMidnight();
         }
-        
+
         /// <summary>
         /// Constructs a <see cref="Date"/> object from the date component of a <see cref="DateTime"/>.
         /// </summary>
