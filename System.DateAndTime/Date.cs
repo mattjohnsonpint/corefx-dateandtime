@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -11,6 +12,7 @@ namespace System
     /// Represents a whole date, having a year, month and day component.
     /// All values are in the proleptic Gregorian (ISO 8601) calendar system unless otherwise specified.
     /// </summary>
+    [DebuggerDisplay("{ToString()}")]
     [XmlSchemaProvider("GetSchema")]
     public struct Date : IEquatable<Date>, IComparable<Date>, IComparable, IFormattable, IXmlSerializable
     {

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml;
@@ -11,6 +12,7 @@ namespace System
     /// Represents a time of day, as would be read from a clock, within the range 00:00:00 to 23:59:59.9999999
     /// Has properties for working with both 12-hour and 24-hour time values.
     /// </summary>
+    [DebuggerDisplay("{ToString()}")]
     [XmlSchemaProvider("GetSchema")]
     public struct TimeOfDay : IEquatable<TimeOfDay>, IFormattable, IXmlSerializable
     {
