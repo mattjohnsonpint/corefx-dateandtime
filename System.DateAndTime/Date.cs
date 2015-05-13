@@ -776,7 +776,7 @@ namespace System
         public static Date Parse(string s, IFormatProvider provider, DateTimeStyles styles)
         {
             if (((int)styles) >= 8)
-                throw new ArgumentOutOfRangeException("styles");
+                throw new ArgumentException("styles");
             Contract.EndContractBlock();
 
             DateTime dt = DateTime.Parse(s, provider, styles);
@@ -794,7 +794,7 @@ namespace System
         public static Date ParseExact(string s, string format, IFormatProvider provider, DateTimeStyles styles)
         {
             if (((int)styles) >= 8)
-                throw new ArgumentOutOfRangeException("styles");
+                throw new ArgumentException("styles");
             Contract.EndContractBlock();
 
             format = NormalizeDateFormat(format);
@@ -806,7 +806,7 @@ namespace System
         public static Date ParseExact(string s, string[] formats, IFormatProvider provider, DateTimeStyles styles)
         {
             if (((int)styles) >= 8)
-                throw new ArgumentOutOfRangeException("styles");
+                throw new ArgumentException("styles");
             Contract.EndContractBlock();
 
             for (int i = 0; i < formats.Length; i++)
@@ -834,7 +834,7 @@ namespace System
         public static bool TryParse(string s, IFormatProvider provider, DateTimeStyles styles, out Date date)
         {
             if (((int)styles) >= 8)
-                throw new ArgumentOutOfRangeException("styles");
+                throw new ArgumentException("styles");
             Contract.EndContractBlock();
 
             DateTime dt;
@@ -851,7 +851,7 @@ namespace System
         public static bool TryParseExact(string s, string format, IFormatProvider provider, DateTimeStyles styles, out Date date)
         {
             if (((int)styles) >= 8)
-                throw new ArgumentOutOfRangeException("styles");
+                throw new ArgumentException("styles");
             Contract.EndContractBlock();
 
             format = NormalizeDateFormat(format);
@@ -870,7 +870,7 @@ namespace System
         public static bool TryParseExact(string s, string[] formats, IFormatProvider provider, DateTimeStyles styles, out Date date)
         {
             if (((int)styles) >= 8)
-                throw new ArgumentOutOfRangeException("styles");
+                throw new ArgumentException("styles");
             Contract.EndContractBlock();
 
             for (int i = 0; i < formats.Length; i++)
