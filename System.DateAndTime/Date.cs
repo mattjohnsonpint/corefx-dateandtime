@@ -761,18 +761,79 @@ namespace System
             return ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
         }
 
+        /// <summary>
+        /// Converts the string representation of a date to its <see cref="Date"/> equivalent.
+        /// </summary>
+        /// <param name="s">A string that contains a date to convert.</param>
+        /// <returns>An object that is equivalent to the date contained in <paramref name="s"/>.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="s"/> is <c>null</c>.
+        /// </exception>
+        /// <exception cref="FormatException">
+        /// <paramref name="s"/> does not contain a valid string representation of a date.
+        /// </exception>
         public static Date Parse(string s)
         {
             DateTime dt = DateTime.Parse(s);
             return DateFromDateTime(dt);
         }
 
+        /// <summary>
+        /// Converts the string representation of a date to its <see cref="Date"/> equivalent
+        /// by using culture-specific format information.
+        /// </summary>
+        /// <param name="s">A string that contains a date to convert.</param>
+        /// <param name="provider">
+        /// An object that supplies culture-specific formatting information about <paramref name="s"/>.
+        /// </param>
+        /// <returns>
+        /// An object that is equivalent to the date contained in <paramref name="s"/>,
+        /// as specified by <paramref name="provider"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="s"/> is <c>null</c>.
+        /// </exception>
+        /// <exception cref="FormatException">
+        /// <paramref name="s"/> does not contain a valid string representation of a date.
+        /// </exception>
         public static Date Parse(string s, IFormatProvider provider)
         {
             DateTime dt = DateTime.Parse(s, provider);
             return DateFromDateTime(dt);
         }
 
+        /// <summary>
+        /// Converts the string representation of a date to its <see cref="Date"/> equivalent
+        /// by using culture-specific format information and formatting style.
+        /// </summary>
+        /// <param name="s">A string that contains a date to convert.</param>
+        /// <param name="provider">
+        /// An object that supplies culture-specific formatting information about <paramref name="s"/>.
+        /// </param>
+        /// <param name="styles">
+        /// A bitwise combination of the enumeration values that indicates the style elements that
+        /// can be present in <paramref name="s"/> for the parse operation to succeed.
+        /// Note that only styles related to whitespace handling are applicable on a <see cref="Date"/>.
+        /// A typical value to specify is <see cref="DateTimeStyles.None"/>.
+        /// </param>
+        /// <returns>
+        /// An object that is equivalent to the date contained in <paramref name="s"/>,
+        /// as specified by <paramref name="provider"/> and <paramref name="styles"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="s"/> is <c>null</c>.
+        /// </exception>
+        /// <exception cref="FormatException">
+        /// <paramref name="s"/> does not contain a valid string representation of a date.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="styles"/> styles contains an invalid <see cref="DateTimeStyles"/> values.
+        /// The only styles that are valid for a <see cref="Date"/> are:
+        /// <see cref="DateTimeStyles.None"/>, <see cref="DateTimeStyles.AllowLeadingWhite"/>,
+        /// <see cref="DateTimeStyles.AllowTrailingWhite"/>, <see cref="DateTimeStyles.AllowInnerWhite"/>, and
+        /// <see cref="DateTimeStyles.AllowWhiteSpaces"/>.  The other styles are invalid because they only apply
+        /// when both a date and time are being parsed together.
+        /// </exception>
         public static Date Parse(string s, IFormatProvider provider, DateTimeStyles styles)
         {
             if (((int)styles) >= 8)
@@ -783,6 +844,30 @@ namespace System
             return DateFromDateTime(dt);
         }
 
+        /// <summary>
+        /// Converts the specified string representation of a date to its <see cref="Date"/> equivalent
+        /// using the specified format and culture-specific format information.
+        /// The format of the string representation must match the specified format exactly or an exception is thrown.
+        /// </summary>
+        /// <param name="s">A string that contains a date to convert.</param>
+        /// <param name="format">A format specifier that defines the required format of <paramref name="s"/>.</param>
+        /// <param name="provider">
+        /// An object that supplies culture-specific formatting information about <paramref name="s"/>.
+        /// </param>
+        /// <returns>
+        /// An object that is equivalent to the date contained in <paramref name="s"/>,
+        /// as specified by <paramref name="format"/> and <paramref name="provider"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="s"/> is <c>null</c>.
+        /// </exception>
+        /// <exception cref="FormatException">
+        /// <paramref name="s"/> or <paramref name="format"/> is an empty string.
+        /// <para>-or-</para>
+        /// <paramref name="s"/> does not contain a date that corresponds to the pattern specified in <paramref name="format"/>.
+        /// <para>-or-</para>
+        /// <paramref name="format"/> contains a format pattern that is not applicable to a <see cref="Date"/>.
+        /// </exception>
         public static Date ParseExact(string s, string format, IFormatProvider provider)
         {
             format = NormalizeDateFormat(format);
@@ -791,6 +876,44 @@ namespace System
             return DateFromDateTime(dt);
         }
 
+        /// <summary>
+        /// Converts the specified string representation of a date to its <see cref="Date"/> equivalent
+        /// using the specified format, culture-specific format information, and style.
+        /// The format of the string representation must match the specified format exactly or an exception is thrown.
+        /// </summary>
+        /// <param name="s">A string that contains a date to convert.</param>
+        /// <param name="format">A format specifier that defines the required format of <paramref name="s"/>.</param>
+        /// <param name="provider">
+        /// An object that supplies culture-specific formatting information about <paramref name="s"/>.
+        /// </param>
+        /// <param name="styles">
+        /// A bitwise combination of the enumeration values that indicates the style elements that
+        /// can be present in <paramref name="s"/> for the parse operation to succeed.
+        /// Note that only styles related to whitespace handling are applicable on a <see cref="Date"/>.
+        /// A typical value to specify is <see cref="DateTimeStyles.None"/>.
+        /// </param>
+        /// <returns>
+        /// An object that is equivalent to the date contained in <paramref name="s"/>,
+        /// as specified by <paramref name="format"/>, <paramref name="provider"/> and <paramref name="styles"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="s"/> is <c>null</c>.
+        /// </exception>
+        /// <exception cref="FormatException">
+        /// <paramref name="s"/> or <paramref name="format"/> is an empty string.
+        /// <para>-or-</para>
+        /// <paramref name="s"/> does not contain a date that corresponds to the pattern specified in <paramref name="format"/>.
+        /// <para>-or-</para>
+        /// <paramref name="format"/> contains a format pattern that is not applicable to a <see cref="Date"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="styles"/> styles contains an invalid <see cref="DateTimeStyles"/> values.
+        /// The only styles that are valid for a <see cref="Date"/> are:
+        /// <see cref="DateTimeStyles.None"/>, <see cref="DateTimeStyles.AllowLeadingWhite"/>,
+        /// <see cref="DateTimeStyles.AllowTrailingWhite"/>, <see cref="DateTimeStyles.AllowInnerWhite"/>, and
+        /// <see cref="DateTimeStyles.AllowWhiteSpaces"/>.  The other styles are invalid because they only apply
+        /// when both a date and time are being parsed together.
+        /// </exception>
         public static Date ParseExact(string s, string format, IFormatProvider provider, DateTimeStyles styles)
         {
             if (((int)styles) >= 8)
@@ -803,6 +926,47 @@ namespace System
             return DateFromDateTime(dt);
         }
 
+        /// <summary>
+        /// Converts the specified string representation of a date to its <see cref="Date"/> equivalent
+        /// using the specified array of formats, culture-specific format information, and style.
+        /// The format of the string representation must match at least one of the specified formats
+        /// exactly or an exception is thrown.
+        /// </summary>
+        /// <param name="s">A string that contains a date to convert.</param>
+        /// <param name="formats">An array of allowable formats of <paramref name="s"/>.</param>
+        /// <param name="provider">
+        /// An object that supplies culture-specific formatting information about <paramref name="s"/>.
+        /// </param>
+        /// <param name="styles">
+        /// A bitwise combination of the enumeration values that indicates the style elements that
+        /// can be present in <paramref name="s"/> for the parse operation to succeed.
+        /// Note that only styles related to whitespace handling are applicable on a <see cref="Date"/>.
+        /// A typical value to specify is <see cref="DateTimeStyles.None"/>.
+        /// </param>
+        /// <returns>
+        /// An object that is equivalent to the date contained in <paramref name="s"/>,
+        /// as specified by <paramref name="formats"/>, <paramref name="provider"/> and <paramref name="styles"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="s"/> is <c>null</c>.
+        /// </exception>
+        /// <exception cref="FormatException">
+        /// <paramref name="s"/> is an empty string.
+        /// <para>-or-</para>
+        /// An element of <paramref name="formats"/> is an empty string.
+        /// <para>-or-</para>
+        /// <paramref name="s"/> does not contain a date that corresponds to any element of <paramref name="formats"/>.
+        /// <para>-or-</para>
+        /// An element of <paramref name="formats"/> contains a format pattern that is not applicable to a <see cref="Date"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="styles"/> styles contains an invalid <see cref="DateTimeStyles"/> values.
+        /// The only styles that are valid for a <see cref="Date"/> are:
+        /// <see cref="DateTimeStyles.None"/>, <see cref="DateTimeStyles.AllowLeadingWhite"/>,
+        /// <see cref="DateTimeStyles.AllowTrailingWhite"/>, <see cref="DateTimeStyles.AllowInnerWhite"/>, and
+        /// <see cref="DateTimeStyles.AllowWhiteSpaces"/>.  The other styles are invalid because they only apply
+        /// when both a date and time are being parsed together.
+        /// </exception>
         public static Date ParseExact(string s, string[] formats, IFormatProvider provider, DateTimeStyles styles)
         {
             if (((int)styles) >= 8)
@@ -818,6 +982,12 @@ namespace System
             return DateFromDateTime(dt);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
         public static bool TryParse(string s, out Date date)
         {
             DateTime dt;
@@ -831,6 +1001,14 @@ namespace System
             return true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="provider"></param>
+        /// <param name="styles"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
         public static bool TryParse(string s, IFormatProvider provider, DateTimeStyles styles, out Date date)
         {
             if (((int)styles) >= 8)
@@ -848,6 +1026,15 @@ namespace System
             return true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="format"></param>
+        /// <param name="provider"></param>
+        /// <param name="styles"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
         public static bool TryParseExact(string s, string format, IFormatProvider provider, DateTimeStyles styles, out Date date)
         {
             if (((int)styles) >= 8)
@@ -867,6 +1054,15 @@ namespace System
             return true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="s"></param>
+        /// <param name="formats"></param>
+        /// <param name="provider"></param>
+        /// <param name="styles"></param>
+        /// <param name="date"></param>
+        /// <returns></returns>
         public static bool TryParseExact(string s, string[] formats, IFormatProvider provider, DateTimeStyles styles, out Date date)
         {
             if (((int)styles) >= 8)
