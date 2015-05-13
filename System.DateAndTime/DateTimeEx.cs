@@ -36,8 +36,8 @@
         {
             // TODO: Propose placing this method directly in the System.DateTime struct
             
-            DateTimeOffset utcNow = DateTimeOffset.UtcNow;
-            return TimeZoneInfo.ConvertTime(utcNow, timeZoneInfo).DateTime;
+            DateTime utcNow = DateTime.UtcNow;
+            return TimeZoneInfo.ConvertTime(utcNow, timeZoneInfo);
         }
     }
 }
