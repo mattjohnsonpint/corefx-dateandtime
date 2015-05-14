@@ -525,31 +525,6 @@ namespace System
         }
 
         /// <summary>
-        /// Returns a value indicating whether the value of this instance is equal to the value of the specified
-        /// <see cref="Date"/> instance.
-        /// </summary>
-        /// <param name="value">The other date object to compare against this instance.</param>
-        /// <returns>
-        /// <c>true</c> if the <paramref name="value"/> parameter equals the value of this instance;
-        /// otherwise, <c>false</c>.
-        /// </returns>
-        public bool Equals(Date value)
-        {
-            return _dayNumber == value._dayNumber;
-        }
-
-        /// <summary>
-        /// Returns a value indicating whether two <see cref="Date"/> instances have the same date value.
-        /// </summary>
-        /// <param name="d1">The first object to compare.</param>
-        /// <param name="d2">The second object to compare.</param>
-        /// <returns><c>true</c> if the two values are equal; otherwise, <c>false</c>.</returns>
-        public static bool Equals(Date d1, Date d2)
-        {
-            return d1.Equals(d2);
-        }
-
-        /// <summary>
         /// Compares two instances of <see cref="Date"/> and returns an integer that indicates whether the first
         /// instance is earlier than, the same as, or later than the second instance.
         /// </summary>
@@ -607,6 +582,67 @@ namespace System
         public int CompareTo(Date value)
         {
             return Compare(this, value);
+        }
+
+        /// <summary>
+        /// Compares the value of this instance to a specified object that contains a <see cref="Date"/> value and
+        /// returns an integer that indicates whether this instance is earlier than, the same as, or later than the
+        /// specified <see cref="Date"/> value.
+        /// </summary>
+        /// <param name="value">The object to compare to the current instance.</param>
+        /// <returns>
+        /// A signed number indicating the relative values of this instance and the <paramref name="value"/> parameter.
+        /// <list type="table">
+        /// <listheader><term>Value</term><term>Description</term></listheader>
+        /// <item>
+        ///   <term>Less than zero</term>
+        ///   <term>This instance is earlier than <paramref name="value"/>.</term>
+        /// </item>
+        /// <item>
+        ///   <term>Zero</term>
+        ///   <term>This instance is earlier than <paramref name="value"/>.</term>
+        /// </item>
+        /// <item>
+        ///   <term>Greater than zero</term>
+        ///   <term>
+        ///     This instance is later than <paramref name="value"/>,
+        ///     or <paramref name="value"/> is <c>null</c>.
+        ///   </term>
+        /// </item>
+        /// </list>
+        /// </returns>
+        public int CompareTo(object value)
+        {
+            if (value == null) return 1;
+            if (!(value is Date))
+                throw new ArgumentException();
+
+            return Compare(this, (Date)value);
+        }
+
+        /// <summary>
+        /// Returns a value indicating whether two <see cref="Date"/> instances have the same date value.
+        /// </summary>
+        /// <param name="d1">The first object to compare.</param>
+        /// <param name="d2">The second object to compare.</param>
+        /// <returns><c>true</c> if the two values are equal; otherwise, <c>false</c>.</returns>
+        public static bool Equals(Date d1, Date d2)
+        {
+            return d1.Equals(d2);
+        }
+
+        /// <summary>
+        /// Returns a value indicating whether the value of this instance is equal to the value of the specified
+        /// <see cref="Date"/> instance.
+        /// </summary>
+        /// <param name="value">The other date object to compare against this instance.</param>
+        /// <returns>
+        /// <c>true</c> if the <paramref name="value"/> parameter equals the value of this instance;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        public bool Equals(Date value)
+        {
+            return _dayNumber == value._dayNumber;
         }
 
         /// <summary>
@@ -1185,42 +1221,6 @@ namespace System
 
             date = DateFromDateTime(dt);
             return true;
-        }
-
-        /// <summary>
-        /// Compares the value of this instance to a specified object that contains a <see cref="Date"/> value and
-        /// returns an integer that indicates whether this instance is earlier than, the same as, or later than the
-        /// specified <see cref="Date"/> value.
-        /// </summary>
-        /// <param name="value">The object to compare to the current instance.</param>
-        /// <returns>
-        /// A signed number indicating the relative values of this instance and the <paramref name="value"/> parameter.
-        /// <list type="table">
-        /// <listheader><term>Value</term><term>Description</term></listheader>
-        /// <item>
-        ///   <term>Less than zero</term>
-        ///   <term>This instance is earlier than <paramref name="value"/>.</term>
-        /// </item>
-        /// <item>
-        ///   <term>Zero</term>
-        ///   <term>This instance is earlier than <paramref name="value"/>.</term>
-        /// </item>
-        /// <item>
-        ///   <term>Greater than zero</term>
-        ///   <term>
-        ///     This instance is later than <paramref name="value"/>,
-        ///     or <paramref name="value"/> is <c>null</c>.
-        ///   </term>
-        /// </item>
-        /// </list>
-        /// </returns>
-        public int CompareTo(object value)
-        {
-            if (value == null) return 1;
-            if (!(value is Date))
-                throw new ArgumentException();
-
-            return Compare(this, (Date)value);
         }
 
         /// <summary>

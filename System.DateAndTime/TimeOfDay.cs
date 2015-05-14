@@ -476,14 +476,14 @@ namespace System
             return timeOfDay.Subtract(timeSpan);
         }
 
-        public bool Equals(TimeOfDay value)
-        {
-            return _ticks == value._ticks;
-        }
-
         public static bool Equals(TimeOfDay t1, TimeOfDay t2)
         {
             return t1.Equals(t2);
+        }
+
+        public bool Equals(TimeOfDay value)
+        {
+            return _ticks == value._ticks;
         }
 
         public override bool Equals(object value)
