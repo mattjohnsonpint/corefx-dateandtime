@@ -465,7 +465,8 @@ namespace System
         /// </remarks>
         public static int DaysInRange(Date d1, Date d2)
         {
-            return Math.Abs(d2.DayNumber - d1.DayNumber) + 1;
+            var delta = d2.DayNumber - d1.DayNumber;
+            return (delta >= 0 ? delta : -delta) + 1;
         }
 
         /// <summary>
