@@ -25,13 +25,30 @@ namespace System
         private const long MinTicks = 0L;
         private const long MaxTicks = 863999999999L;
 
+        /// <summary>
+        /// Represents the smallest possible value of <see cref="TimeOfDay"/>. This field is read-only.
+        /// </summary>
         public static readonly TimeOfDay MinValue = new TimeOfDay(MinTicks);
+        
+        /// <summary>
+        /// Represents the largest possible value of <see cref="TimeOfDay"/>. This field is read-only.
+        /// </summary>
         public static readonly TimeOfDay MaxValue = new TimeOfDay(MaxTicks);
 
         // Number of ticks (100ns units) since midnight at the beginning of a standard 24-hour day.
         // NOTE: This is the only field in this structure.
         private readonly long _ticks;
 
+        /// <summary>
+        /// Initializes a new instance of a <see cref="TimeOfDay"/> structure to a specified number of ticks.
+        /// </summary>
+        /// <param name="ticks">
+        /// A time expressed in the number of 100-nanosecond intervals that have elapsed since midnight (00:00:00),
+        /// without regard to daylight saving time transitions.
+        /// </param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="ticks"/> is out of the range supported by the <see cref="TimeOfDay"/> object.
+        /// </exception>
         public TimeOfDay(long ticks)
         {
             if (ticks < MinTicks || ticks > MaxTicks)
