@@ -308,8 +308,8 @@ namespace System
         }
 
         /// <summary>
-        /// Gets a <see cref="Date"/> object that is set to the current date on this computer,
-        /// expressed in the computer's local time zone.
+        /// Gets a <see cref="Date"/> object that is set to the current date,
+        /// expressed in this computer's local time zone.
         /// </summary>
         /// <value>An object whose value is the current local date.</value>
         public static Date Today
@@ -322,7 +322,7 @@ namespace System
         }
 
         /// <summary>
-        /// Gets a <see cref="Date"/> object that is set to the current date on this computer,
+        /// Gets a <see cref="Date"/> object that is set to the current date,
         /// expressed as Coordinated Universal Time (UTC).
         /// </summary>
         /// <value>An object whose value is the current UTC date.</value>
