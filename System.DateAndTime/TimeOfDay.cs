@@ -226,6 +226,10 @@ namespace System
                      millisecond * TicksPerMillisecond;
         }
 
+        /// <summary>
+        /// Gets the hour component of the time represented by this instance, using the hours of a 24-hour clock.
+        /// </summary>
+        /// <value>The hour component, expressed as a value between 0 and 23.</value>
         public int Hour
         {
             get
@@ -237,6 +241,10 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// Gets the hour component of the time represented by this instance, using the hours of a 12-hour clock.
+        /// </summary>
+        /// <value>The hour component, expressed as a value between 1 and 12.</value>
         public int HourOf12HourClock
         {
             get
@@ -249,6 +257,17 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// Gets the meridiem (AM or PM) of the time represented by this instance.
+        /// The meridiem can be used inconjunction with the <see cref="HourOf12HourClock"/> property
+        /// to represent this instance's time on a 12-hour clock.
+        /// </summary>
+        /// <value>An enumerated constant that indicates the meridiem of this <see cref="TimeOfDay"/> value.</value>
+        /// <remarks>
+        /// Though commonly used in English, these abbreviations derive from Latin.
+        /// AM is an abbreviation for "Ante Meridiem", meaning "before mid-day".
+        /// PM is an abbreviation for "Post Meridiem", meaning "after mid-day".
+        /// </remarks>
         public Meridiem Meridiem
         {
             get
@@ -257,6 +276,10 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// Gets the minute component of the time represented by this instance.
+        /// </summary>
+        /// <value>The minute component, expressed as a value between 0 and 59.</value>
         public int Minute
         {
             get
@@ -268,6 +291,10 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// Gets the second component of the time represented by this instance.
+        /// </summary>
+        /// <value>The second component, expressed as a value between 0 and 59.</value>
         public int Second
         {
             get
@@ -279,6 +306,10 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// Gets the millisecond component of the time represented by this instance.
+        /// </summary>
+        /// <value>The millisecond component, expressed as a value between 0 and 999.</value>
         public int Millisecond
         {
             get
@@ -290,6 +321,17 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// Gets the number of ticks that represent the time of this instance.
+        /// </summary>
+        /// <value>
+        /// The number of ticks that represent the time of this instance.
+        /// The value is between <c>TimeOfDay.MinValue.Ticks</c> and <c>TimeOfDay.MaxValue.Ticks</c>.
+        /// </value>
+        /// <remarks>
+        /// Each tick is a 100-nanosecond interval.  Collectively, they represent the time that has
+        /// elapsed since midnight (00:00:00), without regard to daylight saving time transitions.
+        /// </remarks>
         public long Ticks
         {
             get
@@ -319,6 +361,11 @@ namespace System
             return TimeOfDayFromTimeSpan(localNow.TimeOfDay);
         }
 
+        /// <summary>
+        /// Gets a <see cref="TimeOfDay"/> object that is set to the current time,
+        /// expressed in this computer's local time zone.
+        /// </summary>
+        /// <value>An object whose value is the current local time.</value>
         public static TimeOfDay Now
         {
             get
@@ -328,6 +375,11 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// Gets a <see cref="TimeOfDay"/> object that is set to the current time,
+        /// expressed as Coordinated Universal Time (UTC).
+        /// </summary>
+        /// <value>An object whose value is the current UTC time.</value>
         public static TimeOfDay UtcNow
         {
             get
