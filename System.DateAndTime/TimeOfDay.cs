@@ -356,7 +356,7 @@ namespace System
         /// </remarks>
         public DateTime On(Date date)
         {
-            long ticks = date.DayNumber * TimeSpan.TicksPerDay + _ticks;
+            long ticks = date.DayNumber * TicksPerDay + _ticks;
             return new DateTime(ticks);
         }
 
@@ -755,7 +755,7 @@ namespace System
         public static implicit operator TimeOfDay(TimeSpan timeSpan)
         {
             long ticks = timeSpan.Ticks;
-            if (ticks < 0 || ticks >= TimeSpan.TicksPerDay)
+            if (ticks < 0 || ticks >= TicksPerDay)
                 throw new ArgumentOutOfRangeException("timeSpan");
             Contract.EndContractBlock();
 
