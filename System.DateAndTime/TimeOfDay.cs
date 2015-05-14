@@ -14,7 +14,7 @@ namespace System
     /// </summary>
     [DebuggerDisplay("{ToString()}")]
     [XmlSchemaProvider("GetSchema")]
-    public struct TimeOfDay : IEquatable<TimeOfDay>, IFormattable, IXmlSerializable
+    public struct TimeOfDay : IEquatable<TimeOfDay>, IComparable<TimeOfDay>, IComparable, IFormattable, IXmlSerializable
     {
         private const long TicksPerMillisecond = 10000;
         private const long TicksPerSecond = TicksPerMillisecond * 1000;   // 10,000,000
@@ -476,6 +476,27 @@ namespace System
             return timeOfDay.Subtract(timeSpan);
         }
 
+        public static int Compare(TimeOfDay t1, TimeOfDay t2)
+        {
+            if (t1._ticks > t2._ticks) return 1;
+            if (t1._ticks < t2._ticks) return -1;
+            return 0;
+        }
+
+        public int CompareTo(TimeOfDay value)
+        {
+            return Compare(this, value);
+        }
+
+        public int CompareTo(object value)
+        {
+            if (value == null) return 1;
+            if (!(value is TimeOfDay))
+                throw new ArgumentException();
+
+            return Compare(this, (TimeOfDay)value);
+        }
+
         public static bool Equals(TimeOfDay t1, TimeOfDay t2)
         {
             return t1.Equals(t2);
@@ -685,6 +706,26 @@ namespace System
         public static bool operator !=(TimeOfDay left, TimeOfDay right)
         {
             return !left.Equals(right);
+        }
+
+        public static bool operator >(TimeOfDay t1, TimeOfDay t2)
+        {
+            return t1._ticks > t2._ticks;
+        }
+
+        public static bool operator >=(TimeOfDay t1, TimeOfDay t2)
+        {
+            return t1._ticks >= t2._ticks;
+        }
+
+        public static bool operator <(TimeOfDay t1, TimeOfDay t2)
+        {
+            return t1._ticks < t2._ticks;
+        }
+
+        public static bool operator <=(TimeOfDay t1, TimeOfDay t2)
+        {
+            return t1._ticks <= t2._ticks;
         }
 
         /// <summary>
