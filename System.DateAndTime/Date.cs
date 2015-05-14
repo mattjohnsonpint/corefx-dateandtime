@@ -1210,34 +1210,84 @@ namespace System
             return Compare(this, (Date)value);
         }
 
-        public static bool operator ==(Date left, Date right)
+        /// <summary>
+        /// Determines whether two specified instances of <see cref="Date"/> are equal.
+        /// </summary>
+        /// <param name="d1">The first object to compare.</param>
+        /// <param name="d2">The second object to compare.</param>
+        /// <returns>
+        /// <c>true</c> if <paramref name="d1"/> and <paramref name="d2"/> represent the same date;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        public static bool operator ==(Date d1, Date d2)
         {
-            return left.Equals(right);
+            return d1.Equals(d2);
         }
 
-        public static bool operator !=(Date left, Date right)
+        /// <summary>
+        /// Determines whether two specified instances of <see cref="Date"/> are not equal.
+        /// </summary>
+        /// <param name="d1">The first object to compare.</param>
+        /// <param name="d2">The second object to compare.</param>
+        /// <returns>
+        /// <c>true</c> if <paramref name="d1"/> and <paramref name="d2"/> do not represent the same date;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        public static bool operator !=(Date d1, Date d2)
         {
-            return !left.Equals(right);
+            return !d1.Equals(d2);
         }
 
-        public static bool operator >(Date left, Date right)
+        /// <summary>
+        /// Determines whether one specified <see cref="Date"/> is later than another specified <see cref="Date"/>.
+        /// </summary>
+        /// <param name="d1">The first object to compare.</param>
+        /// <param name="d2">The second object to compare.</param>
+        /// <returns>
+        /// <c>true</c> if <paramref name="d1"/> is later than <paramref name="d2"/>; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool operator >(Date d1, Date d2)
         {
-            return left._dayNumber > right._dayNumber;
+            return d1._dayNumber > d2._dayNumber;
         }
 
-        public static bool operator >=(Date left, Date right)
+        /// <summary>
+        /// Determines whether one specified <see cref="Date"/> is equal to or later than another specified <see cref="Date"/>.
+        /// </summary>
+        /// <param name="d1">The first object to compare.</param>
+        /// <param name="d2">The second object to compare.</param>
+        /// <returns>
+        /// <c>true</c> if <paramref name="d1"/> is equal to or later than <paramref name="d2"/>; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool operator >=(Date d1, Date d2)
         {
-            return left._dayNumber >= right._dayNumber;
+            return d1._dayNumber >= d2._dayNumber;
         }
 
-        public static bool operator <(Date left, Date right)
+        /// <summary>
+        /// Determines whether one specified <see cref="Date"/> is earlier than another specified <see cref="Date"/>.
+        /// </summary>
+        /// <param name="d1">The first object to compare.</param>
+        /// <param name="d2">The second object to compare.</param>
+        /// <returns>
+        /// <c>true</c> if <paramref name="d1"/> is earlier than <paramref name="d2"/>; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool operator <(Date d1, Date d2)
         {
-            return left._dayNumber < right._dayNumber;
+            return d1._dayNumber < d2._dayNumber;
         }
 
-        public static bool operator <=(Date left, Date right)
+        /// <summary>
+        /// Determines whether one specified <see cref="Date"/> is equal to or earlier than another specified <see cref="Date"/>.
+        /// </summary>
+        /// <param name="d1">The first object to compare.</param>
+        /// <param name="d2">The second object to compare.</param>
+        /// <returns>
+        /// <c>true</c> if <paramref name="d1"/> is equal to or earlier than <paramref name="d2"/>; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool operator <=(Date d1, Date d2)
         {
-            return left._dayNumber <= right._dayNumber;
+            return d1._dayNumber <= d2._dayNumber;
         }
 
         /// <summary>
