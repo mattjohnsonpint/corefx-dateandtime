@@ -228,7 +228,7 @@ namespace System
         /// </summary>
         /// <remarks>
         /// Since neither <see cref="Date"/> or <see cref="TimeOfDay"/> keep track of <see cref="DateTimeKind"/>,
-        /// recognize that the <see cref="DateTime"/> produced by <c>Date.Now.At(TimeOfDay.Now)</c> will have
+        /// recognize that the <see cref="DateTime"/> produced by <c>Date.Today.At(TimeOfDay.Now)</c> will have
         /// <see cref="DateTimeKind.Unspecified"/>, rather than then <see cref="DateTimeKind.Local"/> that would be
         /// given by <c>DateTime.Now</c>.
         /// <para>The same applies for <see cref="DateTimeKind.Utc"/>.</para>
