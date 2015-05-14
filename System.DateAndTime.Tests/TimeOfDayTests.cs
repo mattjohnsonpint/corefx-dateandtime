@@ -89,14 +89,14 @@ namespace System.DateAndTime.Tests
         public void CanGetHour24FromTimeOfDay()
         {
             TimeOfDay time = new TimeOfDay(23, 0);
-            Assert.Equal(23, time.Hours24);
+            Assert.Equal(23, time.Hour);
         }
 
         [Fact]
         public void CanGetHour12FromTimeOfDay_12AM()
         {
             TimeOfDay time = new TimeOfDay(0, 0);
-            Assert.Equal(12, time.Hours12);
+            Assert.Equal(12, time.HourOf12HourClock);
             Assert.Equal(Meridiem.AM, time.Meridiem);
         }
 
@@ -104,7 +104,7 @@ namespace System.DateAndTime.Tests
         public void CanGetHour12FromTimeOfDay_01AM()
         {
             TimeOfDay time = new TimeOfDay(1, 0);
-            Assert.Equal(1, time.Hours12);
+            Assert.Equal(1, time.HourOf12HourClock);
             Assert.Equal(Meridiem.AM, time.Meridiem);
         }
 
@@ -112,7 +112,7 @@ namespace System.DateAndTime.Tests
         public void CanGetHour12FromTimeOfDay_11AM()
         {
             TimeOfDay time = new TimeOfDay(11, 0);
-            Assert.Equal(11, time.Hours12);
+            Assert.Equal(11, time.HourOf12HourClock);
             Assert.Equal(Meridiem.AM, time.Meridiem);
         }
 
@@ -120,7 +120,7 @@ namespace System.DateAndTime.Tests
         public void CanGetHour12FromTimeOfDay_12PM()
         {
             TimeOfDay time = new TimeOfDay(12, 0);
-            Assert.Equal(12, time.Hours12);
+            Assert.Equal(12, time.HourOf12HourClock);
             Assert.Equal(Meridiem.PM, time.Meridiem);
         }
 
@@ -128,7 +128,7 @@ namespace System.DateAndTime.Tests
         public void CanGetHour12FromTimeOfDay_01PM()
         {
             TimeOfDay time = new TimeOfDay(13, 0);
-            Assert.Equal(1, time.Hours12);
+            Assert.Equal(1, time.HourOf12HourClock);
             Assert.Equal(Meridiem.PM, time.Meridiem);
         }
 
@@ -136,7 +136,7 @@ namespace System.DateAndTime.Tests
         public void CanGetHour12FromTimeOfDay_11PM()
         {
             TimeOfDay time = new TimeOfDay(23, 0);
-            Assert.Equal(11, time.Hours12);
+            Assert.Equal(11, time.HourOf12HourClock);
             Assert.Equal(Meridiem.PM, time.Meridiem);
         }
 

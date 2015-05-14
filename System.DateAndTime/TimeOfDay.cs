@@ -58,85 +58,85 @@ namespace System
             _ticks = ticks;
         }
 
-        public TimeOfDay(int hours24, int minutes)
+        public TimeOfDay(int hour, int minute)
         {
-            if (hours24 < 0 || hours24 > 23) throw new ArgumentOutOfRangeException("hours24");
-            if (minutes < 0 || minutes > 59) throw new ArgumentOutOfRangeException("minutes");
+            if (hour < 0 || hour > 23) throw new ArgumentOutOfRangeException("hour");
+            if (minute < 0 || minute > 59) throw new ArgumentOutOfRangeException("minute");
             Contract.EndContractBlock();
 
-            _ticks = hours24 * TicksPerHour +
-                     minutes * TicksPerMinute;
+            _ticks = hour * TicksPerHour +
+                     minute * TicksPerMinute;
         }
 
-        public TimeOfDay(int hours12, int minutes, Meridiem meridiem)
+        public TimeOfDay(int hour, int minute, Meridiem meridiem)
         {
-            if (hours12 < 1 || hours12 > 12) throw new ArgumentOutOfRangeException("hours12");
-            if (minutes < 0 || minutes > 59) throw new ArgumentOutOfRangeException("minutes");
+            if (hour < 1 || hour > 12) throw new ArgumentOutOfRangeException("hour");
+            if (minute < 0 || minute > 59) throw new ArgumentOutOfRangeException("minute");
             if (meridiem < Meridiem.AM || meridiem > Meridiem.PM) throw new ArgumentOutOfRangeException("meridiem");
             Contract.EndContractBlock();
 
-            int hours24 = Hours12To24(hours12, meridiem);
+            int hours24 = Hours12To24(hour, meridiem);
             _ticks = hours24 * TicksPerHour +
-                     minutes * TicksPerMinute;
+                     minute * TicksPerMinute;
         }
 
-        public TimeOfDay(int hours24, int minutes, int seconds)
+        public TimeOfDay(int hour, int minute, int second)
         {
-            if (hours24 < 0 || hours24 > 23) throw new ArgumentOutOfRangeException("hours24");
-            if (minutes < 0 || minutes > 59) throw new ArgumentOutOfRangeException("minutes");
-            if (seconds < 0 || seconds > 59) throw new ArgumentOutOfRangeException("seconds");
+            if (hour < 0 || hour > 23) throw new ArgumentOutOfRangeException("hour");
+            if (minute < 0 || minute > 59) throw new ArgumentOutOfRangeException("minute");
+            if (second < 0 || second > 59) throw new ArgumentOutOfRangeException("second");
             Contract.EndContractBlock();
 
-            _ticks = hours24 * TicksPerHour +
-                     minutes * TicksPerMinute +
-                     seconds * TicksPerSecond;
+            _ticks = hour * TicksPerHour +
+                     minute * TicksPerMinute +
+                     second * TicksPerSecond;
         }
 
-        public TimeOfDay(int hours12, int minutes, int seconds, Meridiem meridiem)
+        public TimeOfDay(int hour, int minute, int second, Meridiem meridiem)
         {
-            if (hours12 < 1 || hours12 > 12) throw new ArgumentOutOfRangeException("hours12");
-            if (minutes < 0 || minutes > 59) throw new ArgumentOutOfRangeException("minutes");
-            if (seconds < 0 || seconds > 59) throw new ArgumentOutOfRangeException("seconds");
+            if (hour < 1 || hour > 12) throw new ArgumentOutOfRangeException("hour");
+            if (minute < 0 || minute > 59) throw new ArgumentOutOfRangeException("minute");
+            if (second < 0 || second > 59) throw new ArgumentOutOfRangeException("second");
             if (meridiem < Meridiem.AM || meridiem > Meridiem.PM) throw new ArgumentOutOfRangeException("meridiem");
             Contract.EndContractBlock();
 
-            int hours24 = Hours12To24(hours12, meridiem);
+            int hours24 = Hours12To24(hour, meridiem);
             _ticks = hours24 * TicksPerHour +
-                     minutes * TicksPerMinute +
-                     seconds * TicksPerSecond;
+                     minute * TicksPerMinute +
+                     second * TicksPerSecond;
         }
 
-        public TimeOfDay(int hours24, int minutes, int seconds, int milliseconds)
+        public TimeOfDay(int hour, int minute, int second, int millisecond)
         {
-            if (hours24 < 0 || hours24 > 23) throw new ArgumentOutOfRangeException("hours24");
-            if (minutes < 0 || minutes > 59) throw new ArgumentOutOfRangeException("minutes");
-            if (seconds < 0 || seconds > 59) throw new ArgumentOutOfRangeException("seconds");
-            if (milliseconds < 0 || milliseconds > 999) throw new ArgumentOutOfRangeException("milliseconds");
+            if (hour < 0 || hour > 23) throw new ArgumentOutOfRangeException("hour");
+            if (minute < 0 || minute > 59) throw new ArgumentOutOfRangeException("minute");
+            if (second < 0 || second > 59) throw new ArgumentOutOfRangeException("second");
+            if (millisecond < 0 || millisecond > 999) throw new ArgumentOutOfRangeException("millisecond");
             Contract.EndContractBlock();
 
-            _ticks = hours24 * TicksPerHour +
-                     minutes * TicksPerMinute +
-                     seconds * TicksPerSecond +
-                     milliseconds * TicksPerMillisecond;
+            _ticks = hour * TicksPerHour +
+                     minute * TicksPerMinute +
+                     second * TicksPerSecond +
+                     millisecond * TicksPerMillisecond;
         }
 
-        public TimeOfDay(int hours12, int minutes, int seconds, int milliseconds, Meridiem meridiem)
+        public TimeOfDay(int hour, int minute, int second, int millisecond, Meridiem meridiem)
         {
-            if (hours12 < 1 || hours12 > 12) throw new ArgumentOutOfRangeException("hours12");
-            if (minutes < 0 || minutes > 59) throw new ArgumentOutOfRangeException("minutes");
-            if (seconds < 0 || seconds > 59) throw new ArgumentOutOfRangeException("seconds");
-            if (milliseconds < 0 || milliseconds > 999) throw new ArgumentOutOfRangeException("milliseconds");
+            if (hour < 1 || hour > 12) throw new ArgumentOutOfRangeException("hour");
+            if (minute < 0 || minute > 59) throw new ArgumentOutOfRangeException("minute");
+            if (second < 0 || second > 59) throw new ArgumentOutOfRangeException("second");
+            if (millisecond < 0 || millisecond > 999) throw new ArgumentOutOfRangeException("millisecond");
             if (meridiem < Meridiem.AM || meridiem > Meridiem.PM) throw new ArgumentOutOfRangeException("meridiem");
             Contract.EndContractBlock();
 
-            int hours24 = Hours12To24(hours12, meridiem);
+            int hours24 = Hours12To24(hour, meridiem);
             _ticks = hours24 * TicksPerHour +
-                     minutes * TicksPerMinute +
-                     seconds * TicksPerSecond +
-                     milliseconds * TicksPerMillisecond;
+                     minute * TicksPerMinute +
+                     second * TicksPerSecond +
+                     millisecond * TicksPerMillisecond;
         }
 
-        public int Hours24
+        public int Hour
         {
             get
             {
@@ -147,14 +147,14 @@ namespace System
             }
         }
 
-        public int Hours12
+        public int HourOf12HourClock
         {
             get
             {
                 Contract.Ensures(Contract.Result<int>() >= 1);
                 Contract.Ensures(Contract.Result<int>() <= 12);
 
-                int hour = Hours24 % 12;
+                int hour = Hour % 12;
                 return hour == 0 ? 12 : hour;
             }
         }
@@ -163,11 +163,11 @@ namespace System
         {
             get
             {
-                return Hours24 < 12 ? Meridiem.AM : Meridiem.PM;
+                return Hour < 12 ? Meridiem.AM : Meridiem.PM;
             }
         }
 
-        public int Minutes
+        public int Minute
         {
             get
             {
@@ -178,7 +178,7 @@ namespace System
             }
         }
 
-        public int Seconds
+        public int Second
         {
             get
             {
@@ -189,13 +189,13 @@ namespace System
             }
         }
 
-        public int Milliseconds
+        public int Millisecond
         {
             get
             {
                 Contract.Ensures(Contract.Result<int>() >= 0);
                 Contract.Ensures(Contract.Result<int>() <= 999);
-
+                
                 return (int)((_ticks / TicksPerMillisecond) % 1000);
             }
         }
