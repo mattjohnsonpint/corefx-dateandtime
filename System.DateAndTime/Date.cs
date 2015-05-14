@@ -983,11 +983,20 @@ namespace System
         }
 
         /// <summary>
-        /// 
+        /// Converts the specified string representation of a date to its <see cref="Date"/> equivalent
+        /// and returns a value that indicates whether the conversion succeeded.
         /// </summary>
-        /// <param name="s"></param>
-        /// <param name="date"></param>
-        /// <returns></returns>
+        /// <param name="s">A string containing a date to convert.</param>
+        /// <param name="date">
+        /// When this method returns, contains the <see cref="Date"/> value equivalent to the date
+        /// contained in <paramref name="s"/>, if the conversion succeeded, or <see cref="MinValue"/>
+        /// if the conversion failed. The conversion fails if the <paramref name="s"/> parameter is
+        /// <c>null</c>, is an empty string (""), or does not contain a valid string representation of a date.
+        /// This parameter is passed uninitialized.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the <paramref name="s"/> parameter was converted successfully; otherwise, <c>false</c>.
+        /// </returns>
         public static bool TryParse(string s, out Date date)
         {
             DateTime dt;
@@ -1002,13 +1011,38 @@ namespace System
         }
 
         /// <summary>
-        /// 
+        /// Converts the specified string representation of a date to its <see cref="Date"/> equivalent
+        /// using the specified culture-specific format information and formatting style,
+        /// and returns a value that indicates whether the conversion succeeded.
         /// </summary>
-        /// <param name="s"></param>
-        /// <param name="provider"></param>
-        /// <param name="styles"></param>
-        /// <param name="date"></param>
-        /// <returns></returns>
+        /// <param name="s">A string containing a date to convert.</param>
+        /// <param name="provider">
+        /// An object that supplies culture-specific formatting information about <paramref name="s"/>.
+        /// </param>
+        /// <param name="styles">
+        /// A bitwise combination of the enumeration values that indicates the style elements that
+        /// can be present in <paramref name="s"/> for the parse operation to succeed.
+        /// Note that only styles related to whitespace handling are applicable on a <see cref="Date"/>.
+        /// A typical value to specify is <see cref="DateTimeStyles.None"/>.
+        /// </param>
+        /// <param name="date">
+        /// When this method returns, contains the <see cref="Date"/> value equivalent to the date
+        /// contained in <paramref name="s"/>, if the conversion succeeded, or <see cref="MinValue"/>
+        /// if the conversion failed. The conversion fails if the <paramref name="s"/> parameter is
+        /// <c>null</c>, is an empty string (""), or does not contain a valid string representation of a date.
+        /// This parameter is passed uninitialized.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the <paramref name="s"/> parameter was converted successfully; otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="styles"/> styles contains an invalid <see cref="DateTimeStyles"/> values.
+        /// The only styles that are valid for a <see cref="Date"/> are:
+        /// <see cref="DateTimeStyles.None"/>, <see cref="DateTimeStyles.AllowLeadingWhite"/>,
+        /// <see cref="DateTimeStyles.AllowTrailingWhite"/>, <see cref="DateTimeStyles.AllowInnerWhite"/>, and
+        /// <see cref="DateTimeStyles.AllowWhiteSpaces"/>.  The other styles are invalid because they only apply
+        /// when both a date and time are being parsed together.
+        /// </exception>
         public static bool TryParse(string s, IFormatProvider provider, DateTimeStyles styles, out Date date)
         {
             if (((int)styles) >= 8)
@@ -1027,14 +1061,41 @@ namespace System
         }
 
         /// <summary>
-        /// 
+        /// Converts the specified string representation of a date to its <see cref="Date"/> equivalent
+        /// using the specified format, culture-specific format information, and style.
+        /// The format of the string representation must match the specified format exactly.
+        /// The method returns a value that indicates whether the conversion succeeded.
         /// </summary>
-        /// <param name="s"></param>
-        /// <param name="format"></param>
-        /// <param name="provider"></param>
-        /// <param name="styles"></param>
-        /// <param name="date"></param>
-        /// <returns></returns>
+        /// <param name="s">A string containing a date to convert.</param>
+        /// <param name="format">A format specifier that defines the required format of <paramref name="s"/>.</param>
+        /// <param name="provider">
+        /// An object that supplies culture-specific formatting information about <paramref name="s"/>.
+        /// </param>
+        /// <param name="styles">
+        /// A bitwise combination of the enumeration values that indicates the style elements that
+        /// can be present in <paramref name="s"/> for the parse operation to succeed.
+        /// Note that only styles related to whitespace handling are applicable on a <see cref="Date"/>.
+        /// A typical value to specify is <see cref="DateTimeStyles.None"/>.
+        /// </param>
+        /// <param name="date">
+        /// When this method returns, contains the <see cref="Date"/> value equivalent to the date
+        /// contained in <paramref name="s"/>, if the conversion succeeded, or <see cref="MinValue"/>
+        /// if the conversion failed. The conversion fails if either the <paramref name="s"/> or
+        /// <paramref name="format"/> parameter is <c>null</c>, is an empty string (""), or does not
+        /// contain a date that coresponds to the pattern specified in <paramref name="format"/>.
+        /// This parameter is passed uninitialized.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the <paramref name="s"/> parameter was converted successfully; otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="styles"/> styles contains an invalid <see cref="DateTimeStyles"/> values.
+        /// The only styles that are valid for a <see cref="Date"/> are:
+        /// <see cref="DateTimeStyles.None"/>, <see cref="DateTimeStyles.AllowLeadingWhite"/>,
+        /// <see cref="DateTimeStyles.AllowTrailingWhite"/>, <see cref="DateTimeStyles.AllowInnerWhite"/>, and
+        /// <see cref="DateTimeStyles.AllowWhiteSpaces"/>.  The other styles are invalid because they only apply
+        /// when both a date and time are being parsed together.
+        /// </exception>
         public static bool TryParseExact(string s, string format, IFormatProvider provider, DateTimeStyles styles, out Date date)
         {
             if (((int)styles) >= 8)
@@ -1055,14 +1116,42 @@ namespace System
         }
 
         /// <summary>
-        /// 
+        /// Converts the specified string representation of a date to its <see cref="Date"/> equivalent
+        /// using the specified array of formats, culture-specific format information, and style.
+        /// The format of the string representation must match at least one of the specified formats exactly.
+        /// The method returns a value that indicates whether the conversion succeeded.
         /// </summary>
-        /// <param name="s"></param>
-        /// <param name="formats"></param>
-        /// <param name="provider"></param>
-        /// <param name="styles"></param>
-        /// <param name="date"></param>
-        /// <returns></returns>
+        /// <param name="s">A string containing a date to convert.</param>
+        /// <param name="formats">An array of allowable formats of <paramref name="s"/>.</param>
+        /// <param name="provider">
+        /// An object that supplies culture-specific formatting information about <paramref name="s"/>.
+        /// </param>
+        /// <param name="styles">
+        /// A bitwise combination of the enumeration values that indicates the style elements that
+        /// can be present in <paramref name="s"/> for the parse operation to succeed.
+        /// Note that only styles related to whitespace handling are applicable on a <see cref="Date"/>.
+        /// A typical value to specify is <see cref="DateTimeStyles.None"/>.
+        /// </param>
+        /// <param name="date">
+        /// When this method returns, contains the <see cref="Date"/> value equivalent to the date
+        /// contained in <paramref name="s"/>, if the conversion succeeded, or <see cref="MinValue"/>
+        /// if the conversion failed. The conversion fails if either the <paramref name="s"/> or
+        /// <paramref name="formats"/> parameter is <c>null</c>, <paramref name="s"/> or an element of
+        /// <paramref name="formats"/> is an empty string (""), or the format of <paramref name="s"/> is not
+        /// exactly as specified by at least one of the format patterns in <paramref name="formats"/>.
+        /// This parameter is passed uninitialized.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the <paramref name="s"/> parameter was converted successfully; otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="styles"/> styles contains an invalid <see cref="DateTimeStyles"/> values.
+        /// The only styles that are valid for a <see cref="Date"/> are:
+        /// <see cref="DateTimeStyles.None"/>, <see cref="DateTimeStyles.AllowLeadingWhite"/>,
+        /// <see cref="DateTimeStyles.AllowTrailingWhite"/>, <see cref="DateTimeStyles.AllowInnerWhite"/>, and
+        /// <see cref="DateTimeStyles.AllowWhiteSpaces"/>.  The other styles are invalid because they only apply
+        /// when both a date and time are being parsed together.
+        /// </exception>
         public static bool TryParseExact(string s, string[] formats, IFormatProvider provider, DateTimeStyles styles, out Date date)
         {
             if (((int)styles) >= 8)
