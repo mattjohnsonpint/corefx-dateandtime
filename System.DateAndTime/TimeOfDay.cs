@@ -58,6 +58,17 @@ namespace System
             _ticks = ticks;
         }
 
+        /// <summary>
+        /// Initializes a new instance of a <see cref="TimeOfDay"/> structure to the specified
+        /// hour and minute.
+        /// </summary>
+        /// <param name="hour">The hours (0 through 23).</param>
+        /// <param name="minute">The minutes (0 through 59).</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="hour"/> is less than 0 or greater than 23.
+        /// <para>-or-</para>
+        /// <paramref name="minute"/> is less than 0 or greater than 59.
+        /// </exception>
         public TimeOfDay(int hour, int minute)
         {
             if (hour < 0 || hour > 23) throw new ArgumentOutOfRangeException("hour");
@@ -68,6 +79,19 @@ namespace System
                      minute * TicksPerMinute;
         }
 
+        /// <summary>
+        /// Initializes a new instance of a <see cref="TimeOfDay"/> structure to the specified
+        /// hour, minute, and meridiem, using the hours of a 12-hour clock.
+        /// </summary>
+        /// <param name="hour">The hours (1 through 12).</param>
+        /// <param name="minute">The minutes (0 through 59).</param>
+        /// <param name="meridiem">The meridiem, either <see cref="System.Meridiem.AM"/>,
+        /// or <see cref="System.Meridiem.PM"/>.</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="hour"/> is less than 1 or greater than 12.
+        /// <para>-or-</para>
+        /// <paramref name="minute"/> is less than 0 or greater than 59.
+        /// </exception>
         public TimeOfDay(int hour, int minute, Meridiem meridiem)
         {
             if (hour < 1 || hour > 12) throw new ArgumentOutOfRangeException("hour");
@@ -80,6 +104,20 @@ namespace System
                      minute * TicksPerMinute;
         }
 
+        /// <summary>
+        /// Initializes a new instance of a <see cref="TimeOfDay"/> structure to the specified
+        /// hour, minute, and second, using the hours of a 24-hour clock.
+        /// </summary>
+        /// <param name="hour">The hours (0 through 23).</param>
+        /// <param name="minute">The minutes (0 through 59).</param>
+        /// <param name="second">The seconds (0 through 59).</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="hour"/> is less than 0 or greater than 23.
+        /// <para>-or-</para>
+        /// <paramref name="minute"/> is less than 0 or greater than 59.
+        /// <para>-or-</para>
+        /// <paramref name="second"/> is less than 0 or greater than 59.
+        /// </exception>
         public TimeOfDay(int hour, int minute, int second)
         {
             if (hour < 0 || hour > 23) throw new ArgumentOutOfRangeException("hour");
@@ -92,6 +130,22 @@ namespace System
                      second * TicksPerSecond;
         }
 
+        /// <summary>
+        /// Initializes a new instance of a <see cref="TimeOfDay"/> structure to the specified
+        /// hour, minute, second, and meridiem, using the hours of a 12-hour clock.
+        /// </summary>
+        /// <param name="hour">The hours (1 through 12).</param>
+        /// <param name="minute">The minutes (0 through 59).</param>
+        /// <param name="second">The seconds (0 through 59).</param>
+        /// <param name="meridiem">The meridiem, either <see cref="System.Meridiem.AM"/>,
+        /// or <see cref="System.Meridiem.PM"/>.</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="hour"/> is less than 1 or greater than 12.
+        /// <para>-or-</para>
+        /// <paramref name="minute"/> is less than 0 or greater than 59.
+        /// <para>-or-</para>
+        /// <paramref name="second"/> is less than 0 or greater than 59.
+        /// </exception>
         public TimeOfDay(int hour, int minute, int second, Meridiem meridiem)
         {
             if (hour < 1 || hour > 12) throw new ArgumentOutOfRangeException("hour");
@@ -106,6 +160,23 @@ namespace System
                      second * TicksPerSecond;
         }
 
+        /// <summary>
+        /// Initializes a new instance of a <see cref="TimeOfDay"/> structure to the specified
+        /// hour, minute, second, and millisecond, using the hours of a 24-hour clock.
+        /// </summary>
+        /// <param name="hour">The hours (0 through 23).</param>
+        /// <param name="minute">The minutes (0 through 59).</param>
+        /// <param name="second">The seconds (0 through 59).</param>
+        /// <param name="millisecond">The milliseconds (0 through 999).</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="hour"/> is less than 0 or greater than 23.
+        /// <para>-or-</para>
+        /// <paramref name="minute"/> is less than 0 or greater than 59.
+        /// <para>-or-</para>
+        /// <paramref name="second"/> is less than 0 or greater than 59.
+        /// <para>-or-</para>
+        /// <paramref name="millisecond"/> is less than 0 or greater than 999.
+        /// </exception>
         public TimeOfDay(int hour, int minute, int second, int millisecond)
         {
             if (hour < 0 || hour > 23) throw new ArgumentOutOfRangeException("hour");
@@ -120,6 +191,25 @@ namespace System
                      millisecond * TicksPerMillisecond;
         }
 
+        /// <summary>
+        /// Initializes a new instance of a <see cref="TimeOfDay"/> structure to the specified
+        /// hour, minute, second, millisecond, and meridiem, using the hours of a 12-hour clock.
+        /// </summary>
+        /// <param name="hour">The hours (1 through 12).</param>
+        /// <param name="minute">The minutes (0 through 59).</param>
+        /// <param name="second">The seconds (0 through 59).</param>
+        /// <param name="millisecond">The milliseconds (0 through 999).</param>
+        /// <param name="meridiem">The meridiem, either <see cref="System.Meridiem.AM"/>,
+        /// or <see cref="System.Meridiem.PM"/>.</param>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// <paramref name="hour"/> is less than 1 or greater than 12.
+        /// <para>-or-</para>
+        /// <paramref name="minute"/> is less than 0 or greater than 59.
+        /// <para>-or-</para>
+        /// <paramref name="second"/> is less than 0 or greater than 59.
+        /// <para>-or-</para>
+        /// <paramref name="millisecond"/> is less than 0 or greater than 999.
+        /// </exception>
         public TimeOfDay(int hour, int minute, int second, int millisecond, Meridiem meridiem)
         {
             if (hour < 1 || hour > 12) throw new ArgumentOutOfRangeException("hour");
