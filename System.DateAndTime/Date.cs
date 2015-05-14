@@ -138,6 +138,7 @@ namespace System
         /// <summary>
         /// Gets the year component of the date represented by this instance.
         /// </summary>
+        /// <value>The year component, expressed as a value between 1 and 9999.</value>
         public int Year
         {
             get
@@ -151,6 +152,7 @@ namespace System
         /// <summary>
         /// Gets the month component of the date represented by this instance.
         /// </summary>
+        /// <value>The month component, expressed as a value between 1 and 12.</value>
         public int Month
         {
             get
@@ -164,6 +166,7 @@ namespace System
         /// <summary>
         /// Gets the day component of the date represented by this instance.
         /// </summary>
+        /// <value>The day component, expressed as a value between 1 and 31.</value>
         public int Day
         {
             get
@@ -177,6 +180,7 @@ namespace System
         /// <summary>
         /// Gets the day of the year represented by this instance.
         /// </summary>
+        /// <value>The day of the year, expressed as a value between 1 and 366.</value>
         public int DayOfYear
         {
             get
@@ -190,6 +194,7 @@ namespace System
         /// <summary>
         /// Gets the day of the week represented by this instance.
         /// </summary>
+        /// <value>An enumerated constant that indicates the day of the week of this <see cref="Date"/> value.</value>
         public DayOfWeek DayOfWeek
         {
             get
@@ -203,6 +208,10 @@ namespace System
         /// <summary>
         /// Gets the number of days since January 1, 0001 in the proleptic Gregorian calendar.
         /// </summary>
+        /// <value>
+        /// The number of days that represent the date of this instance.
+        /// The value is between <c>Date.MinValue.DayNumber</c> and <c>Date.MaxValue.DayNumber</c>.
+        /// </value>
         public int DayNumber
         {
             get
@@ -299,8 +308,10 @@ namespace System
         }
 
         /// <summary>
-        /// Gets the current date in the local time zone.
+        /// Gets a <see cref="Date"/> object that is set to the current date on this computer,
+        /// expressed in the computer's local time zone.
         /// </summary>
+        /// <value>An object whose value is the current local date.</value>
         public static Date Today
         {
             get
@@ -311,8 +322,10 @@ namespace System
         }
 
         /// <summary>
-        /// Gets the current date in Coordinated Universal Time (UTC).
+        /// Gets a <see cref="Date"/> object that is set to the current date on this computer,
+        /// expressed as Coordinated Universal Time (UTC).
         /// </summary>
+        /// <value>An object whose value is the current UTC date.</value>
         public static Date UtcToday
         {
             get
