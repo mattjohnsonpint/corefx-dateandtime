@@ -427,12 +427,7 @@ namespace System
         /// <returns>A <see cref="TimeSpan"/> representing the duration between the two values.</returns>
         public static TimeSpan CalculateDuration(TimeOfDay startTime, TimeOfDay endTime)
         {
-            long startTicks = startTime._ticks;
-            long endTicks = endTime._ticks;
-
-            return startTicks <= endTicks
-                ? TimeSpan.FromTicks(endTicks - startTicks)
-                : TimeSpan.FromTicks(endTicks - startTicks + TimeSpan.TicksPerDay);
+            return TimeSpan.FromTicks((endTime._ticks - startTime._ticks + TicksPerDay) % TicksPerDay);
         }
 
         public TimeOfDay Add(TimeSpan timeSpan)
