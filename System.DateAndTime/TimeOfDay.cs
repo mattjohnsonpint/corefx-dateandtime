@@ -698,14 +698,14 @@ namespace System
             return true;
         }
 
-        public static bool operator ==(TimeOfDay left, TimeOfDay right)
+        public static bool operator ==(TimeOfDay t1, TimeOfDay t2)
         {
-            return left.Equals(right);
+            return t1.Equals(t2);
         }
 
-        public static bool operator !=(TimeOfDay left, TimeOfDay right)
+        public static bool operator !=(TimeOfDay t1, TimeOfDay t2)
         {
-            return !left.Equals(right);
+            return !t1.Equals(t2);
         }
 
         public static bool operator >(TimeOfDay t1, TimeOfDay t2)
