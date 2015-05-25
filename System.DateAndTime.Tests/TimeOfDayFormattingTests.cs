@@ -39,32 +39,19 @@ namespace System.DateAndTime.Tests
         [Fact]
         public void ToStringWithCustomDateTimeFormat()
         {
-            Assert.Throws<FormatException>(() =>
-            {
-                var time = new TimeOfDay(23, 59, 59);
-                var s = time.ToString("yyyy-MM-dd HH:mm:ss");
-            });
+            Assert.Throws<FormatException>(() => new TimeOfDay(23, 59, 59).ToString("yyyy-MM-dd HH:mm:ss"));
         }
 
         [Fact]
         public void ToStringWithStandardDateFormat()
         {
-            Assert.Throws<FormatException>(() =>
-            {
-                var time = new TimeOfDay(23, 59, 59);
-                var s = time.ToString("d");
-            });
+            Assert.Throws<FormatException>(() => new TimeOfDay(23, 59, 59).ToString("d"));
         }
 
         [Fact]
         public void ToStringWithCustomDateFormat()
         {
-            Assert.Throws<FormatException>(() =>
-            {
-                var time = new TimeOfDay(23, 59, 59);
-                var s = time.ToString("dd MMM yyyy");
-
-            });
+            Assert.Throws<FormatException>(() => new TimeOfDay(23, 59, 59).ToString("dd MMM yyyy"));
         }
     }
 }

@@ -287,7 +287,10 @@ namespace System
         /// </exception>
         public static int DaysInMonth(int year, int month)
         {
-            if (month < 1 || month > 12) throw new ArgumentOutOfRangeException("month");
+            if (year < 1 || year > 9999)
+                throw new ArgumentOutOfRangeException("year");
+            if (month < 1 || month > 12)
+                throw new ArgumentOutOfRangeException("month");
             Contract.EndContractBlock();
 
             // IsLeapYear checks the year argument

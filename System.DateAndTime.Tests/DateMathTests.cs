@@ -34,37 +34,25 @@ namespace System.DateAndTime.Tests
         [Fact]
         public void CannotAddYearsMoreThanMaxDate()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                var dt = Date.MaxValue.AddYears(1);
-            });
+            Assert.Throws<ArgumentOutOfRangeException>(() => Date.MaxValue.AddYears(1));
         }
 
         [Fact]
         public void CannotAddYearsLessThanMinDate()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                var dt = Date.MinValue.AddYears(-1);
-            });
+            Assert.Throws<ArgumentOutOfRangeException>(() => Date.MinValue.AddYears(-1));
         }
 
         [Fact]
         public void CannotAddYearsMoreThanMaxPossibleYears()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                var dt = Date.MinValue.AddYears(10000);
-            });
+            Assert.Throws<ArgumentOutOfRangeException>(() => Date.MinValue.AddYears(10000));
         }
 
         [Fact]
         public void CannotAddYearsLessThanMinPossibleYears()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                var dt = Date.MaxValue.AddYears(-10000);
-            });
+            Assert.Throws<ArgumentOutOfRangeException>(() => Date.MaxValue.AddYears(-10000));
         }
 
         [Fact]
@@ -133,37 +121,25 @@ namespace System.DateAndTime.Tests
         [Fact]
         public void CannotAddMonthsMoreThanMaxDate()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                var dt = Date.MaxValue.AddMonths(1);
-            });
+            Assert.Throws<ArgumentOutOfRangeException>(() => Date.MaxValue.AddMonths(1));
         }
 
         [Fact]
         public void CannotAddMonthsLessThanMinDate()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                var dt = Date.MinValue.AddMonths(-1);
-            });
+            Assert.Throws<ArgumentOutOfRangeException>(() => Date.MinValue.AddMonths(-1));
         }
 
         [Fact]
         public void CannotAddMonthsMoreThanMaxPossibleMonths()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                var dt = Date.MinValue.AddMonths(120000);
-            });
+            Assert.Throws<ArgumentOutOfRangeException>(() => Date.MinValue.AddMonths(120000));
         }
 
         [Fact]
         public void CannotAddMonthsLessThanMinPossibleMonths()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                var dt = Date.MaxValue.AddMonths(-120000);
-            });
+            Assert.Throws<ArgumentOutOfRangeException>(() => Date.MaxValue.AddMonths(-120000));
         }
 
         [Fact]
@@ -286,37 +262,25 @@ namespace System.DateAndTime.Tests
         [Fact]
         public void CannotAddDaysMoreThanMaxDate()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                var dt = Date.MaxValue.AddDays(1);
-            });
+            Assert.Throws<ArgumentOutOfRangeException>(() => Date.MaxValue.AddDays(1));
         }
 
         [Fact]
         public void CannotAddDaysLessThanMinDate()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                var dt = Date.MinValue.AddDays(-1);
-            });
+            Assert.Throws<ArgumentOutOfRangeException>(() => Date.MinValue.AddDays(-1));
         }
 
         [Fact]
         public void CannotAddDaysMoreThanMaxPossibleDays()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                var dt = Date.MinValue.AddDays(3652059);
-            });
+            Assert.Throws<ArgumentOutOfRangeException>(() => Date.MinValue.AddDays(3652059));
         }
 
         [Fact]
         public void CannotAddDaysLessThanMinPossibleDays()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                var dt = Date.MaxValue.AddDays(-3652059);
-            });
+            Assert.Throws<ArgumentOutOfRangeException>(() => Date.MaxValue.AddDays(-3652059));
         }
     }
 }

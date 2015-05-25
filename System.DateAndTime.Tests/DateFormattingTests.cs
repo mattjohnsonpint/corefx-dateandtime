@@ -47,31 +47,19 @@ namespace System.DateAndTime.Tests
         [Fact]
         public void ToStringWithCustomDateTimeFormat()
         {
-            Assert.Throws<FormatException>(() =>
-            {
-                var date = new Date(2000, 12, 31);
-                var s = date.ToString("yyyy-MM-dd HH:mm:ss");
-            });
+            Assert.Throws<FormatException>(() => new Date(2000, 12, 31).ToString("yyyy-MM-dd HH:mm:ss"));
         }
 
         [Fact]
         public void ToStringWithStandardTimeFormat()
         {
-            Assert.Throws<FormatException>(() =>
-            {
-                var date = new Date(2000, 12, 31);
-                var s = date.ToString("t");
-            });
+            Assert.Throws<FormatException>(() => new Date(2000, 12, 31).ToString("t"));
         }
 
         [Fact]
         public void ToStringWithCustomTimeFormat()
         {
-            Assert.Throws<FormatException>(() =>
-            {
-                var date = new Date(2000, 12, 31);
-                var s = date.ToString("HH:mm:ss");
-            });
+            Assert.Throws<FormatException>(() => new Date(2000, 12, 31).ToString("HH:mm:ss"));
         }
     }
 }
