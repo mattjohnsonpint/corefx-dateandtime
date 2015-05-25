@@ -769,18 +769,49 @@ namespace System
             return _ticks.GetHashCode();
         }
 
+        /// <summary>
+        /// Converts the value of the current <see cref="TimeOfDay"/> object to its equivalent string representation.
+        /// </summary>
+        /// <returns>A string representation of value of the current <see cref="TimeOfDay"/> object.</returns>
         public override string ToString()
         {
             Contract.Ensures(Contract.Result<string>() != null);
             return DateTime.MinValue.AddTicks(_ticks).ToString("T");
         }
 
+        /// <summary>
+        /// Converts the value of the current <see cref="TimeOfDay"/> object to its equivalent string representation
+        /// using the specified culture-specific format information.
+        /// </summary>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        /// <returns>
+        /// A string representation of value of the current <see cref="TimeOfDay"/> object as specified by
+        /// <paramref name="provider"/>.
+        /// </returns>
         public string ToString(IFormatProvider provider)
         {
             Contract.Ensures(Contract.Result<string>() != null);
             return DateTime.MinValue.AddTicks(_ticks).ToString("T", provider);
         }
 
+        /// <summary>
+        /// Converts the value of the current <see cref="TimeOfDay"/> object to its equivalent string representation
+        /// using the specified format.
+        /// </summary>
+        /// <param name="format">A standard or custom time-of-day format string.</param>
+        /// <returns>
+        /// A string representation of value of the current <see cref="TimeOfDay"/> object as specified by
+        /// <paramref name="format"/>.
+        /// </returns>
+        /// <exception cref="FormatException">
+        /// The length of <paramref name="format"/> is 1, and it is not one of the format specifier characters defined
+        /// for <see cref="DateTimeFormatInfo"/>.
+        /// <para>-or-</para>
+        /// <paramref name="format"/> does not contain a valid custom format pattern.
+        /// <para>-or-</para>
+        /// The standard or custom format specified is not valid for a <see cref="TimeOfDay"/> object, because it
+        /// contains a date component.
+        /// </exception>
         public string ToString(string format)
         {
             Contract.Ensures(Contract.Result<string>() != null);
@@ -788,6 +819,25 @@ namespace System
             return DateTime.MinValue.AddTicks(_ticks).ToString(format);
         }
 
+        /// <summary>
+        /// Converts the value of the current <see cref="TimeOfDay"/> object to its equivalent string representation
+        /// using the specified format and culture-specific format information.
+        /// </summary>
+        /// <param name="format">A standard or custom time-of-day format string.</param>
+        /// <param name="provider">An object that supplies culture-specific formatting information.</param>
+        /// <returns>
+        /// A string representation of value of the current <see cref="TimeOfDay"/> object as specified by
+        /// <paramref name="format"/> and <paramref name="provider"/>.
+        /// </returns>
+        /// <exception cref="FormatException">
+        /// The length of <paramref name="format"/> is 1, and it is not one of the format specifier characters defined
+        /// for <see cref="DateTimeFormatInfo"/>.
+        /// <para>-or-</para>
+        /// <paramref name="format"/> does not contain a valid custom format pattern.
+        /// <para>-or-</para>
+        /// The standard or custom format specified is not valid for a <see cref="TimeOfDay"/> object, because it
+        /// contains a date component.
+        /// </exception>
         public string ToString(string format, IFormatProvider provider)
         {
             Contract.Ensures(Contract.Result<string>() != null);
