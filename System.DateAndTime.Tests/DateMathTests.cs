@@ -36,7 +36,7 @@ namespace System.DateAndTime.Tests
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var dt = DateTime.MaxValue.AddYears(1);
+                var dt = Date.MaxValue.AddYears(1);
             });
         }
 
@@ -45,7 +45,25 @@ namespace System.DateAndTime.Tests
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var dt = DateTime.MinValue.AddYears(-1);
+                var dt = Date.MinValue.AddYears(-1);
+            });
+        }
+
+        [Fact]
+        public void CannotAddYearsMoreThanMaxPossibleYears()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var dt = Date.MinValue.AddYears(10000);
+            });
+        }
+
+        [Fact]
+        public void CannotAddYearsLessThanMinPossibleYears()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var dt = Date.MaxValue.AddYears(-10000);
             });
         }
 
@@ -117,7 +135,7 @@ namespace System.DateAndTime.Tests
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var dt = DateTime.MaxValue.AddMonths(1);
+                var dt = Date.MaxValue.AddMonths(1);
             });
         }
 
@@ -126,7 +144,25 @@ namespace System.DateAndTime.Tests
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                var dt = DateTime.MinValue.AddMonths(-1);
+                var dt = Date.MinValue.AddMonths(-1);
+            });
+        }
+
+        [Fact]
+        public void CannotAddMonthsMoreThanMaxPossibleMonths()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var dt = Date.MinValue.AddMonths(120000);
+            });
+        }
+
+        [Fact]
+        public void CannotAddMonthsLessThanMinPossibleMonths()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var dt = Date.MaxValue.AddMonths(-120000);
             });
         }
 
@@ -218,6 +254,69 @@ namespace System.DateAndTime.Tests
             var actual = dt.AddMonths(-2);
             var expected = new Date(2001, 2, 28);
             Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void CanAddPositiveDays()
+        {
+            var dt = new Date(2000, 1, 1);
+            var actual = dt.AddDays(1);
+            var expected = new Date(2000, 1, 2);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void CanAddZeroDays()
+        {
+            var dt = new Date(2000, 1, 1);
+            var actual = dt.AddDays(0);
+            var expected = new Date(2000, 1, 1);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void CanAddNegativeDays()
+        {
+            var dt = new Date(2000, 1, 1);
+            var actual = dt.AddDays(-1);
+            var expected = new Date(1999, 12, 31);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void CannotAddDaysMoreThanMaxDate()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var dt = Date.MaxValue.AddDays(1);
+            });
+        }
+
+        [Fact]
+        public void CannotAddDaysLessThanMinDate()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var dt = Date.MinValue.AddDays(-1);
+            });
+        }
+
+        [Fact]
+        public void CannotAddDaysMoreThanMaxPossibleDays()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var dt = Date.MinValue.AddDays(3652059);
+            });
+        }
+
+        [Fact]
+        public void CannotAddDaysLessThanMinPossibleDays()
+        {
+            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            {
+                var dt = Date.MaxValue.AddDays(-3652059);
+            });
         }
     }
 }
