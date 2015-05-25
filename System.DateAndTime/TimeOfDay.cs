@@ -873,18 +873,79 @@ namespace System
             return ToString(CultureInfo.CurrentCulture.DateTimeFormat.ShortTimePattern);
         }
 
+        /// <summary>
+        /// Converts the string representation of a time-of-day to its <see cref="TimeOfDay"/> equivalent.
+        /// </summary>
+        /// <param name="s">A string that contains a time-of-day to convert.</param>
+        /// <returns>An object that is equivalent to the time-of-day contained in <paramref name="s"/>.</returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="s"/> is <c>null</c>.
+        /// </exception>
+        /// <exception cref="FormatException">
+        /// <paramref name="s"/> does not contain a valid string representation of a time-of-day.
+        /// </exception>
         public static TimeOfDay Parse(string s)
         {
             DateTime dt = DateTime.Parse(s, null, DateTimeStyles.NoCurrentDateDefault);
             return TimeOfDayFromTimeSpan(dt.TimeOfDay);
         }
 
+        /// <summary>
+        /// Converts the string representation of a time-of-day to its <see cref="TimeOfDay"/> equivalent
+        /// by using culture-specific format information.
+        /// </summary>
+        /// <param name="s">A string that contains a time-of-day to convert.</param>
+        /// <param name="provider">
+        /// An object that supplies culture-specific formatting information about <paramref name="s"/>.
+        /// </param>
+        /// <returns>
+        /// An object that is equivalent to the time-of-day contained in <paramref name="s"/>,
+        /// as specified by <paramref name="provider"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="s"/> is <c>null</c>.
+        /// </exception>
+        /// <exception cref="FormatException">
+        /// <paramref name="s"/> does not contain a valid string representation of a time-of-day.
+        /// </exception>
         public static TimeOfDay Parse(string s, IFormatProvider provider)
         {
             DateTime dt = DateTime.Parse(s, provider, DateTimeStyles.NoCurrentDateDefault);
             return TimeOfDayFromTimeSpan(dt.TimeOfDay);
         }
 
+        /// <summary>
+        /// Converts the string representation of a time-of-day to its <see cref="TimeOfDay"/> equivalent
+        /// by using culture-specific format information and formatting style.
+        /// </summary>
+        /// <param name="s">A string that contains a time-of-day to convert.</param>
+        /// <param name="provider">
+        /// An object that supplies culture-specific formatting information about <paramref name="s"/>.
+        /// </param>
+        /// <param name="styles">
+        /// A bitwise combination of the enumeration values that indicates the style elements that
+        /// can be present in <paramref name="s"/> for the parse operation to succeed.
+        /// Note that only styles related to whitespace handling are applicable on a <see cref="TimeOfDay"/>.
+        /// A typical value to specify is <see cref="DateTimeStyles.None"/>.
+        /// </param>
+        /// <returns>
+        /// An object that is equivalent to the time-of-day contained in <paramref name="s"/>,
+        /// as specified by <paramref name="provider"/> and <paramref name="styles"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="s"/> is <c>null</c>.
+        /// </exception>
+        /// <exception cref="FormatException">
+        /// <paramref name="s"/> does not contain a valid string representation of a time-of-day.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="styles"/> styles contains an invalid <see cref="DateTimeStyles"/> values.
+        /// The only styles that are valid for a <see cref="TimeOfDay"/> are:
+        /// <see cref="DateTimeStyles.None"/>, <see cref="DateTimeStyles.AllowLeadingWhite"/>,
+        /// <see cref="DateTimeStyles.AllowTrailingWhite"/>, <see cref="DateTimeStyles.AllowInnerWhite"/>, and
+        /// <see cref="DateTimeStyles.AllowWhiteSpaces"/>.  The other styles are invalid because they only apply
+        /// when both a date and time are being parsed together.
+        /// </exception>
         public static TimeOfDay Parse(string s, IFormatProvider provider, DateTimeStyles styles)
         {
             if (((int)styles) >= 8)
@@ -895,6 +956,31 @@ namespace System
             return TimeOfDayFromTimeSpan(dt.TimeOfDay);
         }
 
+        /// <summary>
+        /// Converts the specified string representation of a time-of-day to its <see cref="TimeOfDay"/> equivalent
+        /// using the specified format and culture-specific format information.
+        /// The format of the string representation must match the specified format exactly or an exception is thrown.
+        /// </summary>
+        /// <param name="s">A string that contains a time-of-day to convert.</param>
+        /// <param name="format">A format specifier that defines the required format of <paramref name="s"/>.</param>
+        /// <param name="provider">
+        /// An object that supplies culture-specific formatting information about <paramref name="s"/>.
+        /// </param>
+        /// <returns>
+        /// An object that is equivalent to the time-of-day contained in <paramref name="s"/>,
+        /// as specified by <paramref name="format"/> and <paramref name="provider"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="s"/> is <c>null</c>.
+        /// </exception>
+        /// <exception cref="FormatException">
+        /// <paramref name="s"/> or <paramref name="format"/> is an empty string.
+        /// <para>-or-</para>
+        /// <paramref name="s"/> does not contain a time-of-day that corresponds to the pattern specified in
+        /// <paramref name="format"/>.
+        /// <para>-or-</para>
+        /// <paramref name="format"/> contains a format pattern that is not applicable to a <see cref="TimeOfDay"/>.
+        /// </exception>
         public static TimeOfDay ParseExact(string s, string format, IFormatProvider provider)
         {
             format = NormalizeTimeFormat(format);
@@ -902,6 +988,45 @@ namespace System
             return TimeOfDayFromTimeSpan(dt.TimeOfDay);
         }
 
+        /// <summary>
+        /// Converts the specified string representation of a time-of-day to its <see cref="TimeOfDay"/> equivalent
+        /// using the specified format, culture-specific format information, and style.
+        /// The format of the string representation must match the specified format exactly or an exception is thrown.
+        /// </summary>
+        /// <param name="s">A string that contains a time-of-day to convert.</param>
+        /// <param name="format">A format specifier that defines the required format of <paramref name="s"/>.</param>
+        /// <param name="provider">
+        /// An object that supplies culture-specific formatting information about <paramref name="s"/>.
+        /// </param>
+        /// <param name="styles">
+        /// A bitwise combination of the enumeration values that indicates the style elements that
+        /// can be present in <paramref name="s"/> for the parse operation to succeed.
+        /// Note that only styles related to whitespace handling are applicable on a <see cref="TimeOfDay"/>.
+        /// A typical value to specify is <see cref="DateTimeStyles.None"/>.
+        /// </param>
+        /// <returns>
+        /// An object that is equivalent to the time-of-day contained in <paramref name="s"/>,
+        /// as specified by <paramref name="format"/>, <paramref name="provider"/> and <paramref name="styles"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="s"/> is <c>null</c>.
+        /// </exception>
+        /// <exception cref="FormatException">
+        /// <paramref name="s"/> or <paramref name="format"/> is an empty string.
+        /// <para>-or-</para>
+        /// <paramref name="s"/> does not contain a time-of-day that corresponds to the pattern specified in
+        /// <paramref name="format"/>.
+        /// <para>-or-</para>
+        /// <paramref name="format"/> contains a format pattern that is not applicable to a <see cref="TimeOfDay"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="styles"/> styles contains an invalid <see cref="DateTimeStyles"/> values.
+        /// The only styles that are valid for a <see cref="TimeOfDay"/> are:
+        /// <see cref="DateTimeStyles.None"/>, <see cref="DateTimeStyles.AllowLeadingWhite"/>,
+        /// <see cref="DateTimeStyles.AllowTrailingWhite"/>, <see cref="DateTimeStyles.AllowInnerWhite"/>, and
+        /// <see cref="DateTimeStyles.AllowWhiteSpaces"/>.  The other styles are invalid because they only apply
+        /// when both a date and time are being parsed together.
+        /// </exception>
         public static TimeOfDay ParseExact(string s, string format, IFormatProvider provider, DateTimeStyles styles)
         {
             if (((int)styles) >= 8)
@@ -913,6 +1038,49 @@ namespace System
             return TimeOfDayFromTimeSpan(dt.TimeOfDay);
         }
 
+        /// <summary>
+        /// Converts the specified string representation of a time-of-day to its <see cref="TimeOfDay"/> equivalent
+        /// using the specified array of formats, culture-specific format information, and style.
+        /// The format of the string representation must match at least one of the specified formats
+        /// exactly or an exception is thrown.
+        /// </summary>
+        /// <param name="s">A string that contains a time-of-day to convert.</param>
+        /// <param name="formats">An array of allowable formats of <paramref name="s"/>.</param>
+        /// <param name="provider">
+        /// An object that supplies culture-specific formatting information about <paramref name="s"/>.
+        /// </param>
+        /// <param name="styles">
+        /// A bitwise combination of the enumeration values that indicates the style elements that
+        /// can be present in <paramref name="s"/> for the parse operation to succeed.
+        /// Note that only styles related to whitespace handling are applicable on a <see cref="TimeOfDay"/>.
+        /// A typical value to specify is <see cref="DateTimeStyles.None"/>.
+        /// </param>
+        /// <returns>
+        /// An object that is equivalent to the time-of-day contained in <paramref name="s"/>,
+        /// as specified by <paramref name="formats"/>, <paramref name="provider"/> and <paramref name="styles"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="s"/> is <c>null</c>.
+        /// </exception>
+        /// <exception cref="FormatException">
+        /// <paramref name="s"/> is an empty string.
+        /// <para>-or-</para>
+        /// An element of <paramref name="formats"/> is an empty string.
+        /// <para>-or-</para>
+        /// <paramref name="s"/> does not contain a time-of-day that corresponds to any element of
+        /// <paramref name="formats"/>.
+        /// <para>-or-</para>
+        /// An element of <paramref name="formats"/> contains a format pattern that is not applicable to a
+        /// <see cref="TimeOfDay"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="styles"/> styles contains an invalid <see cref="DateTimeStyles"/> values.
+        /// The only styles that are valid for a <see cref="TimeOfDay"/> are:
+        /// <see cref="DateTimeStyles.None"/>, <see cref="DateTimeStyles.AllowLeadingWhite"/>,
+        /// <see cref="DateTimeStyles.AllowTrailingWhite"/>, <see cref="DateTimeStyles.AllowInnerWhite"/>, and
+        /// <see cref="DateTimeStyles.AllowWhiteSpaces"/>.  The other styles are invalid because they only apply
+        /// when both a date and time are being parsed together.
+        /// </exception>
         public static TimeOfDay ParseExact(string s, string[] formats, IFormatProvider provider, DateTimeStyles styles)
         {
             if (((int)styles) >= 8)
@@ -928,20 +1096,68 @@ namespace System
             return TimeOfDayFromTimeSpan(dt.TimeOfDay);
         }
 
-        public static bool TryParse(string s, out TimeOfDay time)
+        /// <summary>
+        /// Converts the specified string representation of a time-of-day to its <see cref="TimeOfDay"/> equivalent
+        /// and returns a value that indicates whether the conversion succeeded.
+        /// </summary>
+        /// <param name="s">A string containing a time-of-day to convert.</param>
+        /// <param name="timeOfDay">
+        /// When this method returns, contains the <see cref="TimeOfDay"/> value equivalent to the time-of-day
+        /// contained in <paramref name="s"/>, if the conversion succeeded, or <see cref="MinValue"/>
+        /// if the conversion failed. The conversion fails if the <paramref name="s"/> parameter is
+        /// <c>null</c>, is an empty string (""), or does not contain a valid string representation of a time-of-day.
+        /// This parameter is passed uninitialized.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the <paramref name="s"/> parameter was converted successfully; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool TryParse(string s, out TimeOfDay timeOfDay)
         {
             DateTime dt;
             if (!DateTime.TryParse(s, null, DateTimeStyles.NoCurrentDateDefault, out dt))
             {
-                time = default(TimeOfDay);
+                timeOfDay = default(TimeOfDay);
                 return false;
             }
 
-            time = TimeOfDayFromTimeSpan(dt.TimeOfDay);
+            timeOfDay = TimeOfDayFromTimeSpan(dt.TimeOfDay);
             return true;
         }
 
-        public static bool TryParse(string s, IFormatProvider provider, DateTimeStyles styles, out TimeOfDay time)
+        /// <summary>
+        /// Converts the specified string representation of a time-of-day to its <see cref="TimeOfDay"/> equivalent
+        /// using the specified culture-specific format information and formatting style,
+        /// and returns a value that indicates whether the conversion succeeded.
+        /// </summary>
+        /// <param name="s">A string containing a time-of-day to convert.</param>
+        /// <param name="provider">
+        /// An object that supplies culture-specific formatting information about <paramref name="s"/>.
+        /// </param>
+        /// <param name="styles">
+        /// A bitwise combination of the enumeration values that indicates the style elements that
+        /// can be present in <paramref name="s"/> for the parse operation to succeed.
+        /// Note that only styles related to whitespace handling are applicable on a <see cref="TimeOfDay"/>.
+        /// A typical value to specify is <see cref="DateTimeStyles.None"/>.
+        /// </param>
+        /// <param name="timeOfDay">
+        /// When this method returns, contains the <see cref="TimeOfDay"/> value equivalent to the time-of-day
+        /// contained in <paramref name="s"/>, if the conversion succeeded, or <see cref="MinValue"/>
+        /// if the conversion failed. The conversion fails if the <paramref name="s"/> parameter is
+        /// <c>null</c>, is an empty string (""), or does not contain a valid string representation of a time-of-day.
+        /// This parameter is passed uninitialized.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the <paramref name="s"/> parameter was converted successfully; otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="styles"/> styles contains an invalid <see cref="DateTimeStyles"/> values.
+        /// The only styles that are valid for a <see cref="TimeOfDay"/> are:
+        /// <see cref="DateTimeStyles.None"/>, <see cref="DateTimeStyles.AllowLeadingWhite"/>,
+        /// <see cref="DateTimeStyles.AllowTrailingWhite"/>, <see cref="DateTimeStyles.AllowInnerWhite"/>, and
+        /// <see cref="DateTimeStyles.AllowWhiteSpaces"/>.  The other styles are invalid because they only apply
+        /// when both a date and time are being parsed together.
+        /// </exception>
+        public static bool TryParse(string s, IFormatProvider provider, DateTimeStyles styles, out TimeOfDay timeOfDay)
         {
             if (((int)styles) >= 8)
                 throw new ArgumentException("styles");
@@ -950,15 +1166,51 @@ namespace System
             DateTime dt;
             if (!DateTime.TryParse(s, provider, DateTimeStyles.NoCurrentDateDefault | styles, out dt))
             {
-                time = default(TimeOfDay);
+                timeOfDay = default(TimeOfDay);
                 return false;
             }
 
-            time = TimeOfDayFromTimeSpan(dt.TimeOfDay);
+            timeOfDay = TimeOfDayFromTimeSpan(dt.TimeOfDay);
             return true;
         }
 
-        public static bool TryParseExact(string s, string format, IFormatProvider provider, DateTimeStyles styles, out TimeOfDay time)
+        /// <summary>
+        /// Converts the specified string representation of a time-of-day to its <see cref="TimeOfDay"/> equivalent
+        /// using the specified format, culture-specific format information, and style.
+        /// The format of the string representation must match the specified format exactly.
+        /// The method returns a value that indicates whether the conversion succeeded.
+        /// </summary>
+        /// <param name="s">A string containing a time-of-day to convert.</param>
+        /// <param name="format">A format specifier that defines the required format of <paramref name="s"/>.</param>
+        /// <param name="provider">
+        /// An object that supplies culture-specific formatting information about <paramref name="s"/>.
+        /// </param>
+        /// <param name="styles">
+        /// A bitwise combination of the enumeration values that indicates the style elements that
+        /// can be present in <paramref name="s"/> for the parse operation to succeed.
+        /// Note that only styles related to whitespace handling are applicable on a <see cref="TimeOfDay"/>.
+        /// A typical value to specify is <see cref="DateTimeStyles.None"/>.
+        /// </param>
+        /// <param name="timeOfDay">
+        /// When this method returns, contains the <see cref="TimeOfDay"/> value equivalent to the time-of-day
+        /// contained in <paramref name="s"/>, if the conversion succeeded, or <see cref="MinValue"/>
+        /// if the conversion failed. The conversion fails if either the <paramref name="s"/> or
+        /// <paramref name="format"/> parameter is <c>null</c>, is an empty string (""), or does not
+        /// contain a time-of-day that coresponds to the pattern specified in <paramref name="format"/>.
+        /// This parameter is passed uninitialized.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the <paramref name="s"/> parameter was converted successfully; otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="styles"/> styles contains an invalid <see cref="DateTimeStyles"/> values.
+        /// The only styles that are valid for a <see cref="TimeOfDay"/> are:
+        /// <see cref="DateTimeStyles.None"/>, <see cref="DateTimeStyles.AllowLeadingWhite"/>,
+        /// <see cref="DateTimeStyles.AllowTrailingWhite"/>, <see cref="DateTimeStyles.AllowInnerWhite"/>, and
+        /// <see cref="DateTimeStyles.AllowWhiteSpaces"/>.  The other styles are invalid because they only apply
+        /// when both a date and time are being parsed together.
+        /// </exception>
+        public static bool TryParseExact(string s, string format, IFormatProvider provider, DateTimeStyles styles, out TimeOfDay timeOfDay)
         {
             if (((int)styles) >= 8)
                 throw new ArgumentException("styles");
@@ -969,15 +1221,52 @@ namespace System
             DateTime dt;
             if (!DateTime.TryParseExact(s, format, provider, DateTimeStyles.NoCurrentDateDefault | styles, out dt))
             {
-                time = default(TimeOfDay);
+                timeOfDay = default(TimeOfDay);
                 return false;
             }
 
-            time = TimeOfDayFromTimeSpan(dt.TimeOfDay);
+            timeOfDay = TimeOfDayFromTimeSpan(dt.TimeOfDay);
             return true;
         }
 
-        public static bool TryParseExact(string s, string[] formats, IFormatProvider provider, DateTimeStyles styles, out TimeOfDay time)
+        /// <summary>
+        /// Converts the specified string representation of a time-of-day to its <see cref="TimeOfDay"/> equivalent
+        /// using the specified array of formats, culture-specific format information, and style.
+        /// The format of the string representation must match at least one of the specified formats exactly.
+        /// The method returns a value that indicates whether the conversion succeeded.
+        /// </summary>
+        /// <param name="s">A string containing a time-of-day to convert.</param>
+        /// <param name="formats">An array of allowable formats of <paramref name="s"/>.</param>
+        /// <param name="provider">
+        /// An object that supplies culture-specific formatting information about <paramref name="s"/>.
+        /// </param>
+        /// <param name="styles">
+        /// A bitwise combination of the enumeration values that indicates the style elements that
+        /// can be present in <paramref name="s"/> for the parse operation to succeed.
+        /// Note that only styles related to whitespace handling are applicable on a <see cref="TimeOfDay"/>.
+        /// A typical value to specify is <see cref="DateTimeStyles.None"/>.
+        /// </param>
+        /// <param name="timeOfDay">
+        /// When this method returns, contains the <see cref="TimeOfDay"/> value equivalent to the time-of-day
+        /// contained in <paramref name="s"/>, if the conversion succeeded, or <see cref="MinValue"/>
+        /// if the conversion failed. The conversion fails if either the <paramref name="s"/> or
+        /// <paramref name="formats"/> parameter is <c>null</c>, <paramref name="s"/> or an element of
+        /// <paramref name="formats"/> is an empty string (""), or the format of <paramref name="s"/> is not
+        /// exactly as specified by at least one of the format patterns in <paramref name="formats"/>.
+        /// This parameter is passed uninitialized.
+        /// </param>
+        /// <returns>
+        /// <c>true</c> if the <paramref name="s"/> parameter was converted successfully; otherwise, <c>false</c>.
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="styles"/> styles contains an invalid <see cref="DateTimeStyles"/> values.
+        /// The only styles that are valid for a <see cref="TimeOfDay"/> are:
+        /// <see cref="DateTimeStyles.None"/>, <see cref="DateTimeStyles.AllowLeadingWhite"/>,
+        /// <see cref="DateTimeStyles.AllowTrailingWhite"/>, <see cref="DateTimeStyles.AllowInnerWhite"/>, and
+        /// <see cref="DateTimeStyles.AllowWhiteSpaces"/>.  The other styles are invalid because they only apply
+        /// when both a date and time are being parsed together.
+        /// </exception>
+        public static bool TryParseExact(string s, string[] formats, IFormatProvider provider, DateTimeStyles styles, out TimeOfDay timeOfDay)
         {
             if (((int)styles) >= 8)
                 throw new ArgumentException("styles");
@@ -991,11 +1280,11 @@ namespace System
             DateTime dt;
             if (!DateTime.TryParseExact(s, formats, provider, DateTimeStyles.NoCurrentDateDefault | styles, out dt))
             {
-                time = default(TimeOfDay);
+                timeOfDay = default(TimeOfDay);
                 return false;
             }
 
-            time = TimeOfDayFromTimeSpan(dt.TimeOfDay);
+            timeOfDay = TimeOfDayFromTimeSpan(dt.TimeOfDay);
             return true;
         }
 
