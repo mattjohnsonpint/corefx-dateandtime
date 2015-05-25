@@ -430,47 +430,177 @@ namespace System
             return TimeSpan.FromTicks((endTime._ticks - startTime._ticks + TicksPerDay) % TicksPerDay);
         }
 
+        /// <summary>
+        /// Gets a <see cref="TimeOfDay"/> object whose value is ahead or behind the value of this instance by the
+        /// specified amount of time. Positive values will move the time forward; negative values will move the
+        /// time backwards.
+        /// </summary>
+        /// <param name="timeSpan">The amount of time to adjust by. The value can be negative or positive.</param>
+        /// <returns>
+        /// A new <see cref="TimeOfDay"/> object which is the result of adjusting this instance by the
+        /// <paramref name="timeSpan"/> specified.
+        /// </returns>
+        /// <remarks>
+        /// The time is modeled on a circular 24-hour clock.  When a value crosses midnight, it carries forward
+        /// into the next day.  For example, 23:00 plus two hours is 01:00.
+        /// </remarks>
         public TimeOfDay Add(TimeSpan timeSpan)
         {
             return AddTicks(timeSpan.Ticks);
         }
 
+        /// <summary>
+        /// Gets a <see cref="TimeOfDay"/> object whose value is ahead or behind the value of this instance by the
+        /// specified number of hours. Positive values will move the time forward; negative values will move the
+        /// time backwards.
+        /// </summary>
+        /// <param name="hours">The number of hours to adjust by. The value can be negative or positive.</param>
+        /// <returns>
+        /// A new <see cref="TimeOfDay"/> object which is the result of adjusting this instance by the
+        /// <paramref name="hours"/> specified.
+        /// </returns>
+        /// <remarks>
+        /// The time is modeled on a circular 24-hour clock.  When a value crosses midnight, it carries forward
+        /// into the next day.  For example, 23:00 plus one hour is 00:00.
+        /// </remarks>
         public TimeOfDay AddHours(double hours)
         {
             return AddTicks((long)(hours * TicksPerHour));
         }
 
+        /// <summary>
+        /// Gets a <see cref="TimeOfDay"/> object whose value is ahead or behind the value of this instance by the
+        /// specified number of minutes. Positive values will move the time forward; negative values will move the
+        /// time backwards.
+        /// </summary>
+        /// <param name="minutes">The number of minutes to adjust by. The value can be negative or positive.</param>
+        /// <returns>
+        /// A new <see cref="TimeOfDay"/> object which is the result of adjusting this instance by the
+        /// <paramref name="minutes"/> specified.
+        /// </returns>
+        /// <remarks>
+        /// The time is modeled on a circular 24-hour clock.  When a value crosses midnight, it carries forward
+        /// into the next day.  For example, 23:59 plus one minute is 00:00.
+        /// </remarks>
         public TimeOfDay AddMinutes(double minutes)
         {
             return AddTicks((long)(minutes * TicksPerMinute));
         }
 
+        /// <summary>
+        /// Gets a <see cref="TimeOfDay"/> object whose value is ahead or behind the value of this instance by the
+        /// specified number of seconds. Positive values will move the time forward; negative values will move the
+        /// time backwards.
+        /// </summary>
+        /// <param name="seconds">The number of seconds to adjust by. The value can be negative or positive.</param>
+        /// <returns>
+        /// A new <see cref="TimeOfDay"/> object which is the result of adjusting this instance by the
+        /// <paramref name="seconds"/> specified.
+        /// </returns>
+        /// <remarks>
+        /// The time is modeled on a circular 24-hour clock.  When a value crosses midnight, it carries forward
+        /// into the next day.  For example, 23:59:59 plus one second is 00:00:00.
+        /// </remarks>
         public TimeOfDay AddSeconds(double seconds)
         {
             return AddTicks((long)(seconds * TicksPerSecond));
         }
 
+        /// <summary>
+        /// Gets a <see cref="TimeOfDay"/> object whose value is ahead or behind the value of this instance by the
+        /// specified number of milliseconds. Positive values will move the time forward; negative values will move the
+        /// time backwards.
+        /// </summary>
+        /// <param name="milliseconds">
+        /// The number of milliseconds to adjust by. The value can be negative or positive.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="TimeOfDay"/> object which is the result of adjusting this instance by the
+        /// <paramref name="milliseconds"/> specified.
+        /// </returns>
+        /// <remarks>
+        /// The time is modeled on a circular 24-hour clock.  When a value crosses midnight, it carries forward
+        /// into the next day.  For example, 23:59:59.9990000 plus one millisecond is 00:00:00.0000000.
+        /// </remarks>
         public TimeOfDay AddMilliseconds(double milliseconds)
         {
             return AddTicks((long)(milliseconds * TicksPerMillisecond));
         }
 
+        /// <summary>
+        /// Gets a <see cref="TimeOfDay"/> object whose value is ahead or behind the value of this instance by the
+        /// specified number of ticks. Positive values will move the time forward; negative values will move the
+        /// time backwards.
+        /// </summary>
+        /// <param name="ticks">
+        /// The number of ticks to adjust by. The value can be negative or positive.
+        /// A tick is a unit of time equal to 100 nanoseconds.
+        /// </param>
+        /// <returns>
+        /// A new <see cref="TimeOfDay"/> object which is the result of adjusting this instance by the
+        /// <paramref name="ticks"/> specified.
+        /// </returns>
+        /// <remarks>
+        /// The time is modeled on a circular 24-hour clock.  When a value crosses midnight, it carries forward
+        /// into the next day.  For example, 23:59:59.9999999 plus one tick is 00:00:00.0000000.
+        /// </remarks>
         public TimeOfDay AddTicks(long ticks)
         {
             long t = (_ticks + TicksPerDay + (ticks % TicksPerDay)) % TicksPerDay;
             return new TimeOfDay(t);
         }
 
+        /// <summary>
+        /// Gets a <see cref="TimeOfDay"/> object whose value is ahead or behind the value of this instance by the
+        /// specified amount of time. Positive values will move the time backwards; negative values will move the
+        /// time forward.  This is equivalent to calling <c>Add(timeSpan.Negate())</c>.
+        /// </summary>
+        /// <param name="timeSpan">The amount of time to adjust by. The value can be negative or positive.</param>
+        /// <returns>
+        /// A new <see cref="TimeOfDay"/> object which is the result of adjusting this instance by the
+        /// <paramref name="timeSpan"/> specified.
+        /// </returns>
+        /// <remarks>
+        /// The time is modeled on a circular 24-hour clock.  When a value crosses midnight, it carries backwards
+        /// into the previous day.  For example, 01:00 minus two hours is 23:00.
+        /// </remarks>
         public TimeOfDay Subtract(TimeSpan timeSpan)
         {
             return AddTicks(-timeSpan.Ticks);
         }
 
+
+        /// <summary>
+        /// Adds a specified time interval to a specified time, yielding a new time.
+        /// </summary>
+        /// <param name="timeOfDay">The time of day value to add to.</param>
+        /// <param name="timeSpan">The time interval to add.</param>
+        /// <returns>
+        /// A <see cref="TimeOfDay"/> object which is the result of adding the <paramref name="timeSpan"/>
+        /// specified to the <paramref name="timeOfDay"/> provided.
+        /// </returns>
+        /// <remarks>
+        /// The time is modeled on a circular 24-hour clock.  When a value crosses midnight, it carries forward
+        /// into the next day.  For example, 23:00 plus two hours is 01:00.
+        /// </remarks>
         public static TimeOfDay operator +(TimeOfDay timeOfDay, TimeSpan timeSpan)
         {
             return timeOfDay.Add(timeSpan);
         }
 
+        /// <summary>
+        /// Subtracts a specified time interval to a specified time, yielding a new time.
+        /// </summary>
+        /// <param name="timeOfDay">The time of day value to subtract from.</param>
+        /// <param name="timeSpan">The time interval to subtract.</param>
+        /// <returns>
+        /// A <see cref="TimeOfDay"/> object which is the result of subtracting the <paramref name="timeSpan"/>
+        /// specified from the <paramref name="timeOfDay"/> provided.
+        /// </returns>
+        /// <remarks>
+        /// The time is modeled on a circular 24-hour clock.  When a value crosses midnight, it carries backwards
+        /// into the previous day.  For example, 01:00 minus two hours is 23:00.
+        /// </remarks>
         public static TimeOfDay operator -(TimeOfDay timeOfDay, TimeSpan timeSpan)
         {
             return timeOfDay.Subtract(timeSpan);
