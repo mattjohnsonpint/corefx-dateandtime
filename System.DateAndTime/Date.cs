@@ -343,11 +343,11 @@ namespace System
         /// value will be adjusted to February 28.
         /// </para>
         /// </summary>
+        /// <param name="years">The number of years to adjust by. The value can be negative or positive.</param>
         /// <returns>
         /// A new <see cref="Date"/> object which is the result of adjusting this instance by the
         /// <paramref name="years"/> specified.
         /// </returns>
-        /// <param name="years">The number of years to adjust by. The value can be negative or positive.</param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="years"/> or the resulting <see cref="Date"/> is less than <see cref="Date.MinValue"/>
         /// or greater than <see cref="Date.MaxValue"/>.
@@ -370,11 +370,11 @@ namespace System
         /// adjusted backward to the last day of the month.
         /// </para>
         /// </summary>
+        /// <param name="months">The number of months to adjust by. The value can be negative or positive.</param>
         /// <returns>
         /// A new <see cref="Date"/> object which is the result of adjusting this instance by the
         /// <paramref name="months"/> specified.
         /// </returns>
-        /// <param name="months">The number of months to adjust by. The value can be negative or positive.</param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="months"/> or the resulting <see cref="Date"/> is less than <see cref="Date.MinValue"/>
         /// or greater than <see cref="Date.MaxValue"/>.
@@ -415,11 +415,11 @@ namespace System
         /// Gets a <see cref="Date"/> object whose value is ahead or behind the value of this instance by the specified
         /// number of days. Positive values will move the date forward; negative values will move the date backwards.
         /// </summary>
+        /// <param name="days">The number of days to adjust by. The value can be negative or positive.</param>
         /// <returns>
         /// A new <see cref="Date"/> object which is the result of adjusting this instance by the
         /// <paramref name="days"/> specified.
         /// </returns>
-        /// <param name="days">The number of days to adjust by. The value can be negative or positive.</param>
         /// <exception cref="ArgumentOutOfRangeException">
         /// <paramref name="days"/> or the resulting <see cref="Date"/> is less than <see cref="Date.MinValue"/>
         /// or greater than <see cref="Date.MaxValue"/>.
