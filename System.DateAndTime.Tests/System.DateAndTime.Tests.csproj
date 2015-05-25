@@ -55,6 +55,7 @@
     <Compile Include="DateConstructionTests.cs" />
     <Compile Include="DateFormattingTests.cs" />
     <Compile Include="DateMathTests.cs" />
+    <Compile Include="DateMiscTests.cs" />
     <Compile Include="TimeOfDayComparisonTests.cs" />
     <Compile Include="TimeOfDayConstructionTests.cs" />
     <Compile Include="TimeOfDayMathTests.cs" />
