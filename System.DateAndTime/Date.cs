@@ -354,7 +354,7 @@ namespace System
         /// </exception>
         public Date AddYears(int years)
         {
-            if (years < -10000 || years > 10000)
+            if (years <= -10000 || years >= 10000)
                 throw new ArgumentOutOfRangeException("years");
             Contract.EndContractBlock();
 
@@ -381,7 +381,7 @@ namespace System
         /// </exception>
         public Date AddMonths(int months)
         {
-            if (months < -120000 || months > 120000)
+            if (months <= -120000 || months >= 120000)
                 throw new ArgumentOutOfRangeException("months");
             Contract.EndContractBlock();
 
