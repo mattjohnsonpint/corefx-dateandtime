@@ -606,6 +606,34 @@ namespace System
             return timeOfDay.Subtract(timeSpan);
         }
 
+        /// <summary>
+        /// Compares two instances of <see cref="TimeOfDay"/> and returns an integer that indicates whether the first
+        /// instance is earlier than, the same as, or later than the second instance, within the same day.
+        /// </summary>
+        /// <param name="t1">The first object to compare.</param>
+        /// <param name="t2">The second object to compare.</param>
+        /// <returns>
+        /// A signed number indicating the relative values of <paramref name="t1"/> and <paramref name="t2"/>.
+        /// <list type="table">
+        /// <listheader><term>Value</term><term>Description</term></listheader>
+        /// <item>
+        ///   <term>Less than zero</term>
+        ///   <term><paramref name="t1"/> is earlier than <paramref name="t2"/>.</term>
+        /// </item>
+        /// <item>
+        ///   <term>Zero</term>
+        ///   <term><paramref name="t1"/> is the same as <paramref name="t2"/>.</term>
+        /// </item>
+        /// <item>
+        ///   <term>Greater than zero</term>
+        ///   <term><paramref name="t1"/> is later than <paramref name="t2"/>.</term>
+        /// </item>
+        /// </list>
+        /// </returns>
+        /// <remarks>
+        /// This operation considers all time values to be contained within the same day.  If you need to compare
+        /// time values that cross midnight into a different day, use the <see cref="IsBetween"/> method instead.
+        /// </remarks>
         public static int Compare(TimeOfDay t1, TimeOfDay t2)
         {
             if (t1._ticks > t2._ticks) return 1;
@@ -613,11 +641,73 @@ namespace System
             return 0;
         }
 
+        /// <summary>
+        /// Compares the value of this instance to a specified <see cref="TimeOfDay"/> value and returns an integer
+        /// that indicates whether this instance is earlier than, the same as, or later than the specified
+        /// <see cref="TimeOfDay"/> value, within the same day.
+        /// </summary>
+        /// <param name="value">The object to compare to the current instance.</param>
+        /// <returns>
+        /// A signed number indicating the relative values of this instance and the <paramref name="value"/> parameter.
+        /// <list type="table">
+        /// <listheader><term>Value</term><term>Description</term></listheader>
+        /// <item>
+        ///   <term>Less than zero</term>
+        ///   <term>This instance is earlier than <paramref name="value"/>.</term>
+        /// </item>
+        /// <item>
+        ///   <term>Zero</term>
+        ///   <term>This instance is the same as <paramref name="value"/>.</term>
+        /// </item>
+        /// <item>
+        ///   <term>Greater than zero</term>
+        ///   <term>This instance is later than <paramref name="value"/>.</term>
+        /// </item>
+        /// </list>
+        /// </returns>
+        /// <remarks>
+        /// This operation considers all time values to be contained within the same day.  If you need to compare
+        /// time values that cross midnight into a different day, use the <see cref="IsBetween"/> method instead.
+        /// </remarks>
         public int CompareTo(TimeOfDay value)
         {
             return Compare(this, value);
         }
 
+        /// <summary>
+        /// Compares the value of this instance to a specified object that contains a <see cref="TimeOfDay"/> value and
+        /// returns an integer that indicates whether this instance is earlier than, the same as, or later than the
+        /// specified <see cref="TimeOfDay"/> value, within the same day.
+        /// </summary>
+        /// <param name="value">The object to compare to the current instance.</param>
+        /// <returns>
+        /// A signed number indicating the relative values of this instance and the <paramref name="value"/> parameter.
+        /// <list type="table">
+        /// <listheader><term>Value</term><term>Description</term></listheader>
+        /// <item>
+        ///   <term>Less than zero</term>
+        ///   <term>This instance is earlier than <paramref name="value"/>.</term>
+        /// </item>
+        /// <item>
+        ///   <term>Zero</term>
+        ///   <term>This instance is earlier than <paramref name="value"/>.</term>
+        /// </item>
+        /// <item>
+        ///   <term>Greater than zero</term>
+        ///   <term>
+        ///     This instance is later than <paramref name="value"/>,
+        ///     or <paramref name="value"/> is <c>null</c>.
+        ///   </term>
+        /// </item>
+        /// </list>
+        /// </returns>
+        /// <remarks>
+        /// This operation considers all time values to be contained within the same day.  If you need to compare
+        /// time values that cross midnight into a different day, use the <see cref="IsBetween"/> method instead.
+        /// </remarks>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="value"/> is not a <see cref="TimeOfDay"/>.
+        /// </exception>
         public int CompareTo(object value)
         {
             if (value == null) return 1;
@@ -627,22 +717,53 @@ namespace System
             return Compare(this, (TimeOfDay)value);
         }
 
+        /// <summary>
+        /// Returns a value indicating whether two <see cref="TimeOfDay"/> instances have the same time value.
+        /// </summary>
+        /// <param name="t1">The first object to compare.</param>
+        /// <param name="t2">The second object to compare.</param>
+        /// <returns><c>true</c> if the two values are equal; otherwise, <c>false</c>.</returns>
         public static bool Equals(TimeOfDay t1, TimeOfDay t2)
         {
             return t1.Equals(t2);
         }
 
+        /// <summary>
+        /// Returns a value indicating whether the value of this instance is equal to the value of the specified
+        /// <see cref="TimeOfDay"/> instance.
+        /// </summary>
+        /// <param name="value">The other <see cref="TimeOfDay"/> object to compare against this instance.</param>
+        /// <returns>
+        /// <c>true</c> if the <paramref name="value"/> parameter equals the value of this instance;
+        /// otherwise, <c>false</c>.
+        /// </returns>
         public bool Equals(TimeOfDay value)
         {
             return _ticks == value._ticks;
         }
 
+        /// <summary>
+        /// Returns a value indicating whether this instance is equal to the specified object.
+        /// </summary>
+        /// <param name="value">The object to compare to this instance.</param>
+        /// <returns>
+        /// <c>true</c> if <paramref name="value"/> is an instance of <see cref="TimeOfDay"/>
+        /// and equals the value of this instance; otherwise, <c>false</c>.
+        /// </returns>
         public override bool Equals(object value)
         {
             if (ReferenceEquals(null, value)) return false;
             return value is TimeOfDay && Equals((TimeOfDay)value);
         }
 
+        /// <summary>
+        /// Returns the hash code of this instance.
+        /// </summary>
+        /// <returns>A 32-bit signed integer hash code.</returns>
+        /// <remarks>
+        /// The hash code of a <see cref="TimeOfDay"/> object is the same as the hash code of
+        /// its <see cref="Ticks"/> value.
+        /// </remarks>
         public override int GetHashCode()
         {
             return _ticks.GetHashCode();
