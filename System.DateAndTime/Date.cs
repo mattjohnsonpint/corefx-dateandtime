@@ -612,6 +612,9 @@ namespace System
         /// </item>
         /// </list>
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="value"/> is not a <see cref="Date"/>.
+        /// </exception>
         public int CompareTo(object value)
         {
             if (value == null) return 1;
@@ -636,7 +639,7 @@ namespace System
         /// Returns a value indicating whether the value of this instance is equal to the value of the specified
         /// <see cref="Date"/> instance.
         /// </summary>
-        /// <param name="value">The other date object to compare against this instance.</param>
+        /// <param name="value">The other <see cref="Date"/> object to compare against this instance.</param>
         /// <returns>
         /// <c>true</c> if the <paramref name="value"/> parameter equals the value of this instance;
         /// otherwise, <c>false</c>.
