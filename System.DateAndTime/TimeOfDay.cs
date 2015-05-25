@@ -949,31 +949,105 @@ namespace System
             return true;
         }
 
+        /// <summary>
+        /// Determines whether two specified instances of <see cref="TimeOfDay"/> are equal.
+        /// </summary>
+        /// <param name="t1">The first object to compare.</param>
+        /// <param name="t2">The second object to compare.</param>
+        /// <returns>
+        /// <c>true</c> if <paramref name="t1"/> and <paramref name="t2"/> represent the same time of day;
+        /// otherwise, <c>false</c>.
+        /// </returns>
         public static bool operator ==(TimeOfDay t1, TimeOfDay t2)
         {
             return t1.Equals(t2);
         }
 
+        /// <summary>
+        /// Determines whether two specified instances of <see cref="TimeOfDay"/> are not equal.
+        /// </summary>
+        /// <param name="t1">The first object to compare.</param>
+        /// <param name="t2">The second object to compare.</param>
+        /// <returns>
+        /// <c>true</c> if <paramref name="t1"/> and <paramref name="t2"/> do not represent the same time of day;
+        /// otherwise, <c>false</c>.
+        /// </returns>
         public static bool operator !=(TimeOfDay t1, TimeOfDay t2)
         {
             return !t1.Equals(t2);
         }
 
+        /// <summary>
+        /// Determines whether one specified <see cref="TimeOfDay"/> is later than another specified
+        /// <see cref="TimeOfDay"/>, within the same day.
+        /// </summary>
+        /// <param name="t1">The first object to compare.</param>
+        /// <param name="t2">The second object to compare.</param>
+        /// <returns>
+        /// <c>true</c> if <paramref name="t1"/> is later than <paramref name="t2"/> within the same day;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        /// <remarks>
+        /// This operation considers all time values to be contained within the same day.  If you need to compare
+        /// time values that cross midnight into a different day, use the <see cref="IsBetween"/> method instead.
+        /// </remarks>
         public static bool operator >(TimeOfDay t1, TimeOfDay t2)
         {
             return t1._ticks > t2._ticks;
         }
 
+        /// <summary>
+        /// Determines whether one specified <see cref="TimeOfDay"/> is equal to or later than another specified
+        /// <see cref="TimeOfDay"/>, within the same day.
+        /// </summary>
+        /// <param name="t1">The first object to compare.</param>
+        /// <param name="t2">The second object to compare.</param>
+        /// <returns>
+        /// <c>true</c> if <paramref name="t1"/> is equal to or later than <paramref name="t2"/> within the same day;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        /// <remarks>
+        /// This operation considers all time values to be contained within the same day.  If you need to compare
+        /// time values that cross midnight into a different day, use the <see cref="IsBetween"/> method instead.
+        /// </remarks>
         public static bool operator >=(TimeOfDay t1, TimeOfDay t2)
         {
             return t1._ticks >= t2._ticks;
         }
 
+        /// <summary>
+        /// Determines whether one specified <see cref="TimeOfDay"/> is earlier than another specified
+        /// <see cref="TimeOfDay"/>, within the same day.
+        /// </summary>
+        /// <param name="t1">The first object to compare.</param>
+        /// <param name="t2">The second object to compare.</param>
+        /// <returns>
+        /// <c>true</c> if <paramref name="t1"/> is earlier than <paramref name="t2"/> within the same day;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        /// <remarks>
+        /// This operation considers all time values to be contained within the same day.  If you need to compare
+        /// time values that cross midnight into a different day, use the <see cref="IsBetween"/> method instead.
+        /// </remarks>
         public static bool operator <(TimeOfDay t1, TimeOfDay t2)
         {
             return t1._ticks < t2._ticks;
         }
 
+        /// <summary>
+        /// Determines whether one specified <see cref="TimeOfDay"/> is equal to or earlier than another specified
+        /// <see cref="TimeOfDay"/>, within the same day.
+        /// </summary>
+        /// <param name="t1">The first object to compare.</param>
+        /// <param name="t2">The second object to compare.</param>
+        /// <returns>
+        /// <c>true</c> if <paramref name="t1"/> is equal to or earlier than <paramref name="t2"/> within the same day;
+        /// otherwise, <c>false</c>.
+        /// </returns>
+        /// <remarks>
+        /// This operation considers all time values to be contained within the same day.  If you need to compare
+        /// time values that cross midnight into a different day, use the <see cref="IsBetween"/> method instead.
+        /// </remarks>
         public static bool operator <=(TimeOfDay t1, TimeOfDay t2)
         {
             return t1._ticks <= t2._ticks;
