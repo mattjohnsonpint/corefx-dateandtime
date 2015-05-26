@@ -556,6 +556,32 @@ namespace System
 
             return years;
         }
+
+        /// <summary>
+        /// Determines if a date falls within the range provided.
+        /// </summary>
+        /// <param name="startDate">The starting date, inclusive.</param>
+        /// <param name="endDate">
+        /// The ending date, either inclusive or exclusive, depending on the value of
+        /// <paramref name="exclusiveEndDate"/>.
+        /// </param>
+        /// <param name="exclusiveEndDate">
+        /// If true, then the <paramref name="endDate"/> is treated as exclusive.
+        /// Otherwise, the <paramref name="endDate"/> is treated as inclusive.
+        /// The default is <c>false</c> (inclusive).
+        /// </param>
+        /// <returns>True, if the date falls within the range, false otherwise.</returns>
+        /// <remarks>
+        /// Because a <see cref="Date"/> is intended to represent a whole calendar date,
+        /// this operation is inclusive by default.  For example, January 7th would be
+        /// considered to be included in the week of January 1st through January 7th.
+        /// If you desire the end date to be excluded, then set the <paramref name="exclusiveEndDate"/>
+        /// parameter to <c>true</c>.
+        /// </remarks>
+        public bool IsBetween(Date startDate, Date endDate, bool exclusiveEndDate = false)
+        {
+            return this >= startDate && (this < endDate || (this == endDate && !exclusiveEndDate));
+        }
         
         /// <summary>
         /// Compares two instances of <see cref="Date"/> and returns an integer that indicates whether the first
