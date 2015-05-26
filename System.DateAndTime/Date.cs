@@ -444,7 +444,7 @@ namespace System
         /// <param name="date">The target <see cref="Date"/> value.</param>
         /// <returns>The integer number of days until the date specified.</returns>
         /// <remarks>
-        /// Unlike the <see cref="DaysInRange"/> method, this operation uses an exclusive upper bound.
+        /// This operation uses an exclusive upper bound.
         /// For example, if the current instance represents January 1st, there is one day until January 2nd.
         /// </remarks>
         public int DaysUntil(Date date)
@@ -453,81 +453,110 @@ namespace System
         }
 
         /// <summary>
-        /// Returns the number of days in the range of the two dates specified.  The parameters <paramref name="d1"/>
-        /// and <paramref name="d2"/> make up a fully-inclusive range of dates.  For example, there are
-        /// two days between January 1st and January 2nd.
-        /// <para>The order of the parameters does not matter; the result is always positive.</para>
+        /// Returns the number of days elapsed from the <paramref name="date"/> specified to this date.
+        /// If the <paramref name="date"/> has not yet passed, the result will be negative.
         /// </summary>
-        /// <param name="d1">The first <see cref="Date"/> in the inclusive range.</param>
-        /// <param name="d2">The second <see cref="Date"/> in the inclusive range.</param>
-        /// <returns>The number of days in the range.</returns>
+        /// <param name="date">The target <see cref="Date"/> value.</param>
+        /// <returns>The integer number of days since the date specified.</returns>
         /// <remarks>
-        /// Because a <see cref="Date"/> inherently represents a whole day, the range used by this method is
-        /// fully-inclusive.  This is unlike the <see cref="MonthsInRange"/> and <see cref="YearsInRange"/> methods.
-        /// <seealso cref="DaysUntil"/>
+        /// This operation uses an exclusive upper bound.
+        /// For example, if the current instance represents January 2nd, there has been one day since January 1st.
         /// </remarks>
-        public static int DaysInRange(Date d1, Date d2)
+        public int DaysSince(Date date)
         {
-            var delta = d2.DayNumber - d1.DayNumber;
-            return (delta >= 0 ? delta : -delta) + 1;
+            return _dayNumber - date.DayNumber;
         }
 
         /// <summary>
-        /// Returns the number of whole months in the range of the two dates specified.
-        /// The parameters <paramref name="d1"/> and <paramref name="d2"/> make up a half-open range of dates.
-        /// For example, there is one whole month between January 1st and February 1st.
-        /// <para>The order of the parameters does not matter; the result is always positive.</para>
-        /// <para>The calculation does not include partial months.</para>
+        /// Returns the number of whole months remaining from this date to the <paramref name="date"/> specified.
+        /// If the <paramref name="date"/> has already passed, the result will be negative.
         /// </summary>
-        /// <param name="d1">The first <see cref="Date"/> in the range.</param>
-        /// <param name="d2">The second <see cref="Date"/> in the range.</param>
-        /// <returns>The number of whole months in the range.</returns>
+        /// <param name="date">The target <see cref="Date"/> value.</param>
+        /// <returns>The integer number of whole months until the date specified.</returns>
         /// <remarks>
-        /// Note that the calculation assumes the proleptic Gregorian calendar.
+        /// This operation uses an exclusive upper bound.
+        /// For example, if the current instance represents January 1st, there is one month until February 1st.
         /// </remarks>
-        public static int MonthsInRange(Date d1, Date d2)
+        public int MonthsUntil(Date date)
         {
-            if (d1 == d2)
+            if (this == date)
                 return 0;
 
-            Date min = d1 < d2 ? d1 : d2;
-            Date max = d1 > d2 ? d1 : d2;
-
-            int months = (max.Year * 12 + max.Month) - (min.Year * 12 + min.Month);
-            if (min > max.AddMonths(-months))
+            int months = (date.Year * 12 + date.Month) - (this.Year * 12 + this.Month);
+            if (this > date.AddMonths(-months))
                 months--;
 
             return months;
         }
 
         /// <summary>
-        /// Returns the number of whole years in the range of the two dates specified.
-        /// The parameters <paramref name="d1"/> and <paramref name="d2"/> make up a half-open range of dates.
-        /// For example, there is one whole year between <c>2000-01-01</c> and <c>2001-01-01</c>.
-        /// <para>The order of the parameters does not matter; the result is always positive.</para>
-        /// <para>The calculation does not include partial years.</para>
+        /// Returns the number of whole months elapsed from the <paramref name="date"/> specified to this date.
+        /// If the <paramref name="date"/> has not yet passed, the result will be negative.
         /// </summary>
-        /// <param name="d1">The first <see cref="Date"/> in the range.</param>
-        /// <param name="d2">The second <see cref="Date"/> in the range.</param>
-        /// <returns>The number of whole years in the range.</returns>
+        /// <param name="date">The target <see cref="Date"/> value.</param>
+        /// <returns>The integer number of whole months since the date specified.</returns>
         /// <remarks>
-        /// This method is useful for calculating a person's age, and similar anniversaries.
+        /// This operation uses an exclusive upper bound.
+        /// For example, if the current instance represents February 1st, there has been one month since January 1st.
         /// </remarks>
-        public static int YearsInRange(Date d1, Date d2)
+        public int MonthsSince(Date date)
         {
-            if (d1 == d2)
+            if (this == date)
                 return 0;
 
-            Date min = d1 < d2 ? d1 : d2;
-            Date max = d1 > d2 ? d1 : d2;
+            int months = (this.Year * 12 + this.Month) - (date.Year * 12 + date.Month);
+            if (date > this.AddMonths(-months))
+                months--;
 
-            int years = max.Year - min.Year;
-            if (min > max.AddYears(-years))
+            return months;
+        }
+
+        /// <summary>
+        /// Returns the number of whole years remaining from this date to the <paramref name="date"/> specified.
+        /// If the <paramref name="date"/> has already passed, the result will be negative.
+        /// </summary>
+        /// <param name="date">The target <see cref="Date"/> value.</param>
+        /// <returns>The integer number of whole years until the date specified.</returns>
+        /// <remarks>
+        /// This operation uses an exclusive upper bound.
+        /// For example, if the current instance represents <c>2000-01-01</c>,
+        /// there is one year until <c>2001-01-01</c>.
+        /// </remarks>
+        public int YearsUntil(Date date)
+        {
+            if (this == date)
+                return 0;
+
+            int years = date.Year - this.Year;
+            if (this > date.AddYears(-years))
                 years--;
 
             return years;
         }
 
+        /// <summary>
+        /// Returns the number of whole years elapsed from the <paramref name="date"/> specified to this date.
+        /// If the <paramref name="date"/> has not yet passed, the result will be negative.
+        /// </summary>
+        /// <param name="date">The target <see cref="Date"/> value.</param>
+        /// <returns>The integer number of whole years since the date specified.</returns>
+        /// <remarks>
+        /// This operation uses an exclusive upper bound.
+        /// For example, if the current instance represents <c>2001-01-01</c>,
+        /// there has been one year since <c>2000-01-01</c>.
+        /// </remarks>
+        public int YearsSince(Date date)
+        {
+            if (this == date)
+                return 0;
+
+            int years = this.Year - date.Year;
+            if (date > this.AddYears(-years))
+                years--;
+
+            return years;
+        }
+        
         /// <summary>
         /// Compares two instances of <see cref="Date"/> and returns an integer that indicates whether the first
         /// instance is earlier than, the same as, or later than the second instance.
