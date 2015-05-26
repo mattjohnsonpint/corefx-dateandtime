@@ -282,5 +282,203 @@ namespace System.DateAndTime.Tests
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => Date.MaxValue.AddDays(-3652059));
         }
+
+        [Fact]
+        public void CanCalculateDaysUntilDate_Positive()
+        {
+            Date start = new Date(2000, 1, 1);
+            Date end = new Date(2000, 1, 2);
+
+            int days = start.DaysUntil(end);
+
+            Assert.Equal(1, days);
+        }
+
+        [Fact]
+        public void CanCalculateDaysUntilDate_Negative()
+        {
+            Date start = new Date(2000, 1, 2);
+            Date end = new Date(2000, 1, 1);
+
+            int days = start.DaysUntil(end);
+
+            Assert.Equal(-1, days);
+        }
+
+        [Fact]
+        public void CanCalculateDaysUntilDate_MinToMax()
+        {
+            Date start = Date.MinValue;
+            Date end = Date.MaxValue;
+
+            int days = start.DaysUntil(end);
+
+            Assert.Equal(3652058, days);
+        }
+
+        [Fact]
+        public void CanCalculateDaysSinceDate_Positive()
+        {
+            Date start = new Date(2000, 1, 1);
+            Date end = new Date(2000, 1, 2);
+
+            int days = end.DaysSince(start);
+
+            Assert.Equal(1, days);
+        }
+
+        [Fact]
+        public void CanCalculateDaysSinceDate_Negative()
+        {
+            Date start = new Date(2000, 1, 2);
+            Date end = new Date(2000, 1, 1);
+
+            int days = end.DaysSince(start);
+
+            Assert.Equal(-1, days);
+        }
+
+        [Fact]
+        public void CanCalculateDaysSinceDate_MinToMax()
+        {
+            Date start = Date.MinValue;
+            Date end = Date.MaxValue;
+
+            int days = end.DaysSince(start);
+
+            Assert.Equal(3652058, days);
+        }
+
+        [Fact]
+        public void CanCalculateMonthsUntilDate_Positive()
+        {
+            Date start = new Date(2000, 1, 1);
+            Date end = new Date(2000, 2, 1);
+
+            int months = start.MonthsUntil(end);
+
+            Assert.Equal(1, months);
+        }
+
+        [Fact]
+        public void CanCalculateMonthsUntilDate_Negative()
+        {
+            Date start = new Date(2000, 2, 1);
+            Date end = new Date(2000, 1, 1);
+
+            int months = start.MonthsUntil(end);
+
+            Assert.Equal(-1, months);
+        }
+
+        [Fact]
+        public void CanCalculateMonthsUntilDate_MinToMax()
+        {
+            Date start = Date.MinValue;
+            Date end = Date.MaxValue;
+
+            int months = start.MonthsUntil(end);
+
+            Assert.Equal(119987, months);
+        }
+
+        [Fact]
+        public void CanCalculateMonthsSinceDate_Positive()
+        {
+            Date start = new Date(2000, 1, 1);
+            Date end = new Date(2000, 2, 1);
+
+            int months = end.MonthsSince(start);
+
+            Assert.Equal(1, months);
+        }
+
+        [Fact]
+        public void CanCalculateMonthsSinceDate_Negative()
+        {
+            Date start = new Date(2000, 2, 1);
+            Date end = new Date(2000, 1, 1);
+
+            int months = end.MonthsSince(start);
+
+            Assert.Equal(-1, months);
+        }
+
+        [Fact]
+        public void CanCalculateMonthsSinceDate_MinToMax()
+        {
+            Date start = Date.MinValue;
+            Date end = Date.MaxValue;
+
+            int months = end.MonthsSince(start);
+
+            Assert.Equal(119987, months);
+        }
+
+        [Fact]
+        public void CanCalculateYearsUntilDate_Positive()
+        {
+            Date start = new Date(2000, 1, 1);
+            Date end = new Date(2001, 1, 1);
+
+            int years = start.YearsUntil(end);
+
+            Assert.Equal(1, years);
+        }
+
+        [Fact]
+        public void CanCalculateYearsUntilDate_Negative()
+        {
+            Date start = new Date(2001, 1, 1);
+            Date end = new Date(2000, 1, 1);
+
+            int years = start.YearsUntil(end);
+
+            Assert.Equal(-1, years);
+        }
+
+        [Fact]
+        public void CanCalculateYearsUntilDate_MinToMax()
+        {
+            Date start = Date.MinValue;
+            Date end = Date.MaxValue;
+
+            int years = start.YearsUntil(end);
+
+            Assert.Equal(9998, years);
+        }
+
+        [Fact]
+        public void CanCalculateYearsSinceDate_Positive()
+        {
+            Date start = new Date(2000, 1, 1);
+            Date end = new Date(2001, 1, 1);
+
+            int years = end.YearsSince(start);
+
+            Assert.Equal(1, years);
+        }
+
+        [Fact]
+        public void CanCalculateYearsSinceDate_Negative()
+        {
+            Date start = new Date(2001, 1, 1);
+            Date end = new Date(2000, 1, 1);
+
+            int years = end.YearsSince(start);
+
+            Assert.Equal(-1, years);
+        }
+
+        [Fact]
+        public void CanCalculateYearsSinceDate_MinToMax()
+        {
+            Date start = Date.MinValue;
+            Date end = Date.MaxValue;
+
+            int years = end.YearsSince(start);
+
+            Assert.Equal(9998, years);
+        }
     }
 }
