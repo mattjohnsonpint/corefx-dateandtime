@@ -252,8 +252,7 @@ namespace System
                 Contract.Ensures(Contract.Result<int>() >= 1);
                 Contract.Ensures(Contract.Result<int>() <= 12);
 
-                int hour = Hour % 12;
-                return hour == 0 ? 12 : hour;
+                return (Hour + 11) % 12 + 1;
             }
         }
 
