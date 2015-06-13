@@ -1436,10 +1436,10 @@ namespace System
         /// </summary>
         private static int DateToDayNumber(int year, int month, int day)
         {
-            if (year >= 1 && year <= 9999 && month >= 1 && month <= 12)
+            if (year >= 1 && year <= 9999 && month >= 1 && month <= 12 && day >= 1)
             {
                 int[] days = IsLeapYear(year) ? DaysToMonth366 : DaysToMonth365;
-                if (day >= 1 && day <= days[month] - days[month - 1])
+                if (day <= days[month] - days[month - 1])
                 {
                     int y = year - 1;
                     int n = y * 365 + y / 4 - y / 100 + y / 400 + days[month - 1] + day - 1;
