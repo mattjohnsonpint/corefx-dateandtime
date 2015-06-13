@@ -29,10 +29,50 @@ namespace System.DateAndTime.Tests
         }
 
         [Fact]
+        public void ToStringWithNullTimeFormat()
+        {
+            var time = new TimeOfDay(23, 59, 59);
+            var s = time.ToString((string) null);
+            Assert.Equal("11:59:59 PM", s);
+        }
+
+        [Fact]
+        public void ToStringWithEmptyTimeFormat()
+        {
+            var time = new TimeOfDay(23, 59, 59);
+            var s = time.ToString("");
+            Assert.Equal("11:59:59 PM", s);
+        }
+
+        [Fact]
         public void ToStringWithCustomTimeFormat()
         {
             var time = new TimeOfDay(23, 59, 59);
             var s = time.ToString("HH:mm:ss");
+            Assert.Equal("23:59:59", s);
+        }
+
+        [Fact]
+        public void ToStringWithISOTimeFormat_O()
+        {
+            var time = new TimeOfDay(23, 59, 59);
+            var s = time.ToString("O");
+            Assert.Equal("23:59:59.0000000", s);
+        }
+
+        [Fact]
+        public void ToStringWithISOTimeFormat_o()
+        {
+            var time = new TimeOfDay(23, 59, 59);
+            var s = time.ToString("o");
+            Assert.Equal("23:59:59.0000000", s);
+        }
+
+        [Fact]
+        public void ToStringWithISOTimeFormat_s()
+        {
+            var time = new TimeOfDay(23, 59, 59);
+            var s = time.ToString("s");
             Assert.Equal("23:59:59", s);
         }
 

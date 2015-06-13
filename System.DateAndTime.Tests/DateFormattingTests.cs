@@ -37,11 +37,51 @@ namespace System.DateAndTime.Tests
         }
 
         [Fact]
+        public void ToStringWithNullDateFormat()
+        {
+            var date = new Date(2000, 12, 31);
+            var s = date.ToString((string) null);
+            Assert.Equal(s, "12/31/2000");
+        }
+
+        [Fact]
+        public void ToStringWithEmptyDateFormat()
+        {
+            var date = new Date(2000, 12, 31);
+            var s = date.ToString("");
+            Assert.Equal(s, "12/31/2000");
+        }
+
+        [Fact]
         public void ToStringWithCustomDateFormat()
         {
             var date = new Date(2000, 12, 31);
             var s = date.ToString("dd MMM yyyy");
             Assert.Equal(s, "31 Dec 2000");
+        }
+
+        [Fact]
+        public void ToStringWithISODateFormat_O()
+        {
+            var date = new Date(2000, 12, 31);
+            var s = date.ToString("O");
+            Assert.Equal(s, "2000-12-31");
+        }
+
+        [Fact]
+        public void ToStringWithISODateFormat_o()
+        {
+            var date = new Date(2000, 12, 31);
+            var s = date.ToString("o");
+            Assert.Equal(s, "2000-12-31");
+        }
+
+        [Fact]
+        public void ToStringWithISODateFormat_s()
+        {
+            var date = new Date(2000, 12, 31);
+            var s = date.ToString("s");
+            Assert.Equal(s, "2000-12-31");
         }
 
         [Fact]
