@@ -26,6 +26,34 @@ namespace System.DateAndTime.Tests
         }
 
         [Fact]
+        public void CanGetDayFromDate_DayAfterLeapDay1()
+        {
+            Date date = new Date(2000, 3, 1);
+            Assert.Equal(1, date.Day);
+        }
+
+        [Fact]
+        public void CanGetDayFromDate_DayAfterLeapDay2()
+        {
+            Date date = new Date(2004, 3, 1);
+            Assert.Equal(1, date.Day);
+        }
+
+        [Fact]
+        public void CanGetDayFromDate_DayAfterNonLeapDay1()
+        {
+            Date date = new Date(2001, 3, 1);
+            Assert.Equal(1, date.Day);
+        }
+
+        [Fact]
+        public void CanGetDayFromDate_DayAfterNonLeapDay2()
+        {
+            Date date = new Date(1900, 3, 1);
+            Assert.Equal(1, date.Day);
+        }
+
+        [Fact]
         public void CanGetDayOfWeekFromDate()
         {
             Date date = new Date(2015, 12, 31);

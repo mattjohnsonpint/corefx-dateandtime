@@ -295,6 +295,17 @@ namespace System.DateAndTime.Tests
         }
 
         [Fact]
+        public void CanCalculateDaysUntilDate_Zero()
+        {
+            Date start = new Date(2000, 1, 1);
+            Date end = new Date(2000, 1, 1);
+
+            int days = start.DaysUntil(end);
+
+            Assert.Equal(0, days);
+        }
+
+        [Fact]
         public void CanCalculateDaysUntilDate_Negative()
         {
             Date start = new Date(2000, 1, 2);
@@ -328,6 +339,17 @@ namespace System.DateAndTime.Tests
         }
 
         [Fact]
+        public void CanCalculateDaysSinceDate_Zero()
+        {
+            Date start = new Date(2000, 1, 1);
+            Date end = new Date(2000, 1, 1);
+
+            int days = end.DaysSince(start);
+
+            Assert.Equal(0, days);
+        }
+
+        [Fact]
         public void CanCalculateDaysSinceDate_Negative()
         {
             Date start = new Date(2000, 1, 2);
@@ -350,7 +372,7 @@ namespace System.DateAndTime.Tests
         }
 
         [Fact]
-        public void CanCalculateMonthsUntilDate_Positive()
+        public void CanCalculateMonthsUntilDate_Positive1()
         {
             Date start = new Date(2000, 1, 1);
             Date end = new Date(2000, 2, 1);
@@ -361,9 +383,64 @@ namespace System.DateAndTime.Tests
         }
 
         [Fact]
-        public void CanCalculateMonthsUntilDate_Negative()
+        public void CanCalculateMonthsUntilDate_Positive2()
+        {
+            Date start = new Date(2000, 1, 1);
+            Date end = new Date(2000, 2, 2);
+
+            int months = start.MonthsUntil(end);
+
+            Assert.Equal(1, months);
+        }
+
+        [Fact]
+        public void CanCalculateMonthsUntilDate_Zero1()
+        {
+            Date start = new Date(2000, 1, 1);
+            Date end = new Date(2000, 1, 1);
+
+            int months = start.MonthsUntil(end);
+
+            Assert.Equal(0, months);
+        }
+
+        [Fact]
+        public void CanCalculateMonthsUntilDate_Zero2()
+        {
+            Date start = new Date(2000, 1, 1);
+            Date end = new Date(2000, 1, 2);
+
+            int months = start.MonthsUntil(end);
+
+            Assert.Equal(0, months);
+        }
+
+        [Fact]
+        public void CanCalculateMonthsUntilDate_Zero3()
+        {
+            Date start = new Date(2000, 1, 2);
+            Date end = new Date(2000, 2, 1);
+
+            int months = start.MonthsUntil(end);
+
+            Assert.Equal(0, months);
+        }
+
+        [Fact]
+        public void CanCalculateMonthsUntilDate_Negative1()
         {
             Date start = new Date(2000, 2, 1);
+            Date end = new Date(2000, 1, 1);
+
+            int months = start.MonthsUntil(end);
+
+            Assert.Equal(-1, months);
+        }
+
+        [Fact]
+        public void CanCalculateMonthsUntilDate_Negative2()
+        {
+            Date start = new Date(2000, 2, 2);
             Date end = new Date(2000, 1, 1);
 
             int months = start.MonthsUntil(end);
@@ -383,7 +460,7 @@ namespace System.DateAndTime.Tests
         }
 
         [Fact]
-        public void CanCalculateMonthsSinceDate_Positive()
+        public void CanCalculateMonthsSinceDate_Positive1()
         {
             Date start = new Date(2000, 1, 1);
             Date end = new Date(2000, 2, 1);
@@ -394,9 +471,64 @@ namespace System.DateAndTime.Tests
         }
 
         [Fact]
-        public void CanCalculateMonthsSinceDate_Negative()
+        public void CanCalculateMonthsSinceDate_Positive2()
+        {
+            Date start = new Date(2000, 1, 1);
+            Date end = new Date(2000, 2, 2);
+
+            int months = end.MonthsSince(start);
+
+            Assert.Equal(1, months);
+        }
+
+        [Fact]
+        public void CanCalculateMonthsSinceDate_Zero1()
+        {
+            Date start = new Date(2000, 1, 1);
+            Date end = new Date(2000, 1, 1);
+
+            int months = end.MonthsSince(start);
+
+            Assert.Equal(0, months);
+        }
+
+        [Fact]
+        public void CanCalculateMonthsSinceDate_Zero2()
+        {
+            Date start = new Date(2000, 1, 2);
+            Date end = new Date(2000, 1, 1);
+
+            int months = end.MonthsSince(start);
+
+            Assert.Equal(0, months);
+        }
+
+        [Fact]
+        public void CanCalculateMonthsSinceDate_Zero3()
         {
             Date start = new Date(2000, 2, 1);
+            Date end = new Date(2000, 1, 2);
+
+            int months = end.MonthsSince(start);
+
+            Assert.Equal(0, months);
+        }
+
+        [Fact]
+        public void CanCalculateMonthsSinceDate_Negative1()
+        {
+            Date start = new Date(2000, 2, 1);
+            Date end = new Date(2000, 1, 1);
+
+            int months = end.MonthsSince(start);
+
+            Assert.Equal(-1, months);
+        }
+
+        [Fact]
+        public void CanCalculateMonthsSinceDate_Negative2()
+        {
+            Date start = new Date(2000, 2, 2);
             Date end = new Date(2000, 1, 1);
 
             int months = end.MonthsSince(start);
@@ -416,7 +548,7 @@ namespace System.DateAndTime.Tests
         }
 
         [Fact]
-        public void CanCalculateYearsUntilDate_Positive()
+        public void CanCalculateYearsUntilDate_Positive1()
         {
             Date start = new Date(2000, 1, 1);
             Date end = new Date(2001, 1, 1);
@@ -427,9 +559,64 @@ namespace System.DateAndTime.Tests
         }
 
         [Fact]
-        public void CanCalculateYearsUntilDate_Negative()
+        public void CanCalculateYearsUntilDate_Positive2()
+        {
+            Date start = new Date(2000, 1, 1);
+            Date end = new Date(2001, 1, 2);
+
+            int years = start.YearsUntil(end);
+
+            Assert.Equal(1, years);
+        }
+
+        [Fact]
+        public void CanCalculateYearsUntilDate_Zero1()
+        {
+            Date start = new Date(2000, 1, 1);
+            Date end = new Date(2000, 1, 1);
+
+            int years = start.YearsUntil(end);
+
+            Assert.Equal(0, years);
+        }
+
+        [Fact]
+        public void CanCalculateYearsUntilDate_Zero2()
+        {
+            Date start = new Date(2000, 1, 2);
+            Date end = new Date(2001, 1, 1);
+
+            int years = start.YearsUntil(end);
+
+            Assert.Equal(0, years);
+        }
+
+        [Fact]
+        public void CanCalculateYearsUntilDate_Zero3()
         {
             Date start = new Date(2001, 1, 1);
+            Date end = new Date(2000, 1, 2);
+
+            int years = start.YearsUntil(end);
+
+            Assert.Equal(0, years);
+        }
+
+        [Fact]
+        public void CanCalculateYearsUntilDate_Negative1()
+        {
+            Date start = new Date(2001, 1, 1);
+            Date end = new Date(2000, 1, 1);
+
+            int years = start.YearsUntil(end);
+
+            Assert.Equal(-1, years);
+        }
+
+        [Fact]
+        public void CanCalculateYearsUntilDate_Negative2()
+        {
+            Date start = new Date(2001, 1, 2);
             Date end = new Date(2000, 1, 1);
 
             int years = start.YearsUntil(end);
@@ -449,7 +636,7 @@ namespace System.DateAndTime.Tests
         }
 
         [Fact]
-        public void CanCalculateYearsSinceDate_Positive()
+        public void CanCalculateYearsSinceDate_Positive1()
         {
             Date start = new Date(2000, 1, 1);
             Date end = new Date(2001, 1, 1);
@@ -460,9 +647,64 @@ namespace System.DateAndTime.Tests
         }
 
         [Fact]
-        public void CanCalculateYearsSinceDate_Negative()
+        public void CanCalculateYearsSinceDate_Positive2()
+        {
+            Date start = new Date(2000, 1, 1);
+            Date end = new Date(2001, 1, 2);
+
+            int years = end.YearsSince(start);
+
+            Assert.Equal(1, years);
+        }
+
+        [Fact]
+        public void CanCalculateYearsSinceDate_Zero1()
+        {
+            Date start = new Date(2000, 1, 1);
+            Date end = new Date(2000, 1, 1);
+
+            int years = end.YearsSince(start);
+
+            Assert.Equal(0, years);
+        }
+
+        [Fact]
+        public void CanCalculateYearsSinceDate_Zero2()
+        {
+            Date start = new Date(2000, 1, 1);
+            Date end = new Date(2000, 1, 2);
+
+            int years = end.YearsSince(start);
+
+            Assert.Equal(0, years);
+        }
+
+        [Fact]
+        public void CanCalculateYearsSinceDate_Zero3()
+        {
+            Date start = new Date(2000, 1, 2);
+            Date end = new Date(2001, 1, 1);
+
+            int years = end.YearsSince(start);
+
+            Assert.Equal(0, years);
+        }
+
+        [Fact]
+        public void CanCalculateYearsSinceDate_Negative1()
         {
             Date start = new Date(2001, 1, 1);
+            Date end = new Date(2000, 1, 1);
+
+            int years = end.YearsSince(start);
+
+            Assert.Equal(-1, years);
+        }
+
+        [Fact]
+        public void CanCalculateYearsSinceDate_Negative2()
+        {
+            Date start = new Date(2001, 1, 2);
             Date end = new Date(2000, 1, 1);
 
             int years = end.YearsSince(start);
