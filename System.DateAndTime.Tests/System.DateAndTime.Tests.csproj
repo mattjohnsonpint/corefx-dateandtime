@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DateCalendarTests.cs" />
+    <Compile Include="DateComparisonTests.cs" />
     <Compile Include="DateConstructionTests.cs" />
     <Compile Include="DateFormattingTests.cs" />
     <Compile Include="DateMathTests.cs" />
