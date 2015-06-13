@@ -483,8 +483,17 @@ namespace System
                 return 0;
 
             int months = (date.Year * 12 + date.Month) - (this.Year * 12 + this.Month);
-            if (this > date.AddMonths(-months))
-                months--;
+            var d = date.AddMonths(-months);
+            if (date > this)
+            {
+                if (this > d)
+                    months--;
+            }
+            else
+            {
+                if (this < d)
+                    months++;
+            }
 
             return months;
         }
@@ -501,14 +510,7 @@ namespace System
         /// </remarks>
         public int MonthsSince(Date date)
         {
-            if (this == date)
-                return 0;
-
-            int months = (this.Year * 12 + this.Month) - (date.Year * 12 + date.Month);
-            if (date > this.AddMonths(-months))
-                months--;
-
-            return months;
+            return date.MonthsUntil(this);
         }
 
         /// <summary>
@@ -528,8 +530,17 @@ namespace System
                 return 0;
 
             int years = date.Year - this.Year;
-            if (this > date.AddYears(-years))
-                years--;
+            var d = date.AddYears(-years);
+            if (date > this)
+            {
+                if (this > d)
+                    years--;
+            }
+            else
+            {
+                if (this < d)
+                    years++;
+            }
 
             return years;
         }
@@ -547,14 +558,7 @@ namespace System
         /// </remarks>
         public int YearsSince(Date date)
         {
-            if (this == date)
-                return 0;
-
-            int years = this.Year - date.Year;
-            if (date > this.AddYears(-years))
-                years--;
-
-            return years;
+            return date.YearsUntil(this);
         }
 
         /// <summary>
