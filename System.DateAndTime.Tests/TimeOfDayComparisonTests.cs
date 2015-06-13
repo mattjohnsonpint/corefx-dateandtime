@@ -184,7 +184,7 @@ namespace System.DateAndTime.Tests
         }
 
         [Fact]
-        public void CannotEquateTimes_Object_NonTime()
+        public void CanEquateTimes_Object_NonTime()
         {
             var t = new TimeOfDay();
             var b = t.Equals(0);

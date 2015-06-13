@@ -184,7 +184,7 @@ namespace System.DateAndTime.Tests
         }
 
         [Fact]
-        public void CannotEquateDates_Object_NonTime()
+        public void CanEquateDates_Object_NonTime()
         {
             var d = new Date();
             var b = d.Equals(0);
