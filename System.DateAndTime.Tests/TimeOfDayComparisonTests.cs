@@ -93,6 +93,23 @@ namespace System.DateAndTime.Tests
         }
 
         [Fact]
+        public void CanCompareTimes_Object_Null()
+        {
+            var t = new TimeOfDay();
+            var c = t.CompareTo(null);
+            Assert.Equal(1, c);
+        }
+
+        [Fact]
+        public void CannotCompareTimes_Object_NonTime()
+        {
+            Assert.Throws<ArgumentException>(() =>
+            {
+                var c = new TimeOfDay().CompareTo(0);
+            });
+        }
+
+        [Fact]
         public void CanEquateTimes_Static_Equal()
         {
             var t1 = new TimeOfDay(0, 0);
@@ -158,7 +175,22 @@ namespace System.DateAndTime.Tests
             Assert.False(b);
         }
 
+        [Fact]
+        public void CanEquateTimes_Object_Null()
+        {
+            var t = new TimeOfDay();
+            var b = t.Equals(null);
+            Assert.False(b);
+        }
 
+        [Fact]
+        public void CannotEquateTimes_Object_NonTime()
+        {
+            var t = new TimeOfDay();
+            var b = t.Equals(0);
+            Assert.False(b);
+        }
+        
         [Fact]
         public void CanCompareTimes_UsingOperator_LT1()
         {

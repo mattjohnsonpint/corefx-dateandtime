@@ -93,6 +93,23 @@ namespace System.DateAndTime.Tests
         }
 
         [Fact]
+        public void CanCompareDates_Object_Null()
+        {
+            var d = new Date();
+            var c = d.CompareTo(null);
+            Assert.Equal(1, c);
+        }
+
+        [Fact]
+        public void CannotCompareDates_Object_NonDate()
+        {
+            Assert.Throws<ArgumentException>(() =>
+            {
+                var c = new Date().CompareTo(0);
+            });
+        }
+
+        [Fact]
         public void CanEquateDates_Static_Equal()
         {
             var d1 = new Date(2000, 1, 1);
@@ -155,6 +172,22 @@ namespace System.DateAndTime.Tests
 
             var b = d1.Equals((object)d2);
 
+            Assert.False(b);
+        }
+
+        [Fact]
+        public void CanEquateDates_Object_Null()
+        {
+            var d = new Date();
+            var b = d.Equals(null);
+            Assert.False(b);
+        }
+
+        [Fact]
+        public void CannotEquateDates_Object_NonTime()
+        {
+            var d = new Date();
+            var b = d.Equals(0);
             Assert.False(b);
         }
 
