@@ -2,8 +2,12 @@
 
 This repository contains a prototype project for `System.Date` and `System.TimeOfDay`.
 
-This is an unofficial community-based effort, being used to coordinate an implementation that *could* ultimately be merged into the .NET CoreCLR.  **Nothing here is intended to be usable in its current state.**
+This is an unofficial community-based effort, being used to coordinate an implementation that *could* ultimately be merged into the .NET CoreCLR or a nuget package such as `System.Time`.
 
-For more details, see [dotnet/corefx#700](https://github.com/dotnet/corefx/issues/700).
+For more details, see [dotnet/corefx#700](https://github.com/dotnet/corefx/issues/700) and [dotnet/corefx#2116](https://github.com/dotnet/corefx/issues/2116).
+
+#### Current Status
+
+Nothing here is intended to be usable in its current state, as we might introduce breaking changes at any time.  However, the project is relatively stable at this time.  We need to add some more unit tests, and to start documenting examples of the key areas where these types matter most.
 
 Please review the [list of current issues](https://github.com/mj1856/corefx-dateandtime/issues), and feel free to chime in with your opinions.  We are gladly taking feedback and pull requests!
