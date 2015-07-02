@@ -1,5 +1,3 @@
-[![Join the chat at https://gitter.im/mj1856/corefx-dateandtime](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mj1856/corefx-dateandtime?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 This repository contains a prototype project for improving the date and time features of the .NET Framework.  It currently contains:
 
 - New types: `System.Date` and `System.TimeOfDay`
