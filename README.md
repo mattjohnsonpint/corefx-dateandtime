@@ -13,4 +13,6 @@ For more details, see [dotnet/corefx#700](https://github.com/dotnet/corefx/issue
 
 Nothing here is intended to be usable in its current state, as we might introduce breaking changes at any time.  The project is relatively stable, but is still open for debate and prototyping of new items.  We also need to add some more unit tests, and to start documenting examples of the key areas where the improvements matter most.
 
-Please review the [list of current issues](https://github.com/mj1856/corefx-dateandtime/issues), and feel free to chime in with your opinions.  We are gladly taking feedback, new issues, and pull requests!
+**Migration in Progress**
+
+This project will soon be migrated to [dotnet/corefxlab](https://github.com/dotnet/corefxlab).  Current issues will be closed out and new ones will be opened as neccesary in the new repo.   Hang tight, this should happen in the next few days or so.
