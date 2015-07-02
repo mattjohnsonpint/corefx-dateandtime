@@ -10,7 +10,7 @@ namespace System.DateAndTime.Tests
             TimeOfDay startTime = new TimeOfDay(10, 0);
             TimeOfDay endTime = new TimeOfDay(12, 0);
 
-            TimeSpan duration = TimeOfDay.CalculateDuration(startTime, endTime);
+            TimeSpan duration = endTime - startTime;
             Assert.Equal(TimeSpan.FromHours(2), duration);
         }
 
@@ -20,7 +20,7 @@ namespace System.DateAndTime.Tests
             TimeOfDay startTime = new TimeOfDay(23, 0);
             TimeOfDay endTime = new TimeOfDay(1, 0);
 
-            TimeSpan duration = TimeOfDay.CalculateDuration(startTime, endTime);
+            TimeSpan duration = endTime - startTime;
             Assert.Equal(TimeSpan.FromHours(2), duration);
         }
 

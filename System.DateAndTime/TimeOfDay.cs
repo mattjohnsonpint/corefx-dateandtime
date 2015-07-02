@@ -417,16 +417,18 @@ namespace System
         }
 
         /// <summary>
-        /// Calculates the duration between two time values.
+        /// Calculates the duration between this instance and another <see cref="TimeOfDay"/> value.
         /// Assumes a standard day, with no invalid or ambiguous times due to Daylight Saving Time.
         /// Supports both "normal" ranges such as 10:00-12:00, and ranges that span midnight such as 23:00-01:00.
         /// </summary>
         /// <param name="startTime">The starting time of day, inclusive.</param>
-        /// <param name="endTime">The ending time of day, exclusive.</param>
-        /// <returns>A <see cref="TimeSpan"/> representing the duration between the two values.</returns>
-        public static TimeSpan CalculateDuration(TimeOfDay startTime, TimeOfDay endTime)
+        /// <returns>
+        /// A <see cref="TimeSpan"/> representing the duration between the <paramref name="startTime"/>
+        /// (inclusive), and this instance (exclusive).
+        /// </returns>
+        public TimeSpan Subtract(TimeOfDay startTime)
         {
-            return TimeSpan.FromTicks((endTime._ticks - startTime._ticks + TicksPerDay) % TicksPerDay);
+            return TimeSpan.FromTicks((_ticks - startTime._ticks + TicksPerDay) % TicksPerDay);
         }
 
         /// <summary>
@@ -603,6 +605,21 @@ namespace System
         public static TimeOfDay operator -(TimeOfDay timeOfDay, TimeSpan timeSpan)
         {
             return timeOfDay.Subtract(timeSpan);
+        }
+
+        /// <summary>
+        /// Calculates the duration between this instance and another <see cref="TimeOfDay"/> value.
+        /// Assumes a standard day, with no invalid or ambiguous times due to Daylight Saving Time.
+        /// Supports both "normal" ranges such as 10:00-12:00, and ranges that span midnight such as 23:00-01:00.
+        /// </summary>
+        /// <param name="startTime">The starting time of day, inclusive.</param>
+        /// <param name="endTime">The ending time of day, exclusive.</param>
+        /// <returns>
+        /// A <see cref="TimeSpan"/> representing the duration between the two time of day values.
+        /// </returns>
+        public static TimeSpan operator -(TimeOfDay endTime, TimeOfDay startTime)
+        {
+            return endTime.Subtract(startTime);
         }
 
         /// <summary>
