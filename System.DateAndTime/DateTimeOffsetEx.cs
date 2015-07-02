@@ -40,5 +40,78 @@
             DateTimeOffset utcNow = DateTimeOffset.UtcNow;
             return TimeZoneInfo.ConvertTime(utcNow, timeZoneInfo);
         }
+
+        public static DateTimeOffset AddYears(this DateTimeOffset dateTimeOffset, int years, TimeZoneInfo timeZone)
+        {
+            return AddByDate(dateTimeOffset, dt => dt.AddYears(years), timeZone, TimeZoneOffsetResolvers.Default);
+        }
+
+        public static DateTimeOffset AddYears(this DateTimeOffset dateTimeOffset, int years, TimeZoneInfo timeZone, TimeZoneOffsetResolver resolver)
+        {
+            return AddByDate(dateTimeOffset, dt => dt.AddYears(years), timeZone, resolver);
+        }
+
+        public static DateTimeOffset AddMonths(this DateTimeOffset dateTimeOffset, int months, TimeZoneInfo timeZone)
+        {
+            return AddByDate(dateTimeOffset, dt => dt.AddMonths(months), timeZone, TimeZoneOffsetResolvers.Default);
+        }
+
+        public static DateTimeOffset AddMonths(this DateTimeOffset dateTimeOffset, int months, TimeZoneInfo timeZone, TimeZoneOffsetResolver resolver)
+        {
+            return AddByDate(dateTimeOffset, dt => dt.AddMonths(months), timeZone, resolver);
+        }
+
+        public static DateTimeOffset AddDays(this DateTimeOffset dateTimeOffset, int days, TimeZoneInfo timeZone)
+        {
+            return AddByDate(dateTimeOffset, dt => dt.AddDays(days), timeZone, TimeZoneOffsetResolvers.Default);
+        }
+
+        public static DateTimeOffset AddDays(this DateTimeOffset dateTimeOffset, int days, TimeZoneInfo timeZone, TimeZoneOffsetResolver resolver)
+        {
+            return AddByDate(dateTimeOffset, dt => dt.AddDays(days), timeZone, resolver);
+        }
+
+        public static DateTimeOffset AddHours(this DateTimeOffset dateTimeOffset, double hours, TimeZoneInfo timeZone)
+        {
+            return dateTimeOffset.Add(TimeSpan.FromHours(hours), timeZone);
+        }
+
+        public static DateTimeOffset AddMinutes(this DateTimeOffset dateTimeOffset, double minutes, TimeZoneInfo timeZone)
+        {
+            return dateTimeOffset.Add(TimeSpan.FromMinutes(minutes), timeZone);
+        }
+
+        public static DateTimeOffset AddSeconds(this DateTimeOffset dateTimeOffset, double seconds, TimeZoneInfo timeZone)
+        {
+            return dateTimeOffset.Add(TimeSpan.FromSeconds(seconds), timeZone);
+        }
+
+        public static DateTimeOffset AddMilliseconds(this DateTimeOffset dateTimeOffset, double milliseconds, TimeZoneInfo timeZone)
+        {
+            return dateTimeOffset.Add(TimeSpan.FromMilliseconds(milliseconds), timeZone);
+        }
+
+        public static DateTimeOffset AddTicks(this DateTimeOffset dateTimeOffset, long ticks, TimeZoneInfo timeZone)
+        {
+            return dateTimeOffset.Add(TimeSpan.FromTicks(ticks), timeZone);
+        }
+
+        public static DateTimeOffset Subtract(this DateTimeOffset dateTimeOffset, TimeSpan timeSpan, TimeZoneInfo timeZone)
+        {
+            return dateTimeOffset.Add(timeSpan.Negate(), timeZone);
+        }
+
+        public static DateTimeOffset Add(this DateTimeOffset dateTimeOffset, TimeSpan timeSpan, TimeZoneInfo timeZone)
+        {
+            var t = dateTimeOffset.Add(timeSpan);
+            return TimeZoneInfo.ConvertTime(t, timeZone);
+        }
+        
+        private static DateTimeOffset AddByDate(DateTimeOffset dateTimeOffset, Func<DateTime, DateTime> operation, TimeZoneInfo timeZone, TimeZoneOffsetResolver resolver)
+        {
+            var dto = TimeZoneInfo.ConvertTime(dateTimeOffset, timeZone);
+            var dt = operation.Invoke(dto.DateTime);
+            return resolver.Invoke(dt, timeZone);
+        }
     }
 }
