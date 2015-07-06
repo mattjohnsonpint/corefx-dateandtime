@@ -417,9 +417,27 @@ namespace System
         }
 
         /// <summary>
-        /// Calculates the duration between this instance and another <see cref="TimeOfDay"/> value.
+        /// Calculates the duration between two time values.
         /// Assumes a standard day, with no invalid or ambiguous times due to Daylight Saving Time.
         /// Supports both "normal" ranges such as 10:00-12:00, and ranges that span midnight such as 23:00-01:00.
+        /// Unlike <see cref="Subtract(System.TimeOfDay)"/>, this operation does not assume that both values
+        /// belong to the same calendar date.  If <paramref name="startTime"/> is greater than
+        /// <paramref name="endTime"/>, it behaves as if <see cref="endTime"/> were on the day following
+        /// the <see cref="startTime"/> date.
+        /// </summary>
+        /// <param name="startTime">The starting time of day, inclusive.</param>
+        /// <param name="endTime">The ending time of day, exclusive.</param>
+        /// <returns>A <see cref="TimeSpan"/> representing the duration between the two values.</returns>
+        public static TimeSpan CalculateDuration(TimeOfDay startTime, TimeOfDay endTime)
+        {
+            return TimeSpan.FromTicks((endTime._ticks - startTime._ticks + TicksPerDay) % TicksPerDay);
+        }
+
+        /// <summary>
+        /// Subtracts another <see cref="TimeOfDay"/> value from this instance, returning a <see cref="TimeSpan"/>.
+        /// Assumes a standard day, with no invalid or ambiguous times due to Daylight Saving Time.
+        /// This operation assumes that both values belong to the same calendar date, and thus the result will
+        /// be negative if <paramref name="startTime"/> is greater than this instance.
         /// </summary>
         /// <param name="startTime">The starting time of day, inclusive.</param>
         /// <returns>
@@ -428,7 +446,7 @@ namespace System
         /// </returns>
         public TimeSpan Subtract(TimeOfDay startTime)
         {
-            return TimeSpan.FromTicks((_ticks - startTime._ticks + TicksPerDay) % TicksPerDay);
+            return TimeSpan.FromTicks(_ticks - startTime._ticks);
         }
 
         /// <summary>
@@ -608,9 +626,11 @@ namespace System
         }
 
         /// <summary>
-        /// Calculates the duration between this instance and another <see cref="TimeOfDay"/> value.
+        /// Calculates the duration between the <paramref name="startTime"/> and <see cref="endTime"/>.
         /// Assumes a standard day, with no invalid or ambiguous times due to Daylight Saving Time.
         /// Supports both "normal" ranges such as 10:00-12:00, and ranges that span midnight such as 23:00-01:00.
+        /// This operation assumes that both values belong to the same calendar date, and thus the result will
+        /// be negative if <paramref name="startTime"/> is greater than <paramref name="endTime"/>.
         /// </summary>
         /// <param name="startTime">The starting time of day, inclusive.</param>
         /// <param name="endTime">The ending time of day, exclusive.</param>

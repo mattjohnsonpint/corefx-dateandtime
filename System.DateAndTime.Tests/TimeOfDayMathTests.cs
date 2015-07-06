@@ -15,12 +15,22 @@ namespace System.DateAndTime.Tests
         }
 
         [Fact]
+        public void CanCalculateDuration_Negative()
+        {
+            TimeOfDay startTime = new TimeOfDay(12, 0);
+            TimeOfDay endTime = new TimeOfDay(10, 0);
+
+            TimeSpan duration = endTime - startTime;
+            Assert.Equal(TimeSpan.FromHours(-2), duration);
+        }
+
+        [Fact]
         public void CanCalculateDuration_OverMidnight()
         {
             TimeOfDay startTime = new TimeOfDay(23, 0);
             TimeOfDay endTime = new TimeOfDay(1, 0);
 
-            TimeSpan duration = endTime - startTime;
+            TimeSpan duration = TimeOfDay.CalculateDuration(startTime, endTime);
             Assert.Equal(TimeSpan.FromHours(2), duration);
         }
 
